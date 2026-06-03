@@ -90,11 +90,11 @@ database:
     <<: *defaultLogger
     stdout: true
   default:
-    link: "mysql:apt11:7Wd7kWL6xpx4fmcC@tcp(10.89.128.3:3306)/apt11?loc=Local&parseTime=true&charset=utf8mb4"
+    link: "mysql:apt11:p8xctPZmZMSeWy4L@tcp(127.0.0.1:3306)/apt11?loc=Local&parseTime=true&charset=utf8mb4"
     debug: true
     Prefix: "hg_"
   chat:
-    link: "mysql:chat:sfz2ELicwYzB3sJw@tcp(10.89.128.3:3306)/chat?loc=Local&parseTime=true&charset=utf8mb4"
+    link: "mysql:apt11:p8xctPZmZMSeWy4L@tcp(127.0.0.1:3306)/chat?loc=Local&parseTime=true&charset=utf8mb4"
     debug: true
 
 rabbitmq:
