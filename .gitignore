@@ -10,3 +10,8 @@ public
 APT11
 .bin/*
 product
+.gocache/
+.gomodcache/
+.gopath/
+!/server/resource/public/
+!/server/resource/public/.gitkeep
