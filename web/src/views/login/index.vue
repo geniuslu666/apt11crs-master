@@ -1,110 +1,117 @@
 <template>
 <div class="login-container">
-  <div class="login-container-left">
-    <img src="../../assets/images/new/login_bg.png" class="login-container-left-bg" alt="Bg">
-    <div class="login-container-left-logo">
-      <img src="../../assets/images/new/login_logo.png" alt="Logo">
+  <!-- Left decorative panel (Stripe-style gradient) -->
+  <div class="login-panel-left hidden md:flex">
+    <div class="login-panel-left-content">
+      <div class="login-brand">
+        <img src="../../assets/images/new/login_logo.png" alt="Logo" class="login-brand-logo">
+        <span class="login-brand-name">住一CRS</span>
+      </div>
+      <div class="login-panel-tagline">
+        <h1>业务中台</h1>
+        <p>统一管理 · 高效协作 · 实时数据</p>
+      </div>
+      <img src="../../assets/images/new/login_bg.png" class="login-panel-bg" alt="">
     </div>
   </div>
-  <div class="login-container-right">
-    <div class="login-container-right-login-box">
-      <div class="login-container-right-login-box-title">住一CRS业务中台</div>
-      <div class="login-container-right-login-box-subtitle">请输入您的账号密码登录</div>
-      <div class="login-container-right-login-box-form">
-        <n-form
-          ref="formRef"
-          label-placement="left"
-          size="large"
-          :model="formInline"
-          :rules="rules"
-        >
-          <n-form-item path="username">
+
+  <!-- Right form panel -->
+  <div class="login-form-panel">
+    <div class="login-form-box">
+      <!-- Logo (mobile only) -->
+      <div class="flex items-center gap-2 mb-8 md:hidden">
+        <img src="../../assets/images/new/login_logo.png" alt="Logo" class="h-8 w-8 rounded-lg">
+        <span class="text-base font-bold text-[#1a1f36] tracking-tight">住一CRS</span>
+      </div>
+
+      <h2 class="login-form-title">欢迎回来</h2>
+      <p class="login-form-subtitle">请输入您的账号密码登录</p>
+
+      <n-form
+        ref="formRef"
+        label-placement="left"
+        :model="formInline"
+        :rules="rules"
+        class="login-form"
+      >
+        <n-form-item path="username" :show-label="false">
+          <div class="login-field">
+            <label class="login-label">用户名</label>
             <n-input
               @keyup.enter="handleSubmit"
               v-model:value="formInline.username"
               placeholder="请输入用户名"
+              size="large"
               class="login-input"
-            >
-              <template #prefix>
-                <img src="../../assets/images/new/login_user_icon.png" width="16">
-              </template>
-            </n-input>
-          </n-form-item>
-          <n-form-item path="pass">
+            />
+          </div>
+        </n-form-item>
+
+        <n-form-item path="pass" :show-label="false">
+          <div class="login-field">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="login-label">密码</label>
+              <button type="button" class="login-forgot" @click="handleResetPassword">忘记密码？</button>
+            </div>
             <n-input
               @keyup.enter="handleSubmit"
               v-model:value="formInline.pass"
               type="password"
               show-password-on="click"
               placeholder="请输入密码"
-              class="login-input"
-            >
-              <template #prefix>
-                <img src="../../assets/images/new/login_pass_icon.png" width="16">
-              </template>
-            </n-input>
-          </n-form-item>
-
-          <n-form-item path="code" v-show="codeBase64 !== ''">
-            <n-input-group>
-              <n-grid x-gap="9" :cols="4">
-                <n-gi :span="3">
-                  <n-input
-                    :style="{ width: '100%', marginRight: '16px' }"
-                    placeholder="验证码"
-                    @keyup.enter="handleSubmit"
-                    v-model:value="formInline.code"
-                    class="login-input"
-                  >
-                    <template #prefix>
-                      <img src="../../assets/images/new/login_code_icon.png" width="16">
-                    </template>
-                  </n-input>
-                </n-gi>
-                <n-gi :span="1">
-                  <n-loading-bar-provider
-                    :to="loadingBarTargetRef"
-                    container-style="position: absolute;"
-                  >
-                    <img
-                      ref="loadingBarTargetRef"
-                      style="width: 100%; height: 100%"
-                      :src="codeBase64"
-                      @click="refreshCode"
-                      loading="lazy"
-                      alt="点击获取"
-                      class="image"
-                    />
-                    <loading-bar-trigger />
-                  </n-loading-bar-provider>
-                </n-gi>
-              </n-grid>
-            </n-input-group>
-          </n-form-item>
-
-          <n-space :vertical="true" :size="32">
-            <div style="display: flex;align-items: center;justify-content: space-between">
-              <n-checkbox v-model:checked="autoLogin" style="--n-color-checked: #2398F5;--n-border-checked: 1px solid #2398F5;--n-border-focus: 1px solid #2398F5;">
-                <span style="color: #3D3D3D">自动登录</span>
-              </n-checkbox>
-              <n-button :text="true" @click="handleResetPassword">
-                <span style="color: #2398F5">忘记密码？</span></n-button>
-            </div>
-            <n-button
-              type="primary"
               size="large"
-              :block="true"
-              :loading="loading"
-              @click="handleLogin"
-              color="#4473E8"
-            >
-              登录
-            </n-button>
+              class="login-input"
+            />
+          </div>
+        </n-form-item>
 
-            <!-- <FormOther moduleKey="register" tag="注册账号" @updateActiveModule="updateActiveModule" /> -->
-          </n-space>
-        </n-form>
-      </div>
+        <n-form-item path="code" v-show="codeBase64 !== ''" :show-label="false">
+          <div class="login-field">
+            <label class="login-label">验证码</label>
+            <div class="flex gap-3">
+              <n-input
+                placeholder="请输入验证码"
+                @keyup.enter="handleSubmit"
+                v-model:value="formInline.code"
+                size="large"
+                class="login-input flex-1"
+              />
+              <n-loading-bar-provider :to="loadingBarTargetRef" container-style="position:absolute;">
+                <img
+                  ref="loadingBarTargetRef"
+                  class="h-10 w-28 rounded-md cursor-pointer border border-[#e3e8ef] object-cover"
+                  :src="codeBase64"
+                  @click="refreshCode"
+                  loading="lazy"
+                  alt="验证码"
+                />
+                <loading-bar-trigger />
+              </n-loading-bar-provider>
+            </div>
+          </div>
+        </n-form-item>
+
+        <div class="flex items-center justify-between mb-6">
+          <n-checkbox
+            v-model:checked="autoLogin"
+            style="--n-color-checked:#635bff;--n-border-checked:1px solid #635bff;--n-border-focus:1px solid #635bff;"
+          >
+            <span class="text-sm text-[#697386]">记住登录状态</span>
+          </n-checkbox>
+        </div>
+
+        <n-button
+          type="primary"
+          size="large"
+          block
+          :loading="loading"
+          @click="handleLogin"
+          class="login-btn"
+          style="--n-color:#635bff;--n-color-hover:#4f46e5;--n-color-pressed:#3e35d9;--n-color-focus:#635bff;--n-border:none;--n-border-hover:none;--n-border-pressed:none;height:42px;font-size:14px;font-weight:600;border-radius:8px;"
+        >
+          登录
+        </n-button>
+      </n-form>
     </div>
   </div>
 </div>
@@ -229,76 +236,189 @@ onMounted(() => {
   display: flex;
   width: 100%;
   height: 100vh;
-  &-left {
-    position: relative;
-    flex: 1;
-    background: #F3F4FB;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 440px;
-    &-bg{
-      width: 440px;
-    }
-    &-logo{
-      position: absolute;
-      top: 25px;
-      left: 25px;
-      img{
-        width: 110px;
-      }
-    }
-  }
-  &-right {
-    flex: 1;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 440px;
-    &-login-box{
-      width: 400px;
-      &-title{
-        font-weight: 600;
-        font-size: 32px;
-        color: #3D3D3D;
-        line-height: 45px;
-      }
-      &-subtitle{
-        font-weight: 400;
-        font-size: 14px;
-        color: #979797;
-        line-height: 20px;
-        margin-top: 5px;
-      }
-      &-form{
-        margin-top: 32px;
-      }
-    }
-  }
-}
-.login-input{
-  color: #3D3D3D;
+  background: #ffffff;
 }
 
-/* 当屏幕小于880px，隐藏左侧 */
-@media (max-width: 880px) {
-  .login-container-left {
-    display: none;
+// Left decorative panel
+.login-panel-left {
+  flex: 1;
+  background: linear-gradient(160deg, #0a2540 0%, #1a3a5c 60%, #0d2f50 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  min-width: 420px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 40%, rgba(99,91,255,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(99,91,255,0.15) 0%, transparent 50%);
   }
-  .login-container-right {
+
+  &-content {
+    position: relative;
+    z-index: 1;
+    padding: 48px;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: auto;
+
+  &-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+
+  &-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+  }
+}
+
+.login-panel-tagline {
+  padding-bottom: 80px;
+
+  h1 {
+    font-size: 40px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 15px;
+    color: rgba(200, 210, 224, 0.8);
+    letter-spacing: 0.02em;
+  }
+}
+
+.login-panel-bg {
+  position: absolute;
+  bottom: -20px;
+  right: -40px;
+  width: 360px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+// Right form panel
+.login-form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  min-width: 360px;
+}
+
+.login-form-box {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1f36;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.login-form-subtitle {
+  font-size: 14px;
+  color: #697386;
+  margin-bottom: 32px;
+}
+
+.login-form {
+  :deep(.n-form-item) {
+    margin-bottom: 0;
+  }
+
+  :deep(.n-form-item-feedback-wrapper) {
+    min-height: 20px;
+  }
+}
+
+.login-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.login-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1f36;
+  margin-bottom: 6px;
+}
+
+.login-forgot {
+  font-size: 13px;
+  color: #635bff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+
+  &:hover {
+    color: #4f46e5;
+  }
+}
+
+.login-input {
+  :deep(.n-input__input-el) {
+    font-size: 14px;
+    color: #1a1f36;
+  }
+
+  :deep(.n-input) {
+    border-radius: 8px;
+    border: 1px solid #e3e8ef;
+
+    &:hover {
+      border-color: #9da9bb;
+    }
+
+    &.n-input--focus {
+      border-color: #635bff;
+      box-shadow: 0 0 0 3px rgba(99,91,255,0.15);
+    }
+  }
+}
+
+@media (max-width: 880px) {
+  .login-panel-left {
+    display: none !important;
+  }
+  .login-form-panel {
     flex: 1 1 100%;
-    justify-content: center;
-    align-items: center;
   }
 }
 
 @media (max-width: 480px) {
-  .login-container-right {
+  .login-form-panel {
+    padding: 32px 24px;
     min-width: auto;
-  }
-  .login-container-right-login-box {
-    width: 90%;
   }
 }
 </style>

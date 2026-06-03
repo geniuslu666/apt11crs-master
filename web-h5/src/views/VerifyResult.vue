@@ -56,121 +56,160 @@ const errorMsg = (route.query.msg as string) || '核销码已被使用，不能�
 <style scoped>
 .result-page {
   min-height: 100vh;
-  background: #F4F4F4;
+  background: #f6f9fc;
   position: relative;
 }
 
 .nav-bar {
-  height: 44px;
+  height: 56px;
+  background: #ffffff;
+  border-bottom: 1px solid #e3e8ef;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   padding: 0 16px;
 }
 
 .nav-back {
   position: absolute;
-  left: 16px;
+  left: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: background 0.12s;
 }
 
+.nav-back:active { background: #f0f3f7; }
+
 .back-arrow {
-  font-size: 28px;
-  color: #3D3D3D;
-  font-weight: 300;
+  font-size: 24px;
+  color: #1a1f36;
+  font-weight: 400;
+  line-height: 1;
 }
 
 .result-content {
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
+/* 成功/失败 icon */
 .result-icon {
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  margin: 38px auto 14px;
+  margin: 40px auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e6faf4;
 }
+
+.result-icon.error-icon { background: #fef2f2; }
 
 .result-icon img {
-  width: 100%;
-  height: 100%;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .result-title {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 25px;
-  color: #3D3D3D;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1f36;
   text-align: center;
   margin-bottom: 6px;
+  letter-spacing: -0.03em;
 }
 
 .result-desc {
-  font-weight: 400;
   font-size: 14px;
-  color: #FF5A60;
-  line-height: 20px;
+  color: #697386;
+  line-height: 1.5;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
 }
 
+.result-desc.error { color: #ef4444; }
+
 .result-card {
-  background: #FFFFFF;
-  border-radius: 10px;
-  padding: 17px 12px 22px;
-  margin: 40px 0 20px;
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(60,66,87,0.06);
 }
 
 .card-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f3f7;
 }
 
-.card-row:last-child { margin-bottom: 0; }
+.card-row:last-child { border-bottom: none; }
 
 .card-row .label {
-  font-size: 12px;
-  color: #3D3D3D;
-  line-height: 17px;
-  font-weight: 400;
+  font-size: 13px;
+  color: #697386;
 }
 
 .card-row .value {
-  font-size: 12px;
-  color: #3D3D3D;
-  line-height: 17px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1f36;
+  text-align: right;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 42px;
-  line-height: 42px;
-  background: #12C584;
+  height: 48px;
+  background: #635bff;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
+  border-radius: 12px;
+  font-size: 15px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
-  margin-bottom: 14px;
-  padding: 0;
+  margin-bottom: 10px;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.1s;
 }
 
+.btn-primary:hover { background: #4f46e5; }
+.btn-primary:active { transform: scale(0.98); }
+
 .btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 42px;
-  line-height: 42px;
-  background: #FFFFFF;
-  border: 1px solid #C9CDD4;
-  border-radius: 10px;
-  font-size: 16px;
+  height: 48px;
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 12px;
+  font-size: 15px;
   font-weight: 600;
-  color: #3D3D3D;
+  color: #697386;
   cursor: pointer;
-  padding: 0;
+  font-family: inherit;
+  transition: background 0.12s;
 }
+
+.btn-secondary:active { background: #f8fafc; }
 </style>

@@ -1,172 +1,133 @@
 <template>
-  <div>
-    <n-drawer v-model:show="showModal" :width="dialogWidth">
-      <n-drawer-content closable :header-style="{
-                    padding: '20px',
-                  }" :body-content-style="{
-                    padding: '20px',
-                  }" :footer-style="{
-                    padding: '12px 20px',
-                  }">
-        <template #header>
-          <div style="font-weight: 500;font-size: 18px;color: #3D3D3D;line-height: 25px;">调整积分</div>
-        </template>
-        <template #footer>
-          <n-button @click="closeForm" style="width: 70px;height: 35px;margin-right: 10px">
-            取消
-          </n-button>
-          <n-button type="info" :loading="formBtnLoading" @click="confirmForm" style="width: 70px;height: 35px;">
-            保存
-          </n-button>
-        </template>
-        <n-spin :show="loading" description="请稍候...">
-          <n-form
-            ref="formRef"
-            :model="formValue"
-            :rules="rules"
-            label-placement="top"
-            label-width="auto"
-          >
-            <n-grid :cols="1">
-              <n-gi>
-                <n-form-item label="当前积分" path="balance">
-                  {{formValue.balance}}
-                </n-form-item>
-              </n-gi>
-              <n-gi>
-                <n-form-item label="调整值" path="value">
-                  <n-input-number placeholder="请输入调整值" v-model:value="formValue.value" />
-                  <!--调整后数值是-->
-                  <template #feedback><span style="color: red">调整后：{{ formValue.value + formValue.balance }} 积分</span></template>
-                </n-form-item>
-              </n-gi>
-              <n-gi style="margin-top: 24px">
-                <n-form-item label="操作人" path="operator">
-                  {{formValue.operator}}
-                </n-form-item>
-              </n-gi>
-              <n-gi>
-                <n-form-item label="备注(后端展示)" path="des" :show-require-mark="true">
-                  <n-input type="textarea" placeholder="请输入备注" v-model:value="formValue.des" />
-                </n-form-item>
-              </n-gi>
-              <n-gi>
-                <n-form-item label="原因(前端展示)" path="reason" :show-require-mark="true">
-                  <n-input type="textarea" placeholder="请输入原因" v-model:value="formValue.reason" />
-                </n-form-item>
-              </n-gi>
-            </n-grid>
-          </n-form>
-        </n-spin>
-      </n-drawer-content>
-    </n-drawer>
-  </div>
+  <UiSheet
+    :open="showModal"
+    title="调整积分"
+    width="420px"
+    @update:open="closeForm"
+  >
+    <UiSpinner :show="loading">
+      <div class="space-y-4">
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-foreground">当前积分</label>
+          <p class="text-sm text-foreground py-1">{{ formValue.balance }}</p>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-foreground">调整值</label>
+          <UiNumberInput v-model="formValue.value" placeholder="请输入调整值" />
+          <span v-if="errors.value" class="text-xs text-destructive">{{ errors.value }}</span>
+          <span class="text-xs text-red-500">调整后：{{ Number(formValue.value) + Number(formValue.balance) }} 积分</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-foreground">操作人</label>
+          <p class="text-sm text-foreground py-1">{{ formValue.operator }}</p>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-foreground">备注 <span class="text-destructive">*</span>(后端展示)</label>
+          <UiTextarea v-model="formValue.des" placeholder="请输入备注" :rows="3" />
+          <span v-if="errors.des" class="text-xs text-destructive">{{ errors.des }}</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-medium text-foreground">原因 <span class="text-destructive">*</span>(前端展示)</label>
+          <UiTextarea v-model="formValue.reason" placeholder="请输入原因" :rows="3" />
+          <span v-if="errors.reason" class="text-xs text-destructive">{{ errors.reason }}</span>
+        </div>
+      </div>
+    </UiSpinner>
+    <template #footer>
+      <UiButton variant="outline" @click="closeForm">取消</UiButton>
+      <UiButton :disabled="formBtnLoading" @click="confirmForm">
+        {{ formBtnLoading ? '保存中...' : '保存' }}
+      </UiButton>
+    </template>
+  </UiSheet>
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from 'vue';
-  import { BalanceEdit } from '@/api/pmsMember';
-  import { useProjectSettingStore } from '@/store/modules/projectSetting';
-  import { useUserStore } from '@/store/modules/user';
-  import { useMessage, FormItemRule } from 'naive-ui';
-  import Verify from "@/views/spaSettlementOrder/verify.vue";
-import {adaModalWidth} from "@/utils/hotgo";
+import { ref, reactive } from 'vue';
+import { BalanceEdit } from '@/api/pmsMember';
+import { useUserStore } from '@/store/modules/user';
+import { useMessage } from 'naive-ui';
+import { UiSheet, UiButton, UiNumberInput, UiTextarea, UiSpinner } from '@/components/ui';
 
-  const emit = defineEmits(['reloadInfo']);
-  const message = useMessage();
-  const settingStore = useProjectSettingStore();
-  const userStore = useUserStore();
-  const loading = ref(false);
-  const showModal = ref(false);
-  const formValue = ref({
+const emit = defineEmits(['reloadInfo']);
+const message = useMessage();
+const userStore = useUserStore();
+const loading = ref(false);
+const showModal = ref(false);
+const formValue = ref({
+  id: '' as any,
+  balance: '' as any,
+  value: 0,
+  operator: userStore.getUsername,
+  des: '',
+  reason: '',
+});
+const formBtnLoading = ref(false);
+const errors = reactive({ value: '', des: '', reason: '' });
+
+function validate(): boolean {
+  errors.value = '';
+  errors.des = '';
+  errors.reason = '';
+  let valid = true;
+
+  if ((Number(formValue.value.value) + Number(formValue.value.balance)) < 0) {
+    errors.value = '调整值与当前积分数相加不能小于0';
+    valid = false;
+  }
+  if (!formValue.value.des) {
+    errors.des = '备注必填';
+    valid = false;
+  }
+  if (!formValue.value.reason) {
+    errors.reason = '原因必填';
+    valid = false;
+  }
+  return valid;
+}
+
+function openModal(id: any, balance: any) {
+  formValue.value.id = id;
+  formValue.value.balance = balance;
+  formValue.value.value = 0;
+  formValue.value.des = '';
+  formValue.value.reason = '';
+  errors.value = '';
+  errors.des = '';
+  errors.reason = '';
+  showModal.value = true;
+}
+
+function confirmForm() {
+  if (!validate()) {
+    message.error('验证错误');
+    return;
+  }
+  formBtnLoading.value = true;
+  BalanceEdit(formValue.value)
+    .then(() => {
+      message.success('操作成功');
+      closeForm();
+      emit('reloadInfo');
+    })
+    .catch(() => {})
+    .finally(() => {
+      formBtnLoading.value = false;
+    });
+}
+
+function closeForm() {
+  showModal.value = false;
+  loading.value = false;
+  formValue.value = {
     id: '',
     balance: '',
     value: 0,
     operator: userStore.getUsername,
     des: '',
     reason: '',
-  })
-  const formRef = ref<any>({});
-  const formBtnLoading = ref(false);
-  const dialogWidth = computed(() => {
-    return adaModalWidth(650);
-  });
-
-  const rules = {
-    value: {
-      required: true,
-      validator(rule: FormItemRule, value: string) {
-        if ((Number(value) + Number(formValue.value.balance)) < 0) {
-          return new Error('调整值与当前积分数相加不能小于0')
-        }
-        return true
-      },
-      trigger: ['blur', 'input'],
-    },
-    des: {
-      required: true,
-      trigger: ['blur', 'input'],
-      validator(rule: FormItemRule, value: string) {
-        if (!value) {
-          return new Error('备注必填')
-        }
-      }
-    },
-    reason: {
-      required: true,
-      trigger: ['blur', 'input'],
-      validator(rule: FormItemRule, value: string) {
-        if (!value) {
-          return new Error('原因必填')
-        }
-      }
-    },
   };
+}
 
-  function openModal(id, balance) {
-    formValue.value.id = id
-    formValue.value.balance = balance
-
-    showModal.value = true;
-  }
-
-  function confirmForm(e) {
-    e.preventDefault();
-    formBtnLoading.value = true;
-    formRef.value.validate((errors) => {
-      if (!errors) {
-        BalanceEdit(formValue.value).then((_res) => {
-          message.success('操作成功');
-          setTimeout(() => {
-            closeForm();
-            formBtnLoading.value = false;
-            emit('reloadInfo');
-          });
-        }).catch((err) => {
-          formBtnLoading.value = false;
-        });
-      } else {
-        message.error('验证错误');
-        formBtnLoading.value = false;
-      }
-    });
-  }
-
-  function closeForm() {
-    showModal.value = false;
-    loading.value = false;
-    formValue.value = {
-      id: '',
-      balance: '',
-      value: 0,
-      des: '',
-      reason: '',
-    }
-  }
-
-  defineExpose({
-    openModal,
-  });
+defineExpose({ openModal });
 </script>
-
-<style lang="less"></style>

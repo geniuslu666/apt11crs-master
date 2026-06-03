@@ -148,166 +148,186 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* Stripe-style Login page */
 .login-page {
   min-height: 100vh;
-  background: url('https://oss.yeebok.net/static/attachment/2026-03-12/dh0ch3648pzw55clvy.png') center center / cover no-repeat;
+  background: linear-gradient(160deg, #0a2540 0%, #1a3a5c 60%, #0d2f50 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 40px;
+  padding: 0 24px;
   position: relative;
+  overflow: hidden;
 }
 
-/* 语言切换 */
+/* Background decoration */
+.login-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 30%, rgba(99,91,255,0.25) 0%, transparent 55%),
+              radial-gradient(ellipse at 85% 85%, rgba(99,91,255,0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+
 .lang-switcher {
   position: absolute;
   top: 20px;
   right: 20px;
   display: flex;
   gap: 8px;
+  z-index: 1;
 }
 
 .lang-item {
   font-size: 12px;
-  color: #999;
+  color: rgba(200,210,224,0.7);
   cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 4px;
-  transition: all 0.2s;
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: all 0.15s;
 }
 
 .lang-item.active {
-  color: #1a9b6e;
-  font-weight: 600;
+  color: #ffffff;
+  background: rgba(99,91,255,0.3);
+  border-color: rgba(99,91,255,0.5);
 }
 
 /* Logo 区域 */
 .logo-area {
-  margin-top: 120px;
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 60px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
 }
 
 .logo-wrapper {
-  margin-bottom: 13px;
-}
-
-.logo-wrapper img{
-  display: block;
-  width: 135px;
-  height: 52px;
-}
-
-.logo-icon {
-  width: 64px;
-  height: 64px;
-}
-
-.logo-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.logo-text {
+  margin-bottom: 16px;
+  width: 80px;
+  height: 80px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 20px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.12);
 }
 
-.logo-en {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1a6b4a;
-  line-height: 1.3;
-  letter-spacing: 0.5px;
-}
-
-.logo-zh {
-  font-size: 14px;
-  color: #1a6b4a;
-  margin-top: 2px;
+.logo-wrapper img {
+  display: block;
+  width: 100px;
+  height: auto;
+  max-height: 44px;
+  object-fit: contain;
 }
 
 .platform-title {
-  font-size: 28px;
-  font-weight: 500;
-  color: #125D43;
-  line-height: 39px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffffff;
   margin: 0;
-  letter-spacing: 2px;
+  letter-spacing: -0.03em;
+  text-align: center;
 }
 
 /* 表单区域 */
 .form-area {
   width: 100%;
-  max-width: 400px;
+  max-width: 380px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 24px 32px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05);
+  position: relative;
+  z-index: 1;
+}
+
+.form-area-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1f36;
+  margin: 0 0 4px;
+  letter-spacing: -0.02em;
+}
+
+.form-area-subtitle {
+  font-size: 13px;
+  color: #697386;
+  margin: 0 0 24px;
 }
 
 .input-item {
-  background: white;
+  background: #f8fafc;
+  border: 1px solid #e3e8ef;
   border-radius: 10px;
-  padding: 0 16px;
-  height: 54px;
-  margin-bottom: 20px;
+  padding: 0 14px;
+  height: 48px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
-  box-shadow: 0px 8px 24px 0px rgba(118,219,187,0.2);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input-item:focus-within {
+  border-color: #635bff;
+  box-shadow: 0 0 0 3px rgba(99,91,255,0.12);
+  background: #ffffff;
 }
 
 .input-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 16px;
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  opacity: 0.5;
+  flex-shrink: 0;
 }
-
 
 .input-field {
   flex: 1;
-  font-weight: 400;
   border: none;
   outline: none;
-  font-size: 16px;
-  color: #3D3D3D;
+  font-size: 15px;
+  color: #1a1f36;
   background: transparent;
-  line-height: 54px;
+  font-family: inherit;
 }
 
 .input-field::placeholder {
-  color: #ADAEB0;
+  color: #9da9bb;
 }
 
 .login-btn {
   width: 100%;
-  height: 54px;
-  background: linear-gradient( 90deg, #12C584 0%, #2BBAAE 100%);
+  height: 48px;
+  background: #635bff;
   border: none;
   border-radius: 10px;
   color: white;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   margin-top: 20px;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0px 8px 24px 0px rgba(118,219,187,0.2);
+  transition: background 0.15s, transform 0.1s;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: inherit;
+  letter-spacing: -0.01em;
 }
 
-.login-btn:active {
-  transform: scale(0.98);
-}
-
-.login-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
+.login-btn:hover { background: #4f46e5; }
+.login-btn:active { transform: scale(0.98); }
+.login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 .loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
   border-top-color: white;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
@@ -319,92 +339,109 @@ onMounted(async () => {
 
 .help-text {
   text-align: center;
-  color: #979797;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  margin-top: 20px;
+  color: #697386;
+  font-size: 13px;
+  margin-top: 16px;
+  cursor: pointer;
 }
+
+.help-text:hover { color: #635bff; }
 
 /* 弹窗样式 */
 .dialog-mask {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(10,37,64,0.6);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 24px;
 }
 
 .dialog-box {
   position: relative;
-  width: 335px;
-  background: #FFFFFF;
-  border-radius: 10px;
-  padding: 34px;
+  width: 100%;
+  max-width: 320px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 24px 28px;
   text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 
 .dialog-icon {
-  width: 35px;
-  height: 35px;
-  margin: 0 auto 5px;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  background: #f0efff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.dialog-icon img{
-  width: 100%;
-  width: 100%;
+.dialog-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .dialog-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #3D3D3D;
-  line-height: 25px;
-  margin-bottom: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1f36;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 
 .dialog-desc {
   margin-bottom: 24px;
 }
 
-.dialog-desc div{
+.dialog-desc div {
   font-size: 14px;
-  font-weight: 400;
-  color: #999999;
-  line-height: 20px;
-  text-align: center;
+  color: #697386;
+  line-height: 1.6;
 }
 
 .dialog-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 180px;
-  height: 42px;
-  background: #12C584;
-  border-radius: 4px;
+  height: 44px;
+  background: #635bff;
+  border-radius: 10px;
   border: none;
-  font-size: 16px;
-  line-height: 42px;
+  font-size: 15px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
-  padding: 0;
+  font-family: inherit;
+  transition: background 0.15s;
 }
 
-.dialog-close{
+.dialog-btn:hover { background: #4f46e5; }
+
+.dialog-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 24px;
-  height: 24px;
+  top: 16px;
+  right: 16px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #f8fafc;
+  cursor: pointer;
 }
 
 .dialog-close img {
-  width: 100%;
-  height: 100%;
+  width: 16px;
+  height: 16px;
 }
 </style>
 

@@ -1,4 +1,153 @@
-/*! @import */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* Stripe-inspired light theme */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Stripe brand purple #635BFF → hsl(243, 100%, 68%) */
+    --primary: 243 100% 68%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 20%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 220 14% 96%;
+    --accent-foreground: 222 47% 20%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Stripe border: #E3E8EF */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 243 100% 68%;
+
+    --radius: 0.5rem;
+
+    /* Stripe sidebar: #0A2540 (dark navy) */
+    --sidebar-bg: 210 100% 14%;
+    --sidebar-fg: 220 20% 88%;
+    --sidebar-muted: 213 27% 34%;
+    --sidebar-active-bg: 243 100% 68%;
+    --sidebar-active-fg: 0 0% 100%;
+    --sidebar-hover-bg: 213 35% 22%;
+
+    /* Header */
+    --header-bg: 0 0% 100%;
+    --header-border: 214 32% 91%;
+    --header-height: 56px;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 213 31% 91%;
+    --card: 222 47% 10%;
+    --card-foreground: 213 31% 91%;
+    --popover: 222 47% 10%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 243 100% 68%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 47% 15%;
+    --secondary-foreground: 213 31% 91%;
+    --muted: 222 47% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 222 47% 15%;
+    --accent-foreground: 213 31% 91%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 47% 18%;
+    --input: 222 47% 18%;
+    --ring: 243 100% 68%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Stripe-style card */
+  .stripe-card {
+    @apply bg-card rounded-lg border border-border shadow-stripe-sm;
+  }
+
+  /* Page header pattern */
+  .page-header {
+    @apply mb-6;
+  }
+
+  .page-title {
+    @apply text-xl font-semibold text-foreground tracking-tight;
+  }
+
+  .page-subtitle {
+    @apply text-sm text-muted-foreground mt-0.5;
+  }
+
+  /* Status badge variants */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset;
+  }
+
+  .badge-success {
+    @apply bg-emerald-50 text-emerald-700 ring-emerald-600/20;
+  }
+
+  .badge-warning {
+    @apply bg-amber-50 text-amber-700 ring-amber-600/20;
+  }
+
+  .badge-danger {
+    @apply bg-red-50 text-red-700 ring-red-600/20;
+  }
+
+  .badge-info {
+    @apply bg-blue-50 text-blue-700 ring-blue-600/20;
+  }
+
+  .badge-default {
+    @apply bg-zinc-50 text-zinc-700 ring-zinc-600/20;
+  }
+
+  .badge-primary {
+    @apply bg-stripe-50 text-stripe-700 ring-stripe-600/20;
+  }
+
+  /* Stripe-style status tab bar */
+  .status-tabs {
+    @apply flex items-center gap-1 border-b border-border mb-4 pb-px;
+  }
+
+  .status-tab {
+    @apply px-3 py-2 text-sm font-medium text-muted-foreground rounded-t-md cursor-pointer
+           transition-colors hover:text-foreground hover:bg-muted/60 select-none;
+  }
+
+  .status-tab.active {
+    @apply text-primary border-b-2 border-primary bg-transparent -mb-px
+           hover:bg-transparent;
+  }
+
+  /* Table action buttons */
+  .table-action-btn {
+    @apply text-sm font-medium text-stripe-600 hover:text-stripe-800 cursor-pointer transition-colors;
+  }
+}

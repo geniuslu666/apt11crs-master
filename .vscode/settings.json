@@ -1,0 +1,14 @@
+{
+  "files.exclude": {
+    ".gocache": true,
+    ".gomodcache": true,
+    ".gopath": true,
+    "node_modules": true,
+    "**/node_modules": true,
+    "dist": true,
+    "**/dist": true,
+    "build": true,
+    ".next": true,
+    "coverage": true
+  }
+}

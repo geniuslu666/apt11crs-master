@@ -781,14 +781,17 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+// Stripe-style PC header
 .layout-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0;
   height: @header-height;
-  box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
-  transition: all 0.2s ease-in-out;
+  background: #ffffff;
+  border-bottom: 1px solid #e3e8ef;
+  box-shadow: none;
+  transition: border-color 0.15s;
   width: 100%;
   z-index: 11;
 
@@ -799,31 +802,44 @@ export default defineComponent({
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 64px;
-      line-height: 64px;
+      height: @header-height;
+      line-height: @header-height;
       overflow: hidden;
       white-space: nowrap;
-      padding-left: 10px;
+      padding-left: 16px;
       min-width: 200px;
 
       img {
         width: auto;
-        height: 32px;
+        height: 28px;
         margin-right: 10px;
       }
 
       .title {
         margin-bottom: 0;
-        min-width: 132px;
+        min-width: 120px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1f36;
+        letter-spacing: -0.02em;
       }
     }
 
     ::v-deep(.ant-breadcrumb span:last-child .link-text) {
-      color: #515a6e;
+      color: #697386;
     }
 
     .n-breadcrumb {
       display: inline-block;
+    }
+
+    ::v-deep(.n-breadcrumb-item__link) {
+      color: #697386;
+      font-size: 13px;
+
+      &:hover {
+        color: #1a1f36;
+      }
     }
 
     &-menu {
@@ -833,12 +849,13 @@ export default defineComponent({
 
   &-right {
     align-items: center;
-    margin-right: 20px;
+    margin-right: 16px;
+    gap: 4px;
 
     .avatar {
       display: flex;
       align-items: center;
-      height: 64px;
+      height: @header-height;
     }
 
     >* {
@@ -847,53 +864,54 @@ export default defineComponent({
   }
 
   &-trigger {
-    display: inline-block;
-    width: 64px;
-    height: 64px;
-    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: background 0.15s;
+    color: #697386;
 
     .n-icon {
       display: flex;
       align-items: center;
-      height: 64px;
-      line-height: 64px;
     }
 
     &:hover {
-      background: hsla(0, 0%, 100%, 0.08);
+      background: #f0f3f7;
+      color: #1a1f36;
     }
 
     .anticon {
       font-size: 16px;
-      color: #515a6e;
     }
   }
 
   &-trigger-min {
     width: auto;
-    padding: 0 12px;
+    padding: 0 8px;
   }
 }
 
 .layout-header-light {
-  background: #fff;
-  color: #515a6e;
+  background: #ffffff;
+  color: #1a1f36;
 
   .n-icon {
-    color: #515a6e;
+    color: #697386;
   }
 
   .layout-header-left {
     ::v-deep(.n-breadcrumb .n-breadcrumb-item:last-child .n-breadcrumb-item__link) {
-      color: #515a6e;
+      color: #697386;
     }
   }
 
   .layout-header-trigger {
     &:hover {
-      background: #f8f8f9;
+      background: #f0f3f7;
     }
   }
 }
@@ -907,75 +925,61 @@ export default defineComponent({
 }
 
 ::v-deep(.menu-server-link) {
-  color: #515a6e;
+  color: #697386;
+  font-size: 13px;
+  font-weight: 500;
 
   &:hover {
-    color: #1890ff;
+    color: #635bff;
   }
-}
-
-.action-items-wrapper {
-  position: relative;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  z-index: 1;
-
-  .action-item {
-    min-width: 40px;
-    display: flex;
-    align-items: center;
-
-    &:hover {
-      cursor: pointer;
-      color: var(--primary-color-hover);
-    }
-  }
-
-  .badge-action-item {
-    cursor: pointer;
-    margin-right: 30px;
-  }
-}
-
-:deep(.n-input .n-input__border, .n-input .n-input__state-border) {
-  border: none;
-  border-bottom: 1px solid currentColor;
-}
-
-:deep(.el-input__inner) {
-  border: none !important;
-  height: 35px;
-  line-height: 35px;
-  color: currentColor !important;
-  background-color: transparent !important;
 }
 
 :deep(sup) {
   top: 1.3em;
 }
 
+.cblue {
+  color: #635bff !important;
+}
+
 /* 移动端 Header 样式 */
 .mobile-header {
-  background: #fff;
-  box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
+  background: #ffffff;
+  border-bottom: 1px solid #e3e8ef;
+  box-shadow: none;
   z-index: 11;
 }
 
 .mobile-menu-btn,
 .mobile-action-btn {
-  color: #515a6e;
+  color: #697386;
   -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    color: #1a1f36;
+  }
 }
 
 .mobile-title {
-  color: #515a6e;
+  color: #1a1f36;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.02em;
 }
 
 /* 移动端导航抽屉样式 */
 .mobile-nav-drawer {
   :deep(.n-drawer-body-content-wrapper) {
     padding: 0;
+    background: #0a2540;
+  }
+
+  :deep(.n-drawer-header) {
+    background: #0a2540;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: #ffffff;
+    padding: 0 16px;
+    height: 56px;
   }
 }
 
@@ -983,24 +987,33 @@ export default defineComponent({
   padding: 8px 0;
   overflow-y: auto;
   height: calc(100vh - 56px);
-}
+  background: #0a2540;
 
-/* 移动端菜单项样式优化 */
-.mobile-nav-content {
   :deep(.n-menu) {
-    .n-menu-item {
-      min-height: 48px;
-      padding: 0 16px;
-      font-size: 14px;
+    background-color: #0a2540;
+
+    .n-menu-item-content {
+      color: #c8d2e0;
+      font-size: 13px;
+      font-weight: 500;
+      min-height: 40px;
+      border-radius: 6px;
+      margin: 1px 8px;
     }
 
-    .n-submenu {
-      .n-submenu-children {
-        .n-menu-item {
-          padding-left: 32px;
-          min-height: 40px;
-        }
-      }
+    .n-menu-item-content:hover {
+      color: #ffffff;
+      background-color: rgba(99, 91, 255, 0.15);
+    }
+
+    .n-menu-item-content--selected {
+      color: #ffffff;
+      background-color: rgba(99, 91, 255, 0.25);
+    }
+
+    .n-submenu-children .n-menu-item-content {
+      padding-left: 28px;
+      min-height: 36px;
     }
   }
 }

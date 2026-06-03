@@ -4,3 +4,294 @@
 .baiinput .n-input__input-el {
   color: #fff !important;
 }
+
+// ============================================================
+// Stripe-style Naive UI Sidebar (n-layout-sider)
+// ============================================================
+.n-layout-sider {
+  background: #0a2540 !important;
+  border-right: none !important;
+
+  .n-layout-sider-scroll-container {
+    background: #0a2540;
+  }
+
+  // Hide built-in trigger bar (we use our custom collapse button)
+  .n-layout-sider__trigger {
+    display: none !important;
+  }
+
+  // NMenu inside the sidebar
+  .n-menu {
+    background-color: transparent !important;
+    padding: 0 !important;
+
+    // Section group title
+    .n-menu-item-group-title {
+      padding: 10px 20px 4px !important;
+      font-size: 10px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em !important;
+      color: rgba(255,255,255,0.25) !important;
+      text-transform: uppercase !important;
+    }
+
+    // Menu items (common)
+    .n-menu-item-content {
+      padding: 0 12px !important;
+      min-height: 36px !important;
+      border-radius: 6px !important;
+      margin: 1px 8px !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: #8fa3bb !important;
+      transition: background 0.12s ease, color 0.12s ease !important;
+
+      .n-menu-item-content__icon {
+        color: #8fa3bb !important;
+        margin-right: 8px !important;
+        font-size: 15px !important;
+        transition: color 0.12s ease !important;
+      }
+
+      .n-menu-item-content-header {
+        font-size: 13px !important;
+      }
+    }
+
+    // Hover state
+    .n-menu-item-content:hover,
+    .n-menu-item-content--pending {
+      color: #e0e8f2 !important;
+      background: rgba(255,255,255,0.07) !important;
+
+      .n-menu-item-content__icon {
+        color: #e0e8f2 !important;
+      }
+    }
+
+    // Active/selected state
+    .n-menu-item-content--selected {
+      color: #ffffff !important;
+      background: rgba(99,91,255,0.25) !important;
+      font-weight: 600 !important;
+      position: relative !important;
+
+      &::before {
+        content: '' !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 6px !important;
+        bottom: 6px !important;
+        width: 3px !important;
+        background: #635bff !important;
+        border-radius: 0 2px 2px 0 !important;
+      }
+
+      .n-menu-item-content__icon {
+        color: #a09cff !important;
+      }
+    }
+
+    // Submenu children (nested items)
+    .n-submenu-children .n-menu-item-content {
+      padding-left: 30px !important;
+      min-height: 32px !important;
+      margin: 0px 8px !important;
+      border-radius: 4px !important;
+      font-size: 12.5px !important;
+      color: #6b849d !important;
+    }
+
+    .n-submenu-children .n-menu-item-content:hover {
+      color: #c8d8ea !important;
+      background: rgba(255,255,255,0.05) !important;
+    }
+
+    .n-submenu-children .n-menu-item-content--selected {
+      color: #ffffff !important;
+      background: rgba(99,91,255,0.2) !important;
+
+      &::before { display: none !important; }
+    }
+
+    // Submenu parent title
+    .n-submenu > .n-menu-item-content {
+      font-size: 13px !important;
+    }
+
+    // Arrow icon in submenu
+    .n-menu-item-content__arrow {
+      color: rgba(255,255,255,0.3) !important;
+      transition: transform 0.2s ease !important;
+    }
+
+    // Collapsed state: icon centered
+    &.n-menu--collapsed .n-menu-item-content {
+      padding: 0 !important;
+      justify-content: center !important;
+      border-radius: 8px !important;
+      margin: 2px 8px !important;
+      min-height: 40px !important;
+
+      .n-menu-item-content__icon {
+        margin-right: 0 !important;
+        font-size: 18px !important;
+      }
+    }
+
+    &.n-menu--collapsed .n-menu-item-content--selected::before {
+      display: none !important;
+    }
+
+    // Scrollbar inside menu
+    .n-scrollbar-rail {
+      background: transparent !important;
+    }
+  }
+}
+
+// Header (top bar) when n-layout-header
+.n-layout-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e3e8ef !important;
+  box-shadow: none !important;
+}
+
+// ============================================================
+// Stripe-style Naive UI form + input overrides
+// ============================================================
+.n-input {
+  --n-border: 1px solid #e3e8ef !important;
+  --n-border-hover: 1px solid #635bff !important;
+  --n-border-focus: 1px solid #635bff !important;
+  --n-box-shadow-focus: 0 0 0 3px rgba(99,91,255,0.15) !important;
+  --n-border-radius: 6px !important;
+  font-size: 13px !important;
+}
+
+.n-button {
+  --n-border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+.n-button--primary-type {
+  --n-color: #635bff !important;
+  --n-color-hover: #4f46e5 !important;
+  --n-color-pressed: #3e35d9 !important;
+  --n-color-focus: #635bff !important;
+  --n-border: none !important;
+  --n-border-hover: none !important;
+  --n-border-pressed: none !important;
+}
+
+// Data table Stripe style
+.n-data-table {
+  --n-th-color: #f8fafc !important;
+  --n-th-text-color: #697386 !important;
+  --n-td-color: #ffffff !important;
+  --n-border-color: #e3e8ef !important;
+  font-size: 13px !important;
+
+  .n-data-table-th {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    padding: 10px 16px !important;
+  }
+
+  .n-data-table-td {
+    padding: 12px 16px !important;
+    color: #1a1f36 !important;
+  }
+
+  .n-data-table-tr:hover .n-data-table-td {
+    background: #f8fafc !important;
+  }
+}
+
+// Stripe-style tag/badge
+.n-tag {
+  --n-border-radius: 100px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 0 8px !important;
+  height: 20px !important;
+}
+
+// Select
+.n-base-select-option {
+  font-size: 13px !important;
+}
+
+// Dialog
+.n-dialog {
+  border-radius: 10px !important;
+  border: 1px solid #e3e8ef !important;
+  box-shadow: 0 20px 60px rgba(60,66,87,0.16) !important;
+
+  .n-dialog__title {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #1a1f36 !important;
+  }
+}
+
+// Popover
+.n-popover {
+  border-radius: 8px !important;
+  border: 1px solid #e3e8ef !important;
+  box-shadow: 0 4px 24px rgba(60,66,87,0.12), 0 0 0 1px rgba(60,66,87,0.04) !important;
+}
+
+// Tooltip
+.n-tooltip {
+  font-size: 12px !important;
+  border-radius: 6px !important;
+}
+
+// Pagination
+.n-pagination {
+  font-size: 13px !important;
+}
+
+// Form label
+.n-form-item-label {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #1a1f36 !important;
+}
+
+// Tabs
+.n-tabs {
+  .n-tab-pane {
+    font-size: 13px;
+  }
+
+  .n-tabs-tab {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+
+    &.n-tabs-tab--active {
+      color: #635bff !important;
+    }
+  }
+
+  .n-tabs-bar {
+    background: #635bff !important;
+  }
+}
+
+// ============================================================
+// n-layout-page-header: page title bar Stripe style
+// ============================================================
+.n-layout-page-header .n-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+

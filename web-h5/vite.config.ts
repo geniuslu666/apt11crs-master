@@ -3,6 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from '@vant/auto-import-resolver'
 import pxToViewport from 'postcss-px-to-viewport-8-plugin'
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -35,11 +37,14 @@ export default defineConfig(({ mode }) => {
     css: {
       postcss: {
         plugins: [
+          tailwindcss(),
+          autoprefixer(),
           pxToViewport({
             viewportWidth: 375,
             unitPrecision: 5,
             viewportUnit: 'vw',
-            selectorBlackList: [],
+            // Exclude Tailwind classes from px→vw conversion
+            selectorBlackList: [/^\.tw-/, /^\.(flex|grid|block|inline|hidden|absolute|relative|fixed|sticky)/],
             minPixelValue: 1,
             mediaQuery: false,
           }),

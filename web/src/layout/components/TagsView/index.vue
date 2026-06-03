@@ -559,51 +559,51 @@
 </script>
 
 <style lang="less" scoped>
+  // Stripe-style tab bar
   .tabs-view {
     width: 100%;
-    padding: 6px 0;
+    padding: 4px 20px 0;
     display: flex;
-    transition: all 0.2s ease-in-out;
+    background: #ffffff;
+    border-bottom: 1px solid #e3e8ef;
+    transition: background 0.15s;
 
     &-main {
-      height: 32px;
+      height: 36px;
       display: flex;
       justify-content: space-between;
       max-width: 100%;
       min-width: 100%;
+      align-items: flex-end;
 
       .tabs-card {
-        width: 90%;
-        //-webkit-box-flex: 1;
-        //flex-grow: 1;
         flex-shrink: 1;
         overflow: hidden;
         position: relative;
 
         .tabs-card-prev,
         .tabs-card-next {
-          width: 32px;
+          width: 28px;
           text-align: center;
           position: absolute;
-          line-height: 32px;
           cursor: pointer;
+          color: #697386;
 
           .n-icon {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 32px;
-            width: 32px;
+            width: 28px;
+          }
+
+          &:hover {
+            color: #1a1f36;
           }
         }
 
-        .tabs-card-prev {
-          left: 0;
-        }
-
-        .tabs-card-next {
-          right: 0;
-        }
+        .tabs-card-prev { left: 0; }
+        .tabs-card-next { right: 0; }
 
         .tabs-card-next-hide,
         .tabs-card-prev-hide {
@@ -615,95 +615,103 @@
           overflow: hidden;
 
           &-item {
-            background: v-bind(getCardColor);
-            color: v-bind(getBaseColor);
-            height: 32px;
-            padding: 6px 16px 4px;
-            border-radius: 3px;
-            margin-right: 6px;
+            background: transparent;
+            color: #697386;
+            height: 36px;
+            padding: 0 12px;
+            border-bottom: 2px solid transparent;
+            margin-right: 2px;
             cursor: pointer;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             position: relative;
             flex: 0 0 auto;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.12s, border-color 0.12s;
 
             span {
-              float: left;
               vertical-align: middle;
             }
 
             &:hover {
-              color: #515a6e;
+              color: #1a1f36;
+              background: #f8fafc;
             }
 
             .n-icon {
-              height: 22px;
-              width: 21px;
-              margin-right: -6px;
-              position: relative;
-              vertical-align: middle;
-              text-align: center;
-              color: #808695;
+              height: 16px;
+              width: 16px;
+              color: #9da9bb;
+              transition: color 0.12s;
 
               &:hover {
-                color: #515a6e !important;
+                color: #1a1f36 !important;
               }
 
               svg {
-                height: 21px;
+                height: 14px;
                 display: inline-block;
               }
             }
           }
 
           .active-item {
-            color: v-bind(getAppTheme);
+            color: #635bff !important;
+            border-bottom-color: #635bff;
+            background: transparent !important;
           }
         }
       }
 
       .tabs-card-scrollable {
-        padding: 0 32px;
+        padding: 0 28px;
         overflow: hidden;
       }
     }
 
     .tabs-close {
-      min-width: 32px;
-      width: 32px;
-      height: 32px;
-      line-height: 32px;
-      text-align: center;
-      background: var(--color);
-      border-radius: 2px;
-      cursor: pointer;
-      //margin-right: 10px;
+      display: flex;
+      align-items: center;
+      padding-bottom: 4px;
+      gap: 4px;
 
       &-btn {
-        color: var(--color);
-        height: 100%;
+        height: 28px;
+        width: 28px;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 6px;
+        color: #697386;
+        cursor: pointer;
+        transition: background 0.12s, color 0.12s;
+
+        &:hover {
+          background: #f0f3f7;
+          color: #1a1f36;
+        }
       }
     }
   }
 
   .tabs-view-default-background {
-    background: #f5f7f9;
+    background: #ffffff;
   }
 
   .tabs-view-dark-background {
-    background: #101014;
+    background: #1a1f2e;
   }
 
   .tabs-view-fix {
     position: fixed;
     z-index: 5;
-    padding: 15px 24px 15px 15px;
     left: 200px;
+    padding-left: 20px;
   }
 
   .tabs-view-fixed-header {
-    top: 0;
+    top: 56px;
   }
 </style>

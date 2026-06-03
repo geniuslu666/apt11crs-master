@@ -1,76 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Stripe design tokens for H5 */
+  --color-primary: #635bff;
+  --color-primary-hover: #4f46e5;
+  --color-primary-light: #f0efff;
+  --color-success: #00b37d;
+  --color-success-light: #e6faf4;
+  --color-warning: #d97706;
+  --color-warning-light: #fef3c7;
+  --color-danger: #ef4444;
+  --color-danger-light: #fef2f2;
+  --color-text-primary: #1a1f36;
+  --color-text-secondary: #697386;
+  --color-text-tertiary: #9da9bb;
+  --color-bg: #f6f9fc;
+  --color-bg-card: #ffffff;
+  --color-border: #e3e8ef;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Inter', 'ui-sans-serif', '-apple-system', 'BlinkMacSystemFont', 'PingFang SC',
+               'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-.card {
-  padding: 2em;
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 #app {
   width: 100%;
-  margin: 0;
-  padding: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Stripe-style scrollbar */
+*::-webkit-scrollbar { width: 4px; height: 4px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: #c8d2e0; border-radius: 2px; }
+
+@layer components {
+  /* Stripe primary button */
+  .btn-primary {
+    @apply flex items-center justify-center w-full py-3 px-6 rounded-xl
+           text-white font-semibold text-sm tracking-wide
+           transition-all duration-150 active:scale-[0.98];
+    background: var(--color-primary);
   }
-  a:hover {
-    color: #747bff;
+
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-primary:disabled { opacity: 0.6; pointer-events: none; }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply flex items-center justify-center w-full py-3 px-6 rounded-xl
+           font-semibold text-sm tracking-wide
+           border border-[#e3e8ef] bg-white transition-all duration-150 active:scale-[0.98];
+    color: var(--color-text-primary);
   }
-  button {
-    background-color: #f9f9f9;
+
+  /* Stripe card */
+  .stripe-card {
+    @apply bg-white rounded-2xl border border-[#e3e8ef];
+    box-shadow: 0 1px 3px rgba(60,66,87,0.08), 0 0 0 1px rgba(60,66,87,0.04);
+  }
+
+  /* Input field */
+  .stripe-input {
+    @apply w-full px-4 py-3 rounded-xl border border-[#e3e8ef] text-sm
+           bg-white text-[#1a1f36] outline-none
+           transition-all duration-150 placeholder:text-[#9da9bb];
+  }
+
+  .stripe-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(99,91,255,0.15);
+  }
+
+  /* Status badge */
+  .badge-success { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700; }
+  .badge-warning { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700; }
+  .badge-danger { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700; }
+  .badge-primary { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stripe-50 text-stripe-600; }
+
+  /* Page container */
+  .page-container {
+    @apply min-h-screen bg-[#f6f9fc];
+  }
+
+  /* Section header */
+  .section-title {
+    @apply text-sm font-semibold text-[#697386] uppercase tracking-wider mb-3;
   }
 }

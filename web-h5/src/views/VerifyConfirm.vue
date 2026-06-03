@@ -101,88 +101,100 @@ const handleConfirm = async () => {
 <style scoped>
 .confirm-page {
   min-height: 100vh;
-  background: #FFFFFF;
-  padding-bottom: 80px;
+  background: #f6f9fc;
+  padding-bottom: 88px;
 }
 
 .nav-bar {
-  height: 44px;
-  background: #12C584;
+  height: 56px;
+  background: #635bff;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   padding: 0 16px;
 }
 
 .nav-back {
   position: absolute;
-  left: 16px;
+  left: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: background 0.12s;
 }
 
+.nav-back:active { background: rgba(255,255,255,0.15); }
+
 .back-arrow {
-  font-size: 28px;
-  color: #FFFFFF;
-  font-weight: 300;
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: 400;
+  line-height: 1;
 }
 
 .nav-title {
-  font-size: 18px;
-  font-weight: 500;
-  color: #FFFFFF;
-  line-height: 25px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
-.bg{
+.bg {
   width: 100%;
-  height: 67px;
-  background: #12C584;
+  height: 48px;
+  background: #635bff;
 }
 
 .content {
-  background: #FFFFFF;
-  margin-top: -67px;
-  padding: 20px;
-  border-radius: 10px 10px 0 0;
+  background: transparent;
+  margin-top: -48px;
+  padding: 0 16px 16px;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
 }
 
 .section-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: #3D3D3D;
-  line-height: 26px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1f36;
   margin-bottom: 10px;
+  letter-spacing: -0.01em;
+  margin-top: 16px;
 }
 
 .info-card {
-  background: #FFFFFF;
-  border: 1px solid #D8DCE5;
-  border-radius: 10px;
-  padding: 16px 12px;
-  margin-bottom: 20px;
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(60,66,87,0.06);
 }
 
 .product-title {
   font-size: 14px;
   font-weight: 600;
-  color: #3D3D3D;
-  line-height: 20px;
-  margin-bottom: 9px;
+  color: #1a1f36;
+  margin-bottom: 8px;
+  line-height: 1.4;
 }
 
 .info-row {
   font-size: 12px;
-  font-weight: 400;
-  color: #929292;
-  line-height: 17px;
-  margin-bottom: 5px;
+  color: #697386;
+  line-height: 1.6;
+  margin-bottom: 3px;
   display: flex;
 }
 
-.info-row:last-child {
-  margin-bottom: 0;
-}
+.info-row:last-child { margin-bottom: 0; }
 
 .info-row div {
   flex: 1;
@@ -195,32 +207,26 @@ const handleConfirm = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f3f7;
 }
 
-.order-row:last-child {
-  margin-bottom: 0;
-}
+.order-row:last-child { border-bottom: none; }
 
 .order-label {
-  font-size: 12px;
-  font-weight: 400;
-  color: #3D3D3D;
-  line-height: 17px;
+  font-size: 13px;
+  color: #697386;
 }
 
 .order-value {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: #3D3D3D;
-  line-height: 17px;
+  color: #1a1f36;
   text-align: right;
 }
 
 .order-value.price {
-  font-size: 12px;
-  font-weight: 600;
-  color: #FF5A60;
+  color: #ef4444;
 }
 
 .bottom-bar {
@@ -228,44 +234,46 @@ const handleConfirm = async () => {
   bottom: 0;
   left: 0;
   right: 0;
-  background: #FFFFFF;
-  padding: 12px;
+  background: #ffffff;
+  padding: 12px 16px;
   display: flex;
-  gap: 12px;
-  border-top: 1px solid #F4F4F4;
+  gap: 10px;
+  border-top: 1px solid #e3e8ef;
+  box-shadow: 0 -4px 12px rgba(60,66,87,0.06);
 }
 
 .btn-cancel {
   flex: 1;
-  height: 42px;
-  background: #FFFFFF;
-  border: 1px solid #C9CDD4;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 42px;
-  color: #3D3D3D;
+  height: 48px;
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #697386;
   cursor: pointer;
-  padding: 0;
+  font-family: inherit;
+  transition: background 0.12s;
 }
+
+.btn-cancel:active { background: #f8fafc; }
 
 .btn-confirm {
   flex: 2;
-  height: 42px;
-  background: #12C584;
+  height: 48px;
+  background: #635bff;
   border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 42px;
-  color: #FFFFFF;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
   cursor: pointer;
-  padding: 0;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.1s;
 }
 
-.btn-confirm:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+.btn-confirm:hover { background: #4f46e5; }
+.btn-confirm:active { transform: scale(0.98); }
+.btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 </style>
 

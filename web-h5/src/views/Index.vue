@@ -181,17 +181,20 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Stripe-style Index/Dashboard page */
 .index-page {
   min-height: 100vh;
-  background: #FFFFFF;
+  background: #f6f9fc;
 }
 
 /* 用户信息区域 */
 .user-header {
-  padding: 50px 20px;
+  padding: 52px 20px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #e3e8ef;
 }
 
 .user-info {
@@ -201,10 +204,12 @@ onUnmounted(() => {
 }
 
 .avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   overflow: hidden;
+  border: 2px solid #e3e8ef;
+  flex-shrink: 0;
 }
 
 .avatar img {
@@ -213,58 +218,71 @@ onUnmounted(() => {
   object-fit: cover;
 }
 
-.info {
-  padding-top: 3px;
-}
-
 .info .name {
-  font-size: 16px;
-  font-weight: 500;
-  color: #3D3D3D;
-  line-height: 22px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1f36;
   margin-bottom: 2px;
+  letter-spacing: -0.01em;
 }
 
 .info .role {
   font-size: 12px;
-  color: #979797;
-  line-height: 17px;
+  color: #697386;
   font-weight: 400;
 }
 
 .logout-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e3e8ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
+.logout-btn:active { background: #f0f3f7; }
+
 .logout-btn img {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
 }
 
 /* 扫码按钮区域 */
 .scan-section {
-  padding: 0px 20px 40px;
+  padding: 40px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .scan-button {
-  width: 195px;
-  height: 195px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  background: #12C584;
-  box-shadow: 0px 5px 10px 0px rgba(0,149,45,0.3);
+  background: linear-gradient(135deg, #635bff 0%, #4f46e5 100%);
+  box-shadow: 0 8px 32px rgba(99,91,255,0.4), 0 0 0 8px rgba(99,91,255,0.08);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .scan-button:active {
-  transform: scale(0.95);
+  transform: scale(0.94);
+  box-shadow: 0 4px 16px rgba(99,91,255,0.3), 0 0 0 8px rgba(99,91,255,0.06);
+}
+
+.scan-button.loading {
+  opacity: 0.75;
+  cursor: not-allowed;
 }
 
 .scan-icon {
@@ -272,130 +290,28 @@ onUnmounted(() => {
 }
 
 .scan-icon img {
-  width: 66px;
-  height: 66px;
+  width: 56px;
+  height: 56px;
+  filter: brightness(0) invert(1);
 }
 
 .scan-text {
-  font-size: 18px;
-  color: #fff;
-  font-weight: 400;
-  line-height: 25px;
-}
-
-/* 核销记录区域 */
-.verify-section {
-  padding: 0 20px;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.section-header .title {
   font-size: 16px;
+  color: #fff;
   font-weight: 600;
-  color: #3D3D3D;
-  line-height: 22px;
+  letter-spacing: -0.01em;
 }
 
-.section-header .more {
-  font-size: 14px;
-  color: #979797;
-  font-weight: 400;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.section-header img {
-  width: 16px;
-  height: 16px;
-}
-
-.verify-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.verify-list-empty {
-  padding: 100px 0;
-}
-
-.verify-list-empty img {
-  display: block;
-  margin: 0 auto 11px;
-  width: 70px;
-  height: 70px;
-}
-
-.verify-list-empty div {
-  font-weight: 400;
-  font-size: 12px;
-  color: #C9CDD4;
-  line-height: 17px;
-  text-align: center;
-}
-
-.verify-item {
-  border: 1px solid #D8DCE5;
-  border-radius: 10px;
-  padding: 16px 12px 13px;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-.item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 7px;
-}
-
-.item-header .time {
-  font-weight: 600;
-  font-size: 14px;
-  color: #3D3D3D;
-  line-height: 20px;
-}
-
-.item-header .status {
-  font-weight: 600;
-  font-size: 12px;
-  color: #269C74;
-  line-height: 17px;
-}
-
-.item-content {
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 17px;
-  color: #929292;
-  margin-bottom: 5px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.scan-button.loading {
-  opacity: 0.8;
-  cursor: not-allowed;
-}
-
-/* 方案一：内嵌摄像头扫码区域（当前使用） */
+/* 摄像头扫码区域 */
 .camera-box {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
   position: relative;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   background: #000;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
 
 #inline-qr-reader {
@@ -407,124 +323,197 @@ onUnmounted(() => {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 10px 30px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
+  padding: 10px 28px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 100px;
   font-size: 14px;
-  color: #333;
+  font-weight: 500;
+  color: #1a1f36;
   cursor: pointer;
   z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-/* 方案二：全屏摄像头覆盖层（已注释，需要时取消注释并注释掉方案一）
-.camera-fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #000;
-  z-index: 999;
+/* 核销记录区域 */
+.verify-section {
+  padding: 0 16px 24px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.section-header .title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1f36;
+  letter-spacing: -0.01em;
+}
+
+.section-header .more {
+  font-size: 13px;
+  color: #635bff;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.section-header img {
+  width: 14px;
+  height: 14px;
+}
+
+.verify-list {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-.camera-header {
+.verify-list-empty {
+  padding: 60px 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 50px 20px 20px;
-  position: relative;
+  gap: 12px;
 }
 
-.camera-title {
-  font-size: 18px;
-  font-weight: 500;
-  color: #FFFFFF;
+.verify-list-empty img {
+  width: 64px;
+  height: 64px;
+  opacity: 0.5;
 }
 
-.camera-close {
-  position: absolute;
-  right: 20px;
-  font-size: 20px;
-  color: #FFFFFF;
+.verify-list-empty div {
+  font-size: 13px;
+  color: #9da9bb;
+}
+
+.verify-item {
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+  padding: 14px 16px;
   cursor: pointer;
-  padding: 4px 8px;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  box-shadow: 0 1px 3px rgba(60,66,87,0.06);
 }
 
-.camera-container {
-  flex: 1;
-  width: 100%;
+.verify-item:active {
+  box-shadow: 0 4px 12px rgba(60,66,87,0.1);
+  border-color: #c8d2e0;
 }
 
-.camera-tip {
-  padding: 20px;
-  text-align: center;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
 }
-*/
+
+.item-header .time {
+  font-weight: 600;
+  font-size: 13px;
+  color: #1a1f36;
+}
+
+.item-header .status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #e6faf4;
+  color: #00875a;
+}
+
+.item-content {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #697386;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /* 弹窗样式 */
 .dialog-mask {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(10,37,64,0.5);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 24px;
 }
 
 .dialog-box {
-  width: 335px;
-  background: #FFFFFF;
-  border-radius: 10px;
-  padding: 34px;
+  width: 100%;
+  max-width: 320px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 24px 28px;
   text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 
 .dialog-icon {
-  width: 35px;
-  height: 35px;
-  margin: 0 auto 5px;
+  width: 48px;
+  height: 48px;
+  background: #fef2f2;
+  border-radius: 12px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.dialog-icon img{
-  width: 100%;
-  width: 100%;
+.dialog-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .dialog-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #3D3D3D;
-  line-height: 25px;
-  margin-bottom: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1f36;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 
 .dialog-desc {
   font-size: 14px;
-  font-weight: 400;
-  color: #999999;
-  line-height: 20px;
+  color: #697386;
+  line-height: 1.6;
   margin-bottom: 24px;
 }
 
 .dialog-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 180px;
-  height: 42px;
-  background: #12C584;
-  border-radius: 4px;
+  height: 44px;
+  background: #635bff;
+  border-radius: 10px;
   border: none;
-  font-size: 16px;
-  line-height: 42px;
+  font-size: 15px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
-  padding: 0;
+  font-family: inherit;
+  transition: background 0.15s;
 }
+
+.dialog-btn:hover { background: #4f46e5; }
 </style>

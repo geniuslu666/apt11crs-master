@@ -2,11 +2,21 @@
   <n-layout class="layout" :position="fixedMenu" has-sider>
     <n-layout-sider v-if="
       !isMobile && isMixMenuNoneSub && (navMode === 'vertical' || navMode === 'horizontal-mix')
-    " show-trigger="bar" @collapse="collapsed = true" :position="fixedMenu" @expand="collapsed = false"
+    " :position="fixedMenu"
       :collapsed="collapsed" collapse-mode="width" :collapsed-width="64" :width="leftMenuWidth"
       :native-scrollbar="false" :inverted="inverted" class="layout-sider">
-      <Logo :collapsed="collapsed" />
-      <AsideMenu v-model:collapsed="collapsed" v-model:location="getMenuLocation" />
+      <div class="sidebar-inner">
+        <Logo :collapsed="collapsed" />
+        <div class="sidebar-menu-wrap">
+          <AsideMenu v-model:collapsed="collapsed" v-model:location="getMenuLocation" />
+        </div>
+        <!-- Collapse toggle button -->
+        <div class="sidebar-collapse-btn" @click="collapsed = !collapsed" :title="collapsed ? '展开菜单' : '折叠菜单'">
+          <svg v-if="collapsed" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          <span v-if="!collapsed" class="collapse-label">折叠菜单</span>
+        </div>
+      </div>
     </n-layout-sider>
 
     <!-- 移动端：业务侧边二级菜单抽屉（与顶部一级菜单分离） -->
@@ -173,24 +183,13 @@ onMounted(() => {
 </script>
 
 <style lang="less">
+// Mobile sidebar drawer
 .layout-side-drawer {
-  background-color: #ffffff;
+  background-color: #0a2540 !important;
 
   :deep(.n-drawer-body-content-wrapper) {
     padding: 0;
-  }
-
-  :deep(.n-menu) {
-    .n-menu-item {
-      min-height: 48px;
-      padding: 0 16px;
-      font-size: 14px;
-    }
-
-    .n-submenu .n-submenu-children .n-menu-item {
-      padding-left: 32px;
-      min-height: 40px;
-    }
+    background-color: #0a2540;
   }
 }
 </style>
@@ -201,37 +200,22 @@ onMounted(() => {
   flex: auto;
 
   &-default-background {
-    background: #f5f7f9;
+    background: #f6f9fc;
   }
 
   .layout-sider {
     min-height: 100vh;
-    box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
+    box-shadow: none;
+    border-right: none;
     position: relative;
     z-index: 13;
-    transition: all 0.2s ease-in-out;
-  }
-
-  .layout-sider-fix {
-    position: fixed;
-    top: 0;
-    left: 0;
-  }
-
-  .ant-layout {
-    overflow: hidden;
-  }
-
-  .layout-right-fix {
-    overflow-x: hidden;
-    padding-left: 200px;
-    min-height: 100vh;
-    transition: all 0.2s ease-in-out;
+    transition: width 0.2s ease;
   }
 
   .layout-content {
     flex: auto;
     min-height: 100vh;
+    background: #f6f9fc;
   }
 
   .n-layout-header.n-layout-header--absolute-positioned {
@@ -243,14 +227,69 @@ onMounted(() => {
   }
 }
 
+// Sidebar flex wrapper
+.sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  background: #0a2540;
+}
+
+.sidebar-menu-wrap {
+  flex: 1;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 4px 0;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+  }
+}
+
+.sidebar-collapse-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin: 4px 8px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #697e99;
+  font-size: 13px;
+  transition: background 0.15s, color 0.15s;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 14px;
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .collapse-label {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &:hover {
+    background: rgba(255,255,255,0.06);
+    color: #c8d2e0;
+  }
+}
+
 .layout-content-main {
-  margin: 0 15px 15px;
+  margin: 0 20px 20px;
   position: relative;
-  padding-top: 64px;
+  padding-top: 56px;
 }
 
 .layout-content-main-fix {
-  padding-top: 64px;
+  padding-top: 56px;
 }
 
 .fluid-header {
@@ -258,7 +297,7 @@ onMounted(() => {
 }
 
 .main-view-fix {
-  padding-top: 62px;
+  padding-top: 50px;
 }
 
 .noMultiTabs {
