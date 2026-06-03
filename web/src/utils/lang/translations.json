@@ -1,0 +1,428 @@
+{
+  "今日预定": {
+    "en": "Book Today",
+    "ja": "今日の予定",
+    "ko": "오늘 예정",
+    "zh_CN": "今日預定"
+  },
+  "入住前(分钟)": {
+    "en": "Before check-in (minutes)",
+    "ja": "チェックイン前（分）",
+    "ko": "체크인 전 (분)",
+    "zh_CN": "入住前（分鐘）"
+  },
+  "入住总数：": {
+    "en": "Total number of stays:",
+    "ja": "入居総数：",
+    "ko": "총 체크인 수:",
+    "zh_CN": "入住總數："
+  },
+  "入住时间": {
+    "en": "Check in time",
+    "ja": "チェックイン時間",
+    "ko": "입주 시간",
+    "zh_CN": "入住時間"
+  },
+  "公交站": {
+    "en": "Bus stop",
+    "ja": "バス停",
+    "ko": "버스정류장",
+    "zh_CN": "公車站"
+  },
+  "准备好清洁": {
+    "en": "Get ready to clean",
+    "ja": "清潔にする準備ができている",
+    "ko": "청소 준비해",
+    "zh_CN": "準備好清潔"
+  },
+  "出行信息": {
+    "en": "Travel information",
+    "ja": "移動情報",
+    "ko": "여행 정보",
+    "zh_CN": "出行資訊"
+  },
+  "初始为当天": {
+    "en": "Initially on the same day",
+    "ja": "当初は当日",
+    "ko": "처음에는 당일",
+    "zh_CN": "初始為當天"
+  },
+  "删除": {
+    "en": "delete",
+    "ja": "削除＃サクジョ＃",
+    "ko": "삭제",
+    "zh_CN": "删除"
+  },
+  "发票上使用的语言": {
+    "en": "The language used on the invoice",
+    "ja": "請求書で使用される言語",
+    "ko": "청구서에 사용된 언어",
+    "zh_CN": "發票上使用的語言"
+  },
+  "取消政策": {
+    "en": "Cancel policy",
+    "ja": "政策を取り消す",
+    "ko": "정책 취소",
+    "zh_CN": "取消政策"
+  },
+  "可预订": {
+    "en": "Bookable",
+    "ja": "購読可能",
+    "ko": "가입 가능",
+    "zh_CN": "可預訂"
+  },
+  "吸烟政策": {
+    "en": "Smoking Policy",
+    "ja": "喫煙政策",
+    "ko": "흡연 정책",
+    "zh_CN": "吸烟政策"
+  },
+  "周转天数": {
+    "en": "Turnover days",
+    "ja": "回転日数",
+    "ko": "회전 일수",
+    "zh_CN": "周轉天數"
+  },
+  "周边环境": {
+    "en": "Surrounding environment",
+    "ja": "周辺環境",
+    "ko": "주변 환경",
+    "zh_CN": "周邊環境"
+  },
+  "图片墙": {
+    "en": "Picture Wall",
+    "ja": "イメージウォール",
+    "ko": "그림 벽",
+    "zh_CN": "圖片牆"
+  },
+  "在住客房数": {
+    "en": "Number of guest rooms currently occupied",
+    "ja": "滞在客室数",
+    "ko": "숙박 중인 객실 수",
+    "zh_CN": "在住客房數"
+  },
+  "地铁": {
+    "en": "metro",
+    "ja": "地下鉄",
+    "ko": "지하철",
+    "zh_CN": "捷運"
+  },
+  "安静时间": {
+    "en": "Quiet time",
+    "ja": "安静時間",
+    "ko": "조용한 시간",
+    "zh_CN": "安靜時間"
+  },
+  "定价管理": {
+    "en": "Pricing management",
+    "ja": "価格管理",
+    "ko": "가격 관리",
+    "zh_CN": "定價管理"
+  },
+  "客房总数：": {
+    "en": "Total number of guest rooms:",
+    "ja": "客室総数：",
+    "ko": "총 객실 수:",
+    "zh_CN": "客房總數："
+  },
+  "已入住": {
+    "en": "Already checked in",
+    "ja": "チェックイン済み",
+    "ko": "체크인",
+    "zh_CN": "已入住"
+  },
+  "已关闭": {
+    "en": "Closed",
+    "ja": "閉じる",
+    "ko": "닫힘",
+    "zh_CN": "已關閉"
+  },
+  "已办理入住：": {
+    "en": "Checked in:",
+    "ja": "チェックイン済み：",
+    "ko": "체크인 완료:",
+    "zh_CN": "已辦理入住："
+  },
+  "已办理退房：": {
+    "en": "Checked out:",
+    "ja": "チェックアウト済み：",
+    "ko": "체크아웃 처리:",
+    "zh_CN": "已辦理退房："
+  },
+  "已启用": {
+    "en": "Enabled",
+    "ja": "有効",
+    "ko": "사용 가능",
+    "zh_CN": "已啟用"
+  },
+  "已提前入住": {
+    "en": "Already checked in early",
+    "ja": "事前チェックイン済み",
+    "ko": "미리 체크인",
+    "zh_CN": "已提前入住"
+  },
+  "已退房": {
+    "en": "Checked out",
+    "ja": "チェックアウト済み",
+    "ko": "체크아웃",
+    "zh_CN": "已退房"
+  },
+  "待定": {
+    "en": "undetermined",
+    "ja": "保留中",
+    "ko": "미정",
+    "zh_CN": "待定"
+  },
+  "房型": {
+    "en": "layout of a house or an apartment",
+    "ja": "へやがた",
+    "ko": "집모양",
+    "zh_CN": "房型"
+  },
+  "房间": {
+    "en": "room",
+    "ja": "へや",
+    "ko": "방",
+    "zh_CN": "房間"
+  },
+  "房间设置": {
+    "en": "Room Settings",
+    "ja": "部屋の設定",
+    "ko": "룸 설정",
+    "zh_CN": "房間設定"
+  },
+  "提交定位": {
+    "en": "Submit location",
+    "ja": "送信ロケーション",
+    "ko": "제출 위치",
+    "zh_CN": "提交定位"
+  },
+  "搜索地名": {
+    "en": "Search for place names",
+    "ja": "地名の検索",
+    "ko": "지명 검색",
+    "zh_CN": "蒐索地名"
+  },
+  "携带宠物": {
+    "en": "Carrying pets",
+    "ja": "ペットを連れて",
+    "ko": "애완동물을 휴대하다",
+    "zh_CN": "攜帶寵物"
+  },
+  "时区": {
+    "en": "time zone",
+    "ja": "タイムゾーン",
+    "ko": "시간대",
+    "zh_CN": "時區"
+  },
+  "最大预定区间": {
+    "en": "Maximum reservation interval",
+    "ja": "最大所定区間",
+    "ko": "최대 예정 구간",
+    "zh_CN": "最大預定區間"
+  },
+  "未分配": {
+    "en": "Unallocated",
+    "ja": "未割当て",
+    "ko": "할당되지 않음",
+    "zh_CN": "未分配"
+  },
+  "欢迎": {
+    "en": "welcome",
+    "ja": "ようこそ",
+    "ko": "환영",
+    "zh_CN": "歡迎"
+  },
+  "活动视图": {
+    "en": "Activity View",
+    "ja": "アクティブビュー",
+    "ko": "활성 뷰",
+    "zh_CN": "活動視圖"
+  },
+  "派对": {
+    "en": "party",
+    "ja": "パーティー",
+    "ko": "파티",
+    "zh_CN": "派對"
+  },
+  "清洁任务": {
+    "en": "Cleaning task",
+    "ja": "クリーンアップタスク",
+    "ko": "청소 작업",
+    "zh_CN": "清潔任務"
+  },
+  "无库存": {
+    "en": "Full Room",
+    "ja": "満室",
+    "ko": "만실",
+    "zh_CN": "滿房"
+  },
+  "物业中心": {
+    "en": "Property Center",
+    "ja": "不動産センター",
+    "ko": "부동산 센터",
+    "zh_CN": "物業中心"
+  },
+  "物业描述": {
+    "en": "Property Description",
+    "ja": "プロパティの説明",
+    "ko": "부동산 설명",
+    "zh_CN": "物業描述"
+  },
+  "物业详情": {
+    "en": "Property Details",
+    "ja": "不動産詳細",
+    "ko": "부동산 상세 정보",
+    "zh_CN": "物業詳情"
+  },
+  "百度地图": {
+    "en": "Baidu Maps",
+    "ja": "百度の地図",
+    "ko": "바이두 지도",
+    "zh_CN": "百度地圖"
+  },
+  "确认": {
+    "en": "confirm",
+    "ja": "確認",
+    "ko": "확인",
+    "zh_CN": "確認"
+  },
+  "管理": {
+    "en": "Administration",
+    "ja": "管理",
+    "ko": "관리",
+    "zh_CN": "管理"
+  },
+  "编辑": {
+    "en": "edit",
+    "ja": "編集",
+    "ko": "편집",
+    "zh_CN": "編輯"
+  },
+  "编辑名称": {
+    "en": "Edit Name",
+    "ja": "名前の編集",
+    "ko": "이름 편집",
+    "zh_CN": "編輯名稱"
+  },
+  "编辑地址": {
+    "en": "Edit address",
+    "ja": "アドレスの編集",
+    "ko": "주소 편집",
+    "zh_CN": "編輯地址"
+  },
+  "编辑描述": {
+    "en": "Edit description",
+    "ja": "説明の編集",
+    "ko": "설명 편집",
+    "zh_CN": "編輯描述"
+  },
+  "编辑标签": {
+    "en": "Edit tags",
+    "ja": "ラベルの編集",
+    "ko": "태그 편집",
+    "zh_CN": "編輯標籤"
+  },
+  "编辑物业": {
+    "en": "Edit Property",
+    "ja": "プロパティの編集",
+    "ko": "부동산 편집",
+    "zh_CN": "編輯物業"
+  },
+  "编辑详细": {
+    "en": "Edit Details",
+    "ja": "詳細の編集",
+    "ko": "세부 정보 편집",
+    "zh_CN": "編輯詳細"
+  },
+  "联系信息": {
+    "en": "Contact Information",
+    "ja": "連絡先情報",
+    "ko": "연락처 정보",
+    "zh_CN": "聯系資訊"
+  },
+  "自助入住报告": {
+    "en": "Self Check In Report",
+    "ja": "セルフチェックインレポート",
+    "ko": "셀프 체크인 보고서",
+    "zh_CN": "自助入住報告"
+  },
+  "订房必读": {
+    "en": "Must read for booking",
+    "ja": "部屋を予約するには必読",
+    "ko": "예약 필독",
+    "zh_CN": "訂房必讀"
+  },
+  "语言": {
+    "en": "language",
+    "ja": "言語",
+    "ko": "언어",
+    "zh_CN": "語言"
+  },
+  "请输入物业名": {
+    "en": "Please enter the property name",
+    "ja": "不動産名を入力してください",
+    "ko": "부동산 이름을 입력하십시오.",
+    "zh_CN": "請輸入物業名"
+  },
+  "谷歌地图": {
+    "en": "Google Maps ",
+    "ja": "グーグルマップ",
+    "ko": "구글 지도",
+    "zh_CN": "穀歌地圖"
+  },
+  "货币": {
+    "en": "currency",
+    "ja": "通貨＃ツウカ＃",
+    "ko": "화폐",
+    "zh_CN": "貨幣"
+  },
+  "退房后(分钟)": {
+    "en": "After check-out (minutes)",
+    "ja": "チェックアウト後（分）",
+    "ko": "체크아웃 후 (분)",
+    "zh_CN": "退房後（分鐘）"
+  },
+  "退房总数：": {
+    "en": "Total number of check-out:",
+    "ja": "チェックアウト総数：",
+    "ko": "총 체크아웃 수:",
+    "zh_CN": "退房總數："
+  },
+  "退房时间": {
+    "en": "check-out time",
+    "ja": "チェックアウト時間",
+    "ko": "체크아웃 시간",
+    "zh_CN": "退房時間"
+  },
+  "附加信息": {
+    "en": "Additional Information",
+    "ja": "追加情報",
+    "ko": "추가 정보",
+    "zh_CN": "附加資訊"
+  },
+  "预定设置": {
+    "en": "Reservation Settings",
+    "ja": "スケジュール設定",
+    "ko": "예약 설정",
+    "zh_CN": "預定設定"
+  },
+  "预抵数": {
+    "en": "Pre offset amount",
+    "ja": "プリコンスタント",
+    "ko": "사전 저항 수",
+    "zh_CN": "預抵數"
+  },
+  "预离数": {
+    "en": "Pre departure number",
+    "ja": "プリディスタンス",
+    "ko": "전리 수",
+    "zh_CN": "預離數"
+  },
+  "预约期限": {
+    "en": "Appointment deadline",
+    "ja": "予約期間",
+    "ko": "예약 기간",
+    "zh_CN": "預約期限"
+  }
+}

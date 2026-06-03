@@ -1,0 +1,50 @@
+{
+  "zh": {
+    "xinxi": {
+      "welcome": "欢迎",
+      "view": "活动视图",
+      "pre_off_amount": "预抵数",
+      "preionization": "预离数",
+      "roomstaynum": "在住客房数",
+      "booktoday": "今日预定",
+      "selfcheck": "自助入住报告",
+      "checkedin": "已办理入住：",
+      "checkedout": "已办理退房：",
+      "totalnumber": "客房总数：",
+      "earlycheckedin": "已提前入住",
+      "checkin": "已入住",
+      "checkout": "已退房",
+      "totalnumberstay": "入住总数：",
+      "totalcheckout": "退房总数：",
+      "cleaningtask": "清洁任务",
+      "undistributed": "未分配",
+      "pending": "待定",
+      "readytoclean": "准备好清洁",
+      "verify": "确认"
+    }
+  },
+  "ja": {
+    "xinxi": {
+      "welcome": "歓迎します",
+      "view": "アクティブビューです",
+      "pre_off_amount": "差し引き数です",
+      "preionization": "予離数です",
+      "roomstaynum": "宿泊客室数です。",
+      "booktoday": "今日预定",
+      "selfcheck": "自助入住报告",
+      "checkedin": "已办理入住：",
+      "checkedout": "已办理退房：",
+      "totalnumber": "客房总数：",
+      "earlycheckedin": "已提前入住",
+      "checkin": "已入住",
+      "checkout": "已退房",
+      "totalnumberstay": "入住总数：",
+      "totalcheckout": "退房总数：",
+      "cleaningtask": "清洁任务",
+      "undistributed": "未分配",
+      "pending": "待定",
+      "readytoclean": "准备好清洁",
+      "verify": "确认"
+    }
+  }
+}

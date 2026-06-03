@@ -1,0 +1,12 @@
+.idea
+logs/
+vendor/
+node_modules/
+.idea
+temp
+/server/resource/public/
+public
+*.log
+APT11
+.bin/*
+product

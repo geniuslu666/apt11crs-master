@@ -1,0 +1,9 @@
+#! /usr/bin/expect -f
+set timeout 1000
+set password [lindex $argv 0]
+set source [lindex $argv 1]
+set to [lindex $argv 2]
+spawn rsync -avz -e ssh --progress  "${source}" "${to}"
+expect "*password:"
+send "${password}\r"
+expect eof

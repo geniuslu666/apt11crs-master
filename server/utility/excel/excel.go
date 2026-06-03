@@ -1,0 +1,246 @@
+// Package excel
+// @Link  https://github.com/bufanyun/hotgo
+// @Copyright  Copyright (c) 2023 HotGo CLI
+// @Author  Ms <133814250@qq.com>
+// @License  https://github.com/bufanyun/hotgo/blob/master/LICENSE
+package excel
+
+import (
+	"APT/internal/library/contexts"
+	"APT/internal/model"
+	"bytes"
+	"context"
+	"fmt"
+	"github.com/gogf/gf/v2/errors/gcode"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/net/ghttp"
+	"github.com/gogf/gf/v2/os/gctx"
+	"github.com/gogf/gf/v2/os/gtime"
+	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/xuri/excelize/v2"
+	"net/url"
+	"os"
+	"reflect"
+	"strings"
+	"time"
+	"unicode"
+)
+
+var (
+	// 单元格表头
+	char = []string{"", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+)
+
+// ExportByStructs 导出切片结构体到excel表格
+func ExportByStructs(ctx context.Context, tags []string, list interface{}, fileName string, sheetName string) (err error) {
+	f := excelize.NewFile()
+	f.SetSheetName("Sheet1", sheetName)
+	_ = f.SetRowHeight("Sheet1", 1, 30)
+
+	rowStyleID, err := f.NewStyle(&excelize.Style{
+		Alignment: &excelize.Alignment{
+			Vertical:   "center",
+			Horizontal: "center",
+		},
+		Font: &excelize.Font{ // 字体
+			Size:   12,
+			Family: "arial",
+		},
+	})
+	if err != nil {
+		return
+	}
+	_ = f.SetSheetRow(sheetName, "A1", &tags)
+
+	var (
+		length    = len(tags)
+		headStyle = letter(length)
+		lastRow   string
+		widthRow  string
+	)
+
+	for k, v := range headStyle {
+		if k == length-1 {
+			lastRow = fmt.Sprintf("%s1", v)
+			widthRow = v
+		}
+	}
+
+	if err = f.SetColWidth(sheetName, "A", widthRow, 30); err != nil {
+		return err
+	}
+
+	var rowNum = 1
+	for _, v := range gconv.Interfaces(list) {
+		t := reflect.TypeOf(v)
+		value := reflect.ValueOf(v)
+		row := make([]interface{}, 0)
+		for l := 0; l < t.NumField(); l++ {
+			val := value.Field(l).Interface()
+			row = append(row, val)
+		}
+		rowNum++
+		if err = f.SetSheetRow(sheetName, "A"+gconv.String(rowNum), &row); err != nil {
+			return
+		}
+		if err = f.SetCellStyle(sheetName, fmt.Sprintf("A%d", rowNum), lastRow, rowStyleID); err != nil {
+			return
+		}
+	}
+
+	r := ghttp.RequestFromCtx(ctx)
+	if r == nil {
+		err = gerror.New("ctx not http request")
+		return
+	}
+	// 将文件内容写入缓冲区
+	buf := bytes.NewBuffer([]byte{})
+	if err = f.Write(buf); err != nil {
+		err = gerror.New("Failed to generate XLSX file")
+		return
+	}
+	writer := r.Response.Writer
+	writer.Header().Set("Content-Type", "application/octet-stream")
+	writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s.xlsx", url.QueryEscape(fileName)))
+	writer.Header().Set("Content-length", fmt.Sprintf("%d", buf.Len()))
+	writer.Header().Set("Content-Transfer-Encoding", "binary")
+	//writer.Header().Set("Access-Control-Expose-Headers", "Content-Disposition")
+
+	if err = f.Write(writer); err != nil {
+		return
+	}
+
+	// 加入到上下文
+	contexts.SetResponse(ctx, &model.Response{
+		Code:      gcode.CodeOK.Code(),
+		Message:   "export successfully!",
+		Timestamp: time.Now().Unix(),
+		TraceID:   gctx.CtxId(ctx),
+	})
+	return
+}
+
+// ExportByStructsFile 导出切片结构体到excel表格
+func ExportByStructsFile(ctx context.Context, tags []string, list interface{}, fileName string, sheetName string) (fileUrl string, err error) {
+	f := excelize.NewFile()
+	f.SetSheetName("Sheet1", sheetName)
+	_ = f.SetRowHeight("Sheet1", 1, 30)
+
+	rowStyleID, err := f.NewStyle(&excelize.Style{
+		Alignment: &excelize.Alignment{
+			Vertical:   "center",
+			Horizontal: "center",
+		},
+		Font: &excelize.Font{ // 字体
+			Size:   12,
+			Family: "arial",
+		},
+	})
+	if err != nil {
+		return
+	}
+	_ = f.SetSheetRow(sheetName, "A1", &tags)
+
+	var (
+		length    = len(tags)
+		headStyle = letter(length)
+		lastRow   string
+		widthRow  string
+	)
+
+	for k, v := range headStyle {
+		if k == length-1 {
+			lastRow = fmt.Sprintf("%s1", v)
+			widthRow = v
+		}
+	}
+
+	if err = f.SetColWidth(sheetName, "A", widthRow, 30); err != nil {
+		return
+	}
+
+	var rowNum = 1
+	for _, v := range gconv.Interfaces(list) {
+		t := reflect.TypeOf(v)
+		value := reflect.ValueOf(v)
+		row := make([]interface{}, 0)
+		for l := 0; l < t.NumField(); l++ {
+			val := value.Field(l).Interface()
+			row = append(row, val)
+		}
+		rowNum++
+		if err = f.SetSheetRow(sheetName, "A"+gconv.String(rowNum), &row); err != nil {
+			return
+		}
+		if err = f.SetCellStyle(sheetName, fmt.Sprintf("A%d", rowNum), lastRow, rowStyleID); err != nil {
+			return
+		}
+	}
+
+	// 生成唯一文件名
+	timestamp := time.Now().Unix()
+	sp := g.Cfg().MustGet(ctx, "server.serverRoot")
+	if sp.IsEmpty() {
+		err = gerror.New("本地上传驱动必须配置静态路径!")
+		return
+	}
+	saveDir := strings.Trim(sp.String(), "/") + "/excel/" + gtime.Date() // 文件保存目录（需确保已存在或创建）
+	saveName := fmt.Sprintf("%s_%d.xlsx", fileName, timestamp)
+	savePath := fmt.Sprintf("%s/%s", saveDir, saveName)
+
+	// 创建目录（如果不存在）
+	if err = ensureDir(saveDir); err != nil {
+		return
+	}
+
+	// 保存到服务器本地
+	if err = f.SaveAs(savePath); err != nil {
+		err = gerror.Wrap(err, "保存 Excel 文件失败")
+		return
+	}
+	return fmt.Sprintf("%s/%s", "/excel/"+gtime.Date(), saveName), nil
+}
+
+func ensureDir(path string) error {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return os.MkdirAll(path, os.ModePerm)
+	}
+	return nil
+}
+
+// letter 生成完整的表头
+func letter(length int) []string {
+	var str []string
+	for i := 1; i <= length; i++ {
+		str = append(str, numToChars(i))
+	}
+	return str
+}
+
+// numToChars 将数字转换为具体的表格表头名称
+func numToChars(num int) string {
+	var cols string
+	v := num
+	for v > 0 {
+		k := v % 26
+		if k == 0 {
+			k = 26
+		}
+		v = (v - k) / 26
+		cols = char[k] + cols
+	}
+	return cols
+}
+
+// NextLetter 传入一个字母，获取下一个字母
+func NextLetter(input string) string {
+	if len(input) == 0 {
+		return ""
+	}
+	upperInput := unicode.ToUpper(rune(input[0]))
+	if upperInput >= 'A' && upperInput < 'Z' {
+		return string(upperInput + 1)
+	}
+	return "A"
+}

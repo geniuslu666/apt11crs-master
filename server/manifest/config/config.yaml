@@ -1,0 +1,200 @@
+server:
+  # 基本配置
+  appName:            "APT11 CRS"            # 应用名称
+  model:              "develop"              # develop 开发模式 produce 生产模式
+  address:             ":8000"               # 本地监听地址。默认":80"，多个地址以","号分隔。例如："192.168.2.3:8000,10.0.3.10:8001"
+  httpsAddr:           ":443"                # TLS/HTTPS配置，同时需要配置证书和密钥。默认关闭。配置格式同上。
+  httpsCertPath:       ""                    # TLS/HTTPS证书文件本地路径，建议使用绝对路径。默认关闭
+  httpsKeyPath:        ""                    # TLS/HTTPS密钥文件本地路径，建议使用绝对路径。默认关闭
+  readTimeout:         "60s"                 # 请求读取超时时间，一般不需要配置。默认为60秒
+  writeTimeout:        "0"                   # 数据返回写入超时时间，一般不需要配置。默认不超时（0）
+  idleTimeout:         "60s"                 # 仅当Keep-Alive开启时有效，请求闲置时间。默认为60秒
+  maxHeaderBytes:      "100KB"               # 请求Header大小限制（Byte）。默认为10KB
+  keepAlive:           true                  # 是否开启Keep-Alive功能。默认true
+  serverAgent:         "GoFrame HTTP Server" # 服务端Agent信息。默认为"GoFrame HTTP Server"
+  serverRoot:          "resource/public"
+  defaultLanguage:     "zh"                  # 默认语言。默认为"zh"
+
+  # 接口文档
+  openapiPath: "/api.json" # OpenAPI接口文档地址
+  swaggerPath: "/swagger"  # 内置SwaggerUI展示地址
+
+  # 日志基本配置
+  # 此配置类似nginx，主要对请求日志的记录
+  logPath: "logs/logger"                  # 日志文件存储目录路径，建议使用绝对路径。默认为空，表示关闭
+  logStdout: true                         # 日志是否输出到终端。默认为true
+  errorStack: true                        # 当Server捕获到异常时是否记录堆栈信息到日志中。默认为true
+  errorLogEnabled: true                   # 是否记录异常日志信息到日志中。默认为true
+  errorLogPattern: "error-{Ymd}.log"      # 异常错误日志文件格式。默认为"error-{Ymd}.log"
+  accessLogEnabled: false                 # 是否记录访问日志。默认为false
+  accessLogPattern: "access-{Ymd}.log"    # 访问日志文件格式。默认为"access-{Ymd}.log"
+
+  # 其他配置
+  clientMaxBodySize:   810241024 # 客户端最大Body上传限制大小，影响文件上传大小(Byte)。默认为8*1024*1024=8MB
+  formParsingMemory:   1048576   # 解析表单时的缓冲区大小(Byte)，一般不需要配置。默认为1024*1024=1MB
+  nameToUriType:       0         # 路由注册中使用对象注册时的路由生成规则。默认为0
+  routeOverWrite:      false     # 当遇到重复路由注册时是否强制覆盖。默认为false，重复路由存在时将会在启动时报错退出
+  dumpRouterMap:       true      # 是否在Server启动时打印所有的路由列表。默认为true
+  ipMethod:            "whois"   # IP归属地解析方法，可选：cz88|whois，默认为whois
+  isDemo:              false     # 是否为演示系统，可选：false|true
+
+# 统一默认日志配置
+defaultLogger: &defaultLogger
+  level: "all"
+  flags: 42
+  file: "{Y-m-d}.log"                     # 日志文件格式。默认为"{Y-m-d}.log"
+  stdoutColorDisabled: false              # 关闭终端的颜色打印。可选：false|true，默认false
+  writerColorEnable: false                # 日志文件是否带上颜色。可选：false|true，默认false，表示不带颜色
+  rotateExpire: "7d"                      # 日志保留天数
+  rotateBackupLimit: 2                    # 最大备份数量
+  rotateBackupCompress: 2                 # 日志文件压缩级别，0-9,9最高
+  stdout: true                            # 日志是否同时输出到终端。默认true
+
+logger:
+  # 全局日志：g.Log()
+  path: "logs/logger"                       # 日志文件路径。默认为空，表示关闭，仅输出到终端
+  <<: *defaultLogger
+
+# 缓存驱动
+cache:
+  adapter: "redis"                    # 缓存驱动方式，支持：memory|redis|file，不填默认memory
+  fileDir: "./storage/cache"         # 文件缓存路径，adapter=file时必填
+
+viewer:
+  paths: "resource/template"
+  defaultFile: "index.html"
+  delimiters: [ "@{", "}" ]
+  homeLayout: "home/index.html"
+
+# 登录令牌
+token:
+  secretKey: "hotgo123"                  # 令牌加密秘钥，考虑安全问题生产环境中请修改默认值
+  expires: 604800                        # 令牌有效期，单位：秒。默认7天
+  autoRefresh: true                      # 是否开启自动刷新过期时间， false|true 默认为true
+  refreshInterval: 86400                 # 刷新间隔，单位：秒。必须小于expires，否则无法触发。默认1天内只允许刷新一次
+  maxRefreshTimes: 30                    # 最大允许刷新次数，-1不限制。默认30次
+  multiLogin: true                       # 是否允许多端登录， false|true 默认为true
+
+# Redis. 配置参考：https://goframe.org/pages/viewpage.action?pageId=1114217
+redis:
+  default:
+    address: "127.0.0.1:6379"
+    db: "2"
+    pass: "LK3rqzJBgmvMhAdJ"
+    idleTimeout: "20"
+
+# Database. 配置参考：https://goframe.org/pages/viewpage.action?pageId=1114245
+database:
+  logger:
+    path: "logs/database"                       # 日志文件路径。默认为空，表示关闭，仅输出到终端
+    <<: *defaultLogger
+    stdout: true
+  default:
+    link: "mysql:apt11:p8xctPZmZMSeWy4L@tcp(8.211.151.143:3306)/apt11?loc=Local&parseTime=true&charset=utf8mb4"
+    debug: true
+    Prefix: "hg_"
+  chat:
+    link: "mysql:apt11:p8xctPZmZMSeWy4L@tcp(8.211.151.143:3306)/chat?loc=Local&parseTime=true&charset=utf8mb4"
+    debug: true
+
+rabbitmq:
+  user: "guest"
+  pwd: "guest"
+  link: "127.0.0.1"
+  port: "5672"
+  vhost: "/"
+
+openTelemetry:
+  serviceName: "APT11_PRO"
+  serviceVersion: "v1.0.0"
+  deployEnvironment: "PRODUCE"
+  httpEndpoint: "tracing-ap-northeast-1.arms.aliyuncs.com"
+  httpUrlPath: "adapt_g2jqjl07hg@10a009f063955a6_g2jqjl07hg@53df7ad2afe8301/api/otlp/traces"
+
+airhousePublicApi:
+  mode: "produce"
+  develop:
+    host: "https://api2-stage.airhost.co/api/public"      #测试环境 airhost 域名
+    X-AH-Partner: "033e644c-b2f1-4f94-ae5a-54b2c09c0488"      # 测试身份 KEY
+    X-Access-Token: "0a4c363b46bfd6a96cb09b195ac8c55a"    # 测试身份 TOKEN
+  produce:
+    host: "https://api2.airhost.co/api/public"    #测试环境 airhost 域名
+    X-AH-Partner: "797f59cf-aa23-4d9b-981c-394c62dc7b63"                              # 测试身份 KEY
+    X-Access-Token: "665db4388d76ce6490041fc0eb7bcd85"                            # 测试身份 TOKEN
+
+# 生成代码
+hggen:
+  allowedIPs: [ "127.0.0.1", "*" ]                                      # 白名单，*代表所有，只有允许的IP后台才能使用生成代码功能
+  selectDbs: [ "default" ]                                              # 可选生成表的数据库配置名称，支持多库
+  disableTables: [ "hg_sys_gen_codes","hg_admin_role_casbin" ]          # 禁用的表，禁用以后将不会在选择表中看到
+  delimiters: [ "@{", "}" ]                                             # 模板引擎变量分隔符号
+  # 生成应用模型，所有生成模板允许自定义，可以参考default模板进行改造
+  application:
+    # CRUD和关系树列表模板
+    crud:
+      templates:
+        # 默认的主包模板
+        - group: "default"                                              # 分组名称
+          isAddon: false                                                # 是否为插件模板 false｜true
+          masterPackage: "sys"                                          # 主包名称，需和controllerPath、logicPath、inputPath保持关联
+          templatePath: "./resource/generate/default/curd"              # 模板路径
+          apiPath: "./api/admin"                                        # goApi生成路径
+          controllerPath: "./internal/controller/admin/sys"             # 控制器生成路径
+          logicPath: "./internal/logic/sys"                             # 主要业务生成路径
+          inputPath: "./internal/model/input/sysin"                     # 表单过滤器生成路径
+          routerPath: "./internal/router/genrouter"                     # 生成路由表路径
+          sqlPath: "./storage/data/generate"                            # 生成sql语句路径
+          webApiPath: "../web/src/api"                                  # webApi生成路径
+          webViewsPath: "../web/src/views"                              # web页面生成路径
+
+        # 默认的插件包模板，{$name}会自动替换成实际的插件名称
+        - group: "addon"                                                # 分组名称
+          isAddon: true                                                 # 是否为插件模板 false｜true
+          masterPackage: "sys"                                          # 主包名称，需和controllerPath、logicPath、inputPath保持关联
+          templatePath: "./resource/generate/default/curd"              # 模板路径
+          apiPath: "./addons/{$name}/api/admin"                         # goApi生成路径
+          controllerPath: "./addons/{$name}/controller/admin/sys"       # 控制器生成路径
+          logicPath: "./addons/{$name}/logic/sys"                       # 主要业务生成路径
+          inputPath: "./addons/{$name}/model/input/sysin"               # 表单过滤器生成路径
+          routerPath: "./addons/{$name}/router/genrouter"               # 生成路由表路径
+          sqlPath: "./storage/data/generate/addons"                     # 生成sql语句路径
+          webApiPath: "../web/src/api/addons/{$name}"                   # webApi生成路径
+          webViewsPath: "../web/src/views/addons/{$name}"               # web页面生成路径
+
+    # 消息队列模板
+    queue:
+      templates:
+        - group: "default"
+          templatePath: "./resource/generate/default/queue"
+
+    # 定时任务模板
+    cron:
+      templates:
+        - group: "default"
+          templatePath: "./resource/generate/default/cron"
+
+  # 生成插件模块，通过后台创建新插件时使用的模板，允许自定义，可以参考default模板进行改造
+  addon:
+    srcPath: "./resource/generate/default/addon"                    # 生成模板路径
+    webApiPath: "../web/src/api/addons/{$name}"                     # webApi生成路径
+    webViewsPath: "../web/src/views/addons/{$name}"                 # web页面生成路径
+
+kefu:
+  kefuApiHost: "http://127.0.0.1:8081"
+  kefuUrlHost: "https://chat.apt11.net"
+WeixinOpenplatform:
+  appid: "wx3b9aa9ded68f405f"
+  appsecret: "dfbc3f938ed119954d56c7683531e38d"
+WeixinMiniprogram:
+  appid: "wx4060f8631ecdc3d1"
+  appsecret: "18c4c909f85171fe672c0501d809f545"
+shareUrl:
+  domain: "https://crs.apt11.net/mobLink.html"
+localUploadDomain: "https://crsdev.yeebok.cn"
+aladdin:
+  host: "https://api-tiyan.innnair.com"
+cabinet:
+    host: "http://8.209.235.8:8787/api"
+    appid: "apt11"
+    appkey: "apt11##"
+    apiSecret: "mch**"
