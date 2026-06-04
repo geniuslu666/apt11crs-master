@@ -15,3 +15,4 @@ product
 .gopath/
 !/server/resource/public/
 !/server/resource/public/.gitkeep
+/server/resource/public/assets/*

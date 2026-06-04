@@ -4,8 +4,7 @@
     <audio ref="audio" controls hidden="true" :src="voicePath" />
 
     <!-- PC 端：顶部水平菜单 -->
-    <div class="layout-header-left hidden md:flex"
-      v-if="navMode === 'horizontal' || (navMode === 'horizontal-mix' && mixMenu)">
+    <div class="layout-header-left hidden md:flex" v-if="false">
       <div class="logo" v-if="navMode === 'horizontal'">
         <img src="~@/assets/images/logo.png" alt="" />
         <h2 v-show="!collapsed" class="title">{{ projectName }}</h2>

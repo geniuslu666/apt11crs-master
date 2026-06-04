@@ -1,28 +1,44 @@
 <template>
-  <div class="member-admin-page member-page p-4 space-y-3">
+  <div class="member-admin-page member-page space-y-4">
+    <div class="member-page-header">
+      <div>
+        <div class="member-eyebrow">Members</div>
+        <h1 class="member-title">会员列表</h1>
+      </div>
+      <div class="member-header-actions">
+        <UiButton size="sm" variant="outline" @click="loadData" :disabled="loading">
+          <RefreshCw :size="14" :class="loading ? 'animate-spin' : ''" />
+          刷新
+        </UiButton>
+        <UiButton size="sm" variant="outline" @click="handleExport" v-if="hasPermission(['/pmsMember/export'])">
+          <Download :size="14" />
+          导出
+        </UiButton>
+      </div>
+    </div>
 
     <!-- Search card -->
-    <div class="bg-white rounded-lg border border-border">
-      <div class="p-4">
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-          <div>
-            <div class="text-[12px] font-medium text-muted-foreground mb-1">会员号</div>
+    <div class="member-panel">
+      <div class="member-panel-section">
+        <div class="member-filter-grid">
+          <div class="member-field">
+            <div class="member-label">会员号</div>
             <UiInput v-model="searchForm.memberNo" placeholder="请输入" @keyup.enter="handleSearch" />
           </div>
-          <div>
-            <div class="text-[12px] font-medium text-muted-foreground mb-1">手机号</div>
+          <div class="member-field">
+            <div class="member-label">手机号</div>
             <UiInput v-model="searchForm.phone" placeholder="请输入" @keyup.enter="handleSearch" />
           </div>
-          <div>
-            <div class="text-[12px] font-medium text-muted-foreground mb-1">昵称</div>
+          <div class="member-field">
+            <div class="member-label">昵称</div>
             <UiInput v-model="searchForm.fullName" placeholder="请输入" @keyup.enter="handleSearch" />
           </div>
-          <div>
-            <div class="text-[12px] font-medium text-muted-foreground mb-1">邮箱</div>
+          <div class="member-field">
+            <div class="member-label">邮箱</div>
             <UiInput v-model="searchForm.mail" placeholder="请输入" @keyup.enter="handleSearch" />
           </div>
-          <div>
-            <div class="text-[12px] font-medium text-muted-foreground mb-1">会员等级</div>
+          <div class="member-field">
+            <div class="member-label">会员等级</div>
             <UiSelect
               v-model="searchForm.level"
               :options="levelList"
@@ -36,172 +52,173 @@
         </div>
 
         <!-- More filters (date ranges) -->
-        <div v-show="showMore" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 pt-3 border-t border-border/40">
-          <div>
-            <div class="text-[12px] font-medium text-muted-foreground mb-1">注册时间</div>
+        <div v-show="showMore" class="member-more-grid">
+          <div class="member-field">
+            <div class="member-label">注册时间</div>
             <div class="flex items-center gap-1.5">
               <input
                 type="datetime-local"
                 v-model="searchForm.createdAtStart"
-                class="flex-1 h-8 rounded-md border border-input bg-background px-2 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-w-0"
+                class="member-date-input"
               />
-              <span class="text-muted-foreground text-[12px] flex-shrink-0">—</span>
+              <Minus :size="12" class="text-muted-foreground flex-shrink-0" />
               <input
                 type="datetime-local"
                 v-model="searchForm.createdAtEnd"
-                class="flex-1 h-8 rounded-md border border-input bg-background px-2 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-w-0"
+                class="member-date-input"
               />
             </div>
           </div>
-          <div>
-            <div class="text-[12px] font-medium text-muted-foreground mb-1">最后登录</div>
+          <div class="member-field">
+            <div class="member-label">最后登录</div>
             <div class="flex items-center gap-1.5">
               <input
                 type="datetime-local"
                 v-model="searchForm.lastLoginStart"
-                class="flex-1 h-8 rounded-md border border-input bg-background px-2 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-w-0"
+                class="member-date-input"
               />
-              <span class="text-muted-foreground text-[12px] flex-shrink-0">—</span>
+              <Minus :size="12" class="text-muted-foreground flex-shrink-0" />
               <input
                 type="datetime-local"
                 v-model="searchForm.lastLoginEnd"
-                class="flex-1 h-8 rounded-md border border-input bg-background px-2 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-w-0"
+                class="member-date-input"
               />
             </div>
           </div>
         </div>
 
         <!-- Actions -->
-        <div class="flex items-center justify-between mt-3 pt-3 border-t border-border/40">
+        <div class="flex items-center justify-between mt-4">
           <div class="flex items-center gap-2">
             <UiButton size="sm" @click="handleSearch">
-              <svg class="w-3.5 h-3.5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <Search :size="14" />
               查询
             </UiButton>
-            <UiButton size="sm" variant="outline" @click="handleReset">重置</UiButton>
-            <UiButton size="sm" variant="outline" @click="handleExport" v-if="hasPermission(['/pmsMember/export'])">导出</UiButton>
+            <UiButton size="sm" variant="outline" @click="handleReset">
+              <RotateCcw :size="14" />
+              重置
+            </UiButton>
           </div>
           <button
             type="button"
             @click="showMore = !showMore"
-            class="inline-flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors"
+            class="member-disclosure"
           >
-            {{ showMore ? '收起' : '更多筛选' }}
-            <svg
-              :class="['transition-transform duration-200', showMore ? 'rotate-180' : '']"
-              xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            ><path d="m6 9 6 6 6-6"/></svg>
+            {{ showMore ? '收起筛选' : '展开筛选' }}
+            <ChevronDown :size="13" :class="['transition-transform duration-200', showMore ? 'rotate-180' : '']" />
           </button>
         </div>
       </div>
     </div>
 
     <!-- Table card -->
-    <div class="bg-white rounded-lg border border-border overflow-hidden">
+    <div class="member-panel member-table-panel">
       <!-- Toolbar -->
-      <div class="flex items-center justify-between px-4 py-2.5 border-b border-border">
+      <div class="member-table-toolbar">
         <div class="flex items-center gap-2">
+          <Users :size="16" class="text-primary" />
           <span class="text-[13px] font-semibold text-foreground">会员列表</span>
           <span
             v-if="totalCount > 0"
-            class="inline-flex items-center h-5 px-1.5 text-[11px] font-medium bg-muted text-muted-foreground rounded"
+            class="member-count"
           >{{ totalCount }}</span>
         </div>
         <button
           type="button"
           @click="loadData"
           :disabled="loading"
-          class="inline-flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground disabled:opacity-50 transition-colors"
+          class="member-refresh"
         >
-          <svg :class="['w-3.5 h-3.5', loading ? 'animate-spin' : '']" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          <RefreshCw :size="14" :class="loading ? 'animate-spin' : ''" />
           刷新
         </button>
       </div>
 
       <!-- Table -->
-      <div class="overflow-x-auto relative">
+      <div :class="['member-table-scroll', activeActionId !== null ? 'member-table-scroll-open' : '']">
         <!-- Loading overlay -->
         <div v-if="loading" class="absolute inset-0 bg-white/70 z-10 flex items-center justify-center">
-          <svg class="animate-spin w-5 h-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-          </svg>
+          <Loader2 class="animate-spin text-primary" :size="22" />
         </div>
 
-        <table class="w-full text-[13px]">
+        <table class="member-table w-full text-[13px]">
+          <colgroup>
+            <col class="member-colgroup-name" />
+            <col class="member-colgroup-id" />
+            <col class="member-colgroup-level" />
+            <col class="member-colgroup-phone" />
+            <col class="member-colgroup-email" />
+            <col class="member-colgroup-status" />
+            <col class="member-colgroup-source" />
+            <col class="member-colgroup-date" />
+            <col class="member-colgroup-date" />
+            <col class="member-colgroup-action" />
+          </colgroup>
           <thead>
             <tr class="border-b border-border bg-[#f8fafc]">
-              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">会员信息</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">会员分组</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">会员等级</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">推荐信息</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">手机/邮箱</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">积分/经验</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">状态</th>
+              <th class="member-col-name py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">会员昵称</th>
+              <th class="member-col-id py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">会员ID</th>
+              <th class="member-col-level py-2.5 text-center text-[11px] font-medium text-muted-foreground whitespace-nowrap">等级</th>
+              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">手机信息</th>
+              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">邮箱信息</th>
+              <th class="member-col-status py-2.5 text-center text-[11px] font-medium text-muted-foreground whitespace-nowrap">状态</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">注册来源</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">上次登录</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">创建时间</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-medium text-muted-foreground whitespace-nowrap">操作</th>
+              <th class="member-col-action py-2.5 text-center text-[11px] font-medium text-muted-foreground whitespace-nowrap">操作</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-border">
             <tr v-if="data.length === 0 && !loading">
-              <td colspan="11" class="px-3 py-12 text-center text-muted-foreground text-[13px]">暂无数据</td>
+              <td colspan="10" class="px-3 py-14 text-center">
+                <div class="member-empty">
+                  <SearchX :size="24" />
+                  <span>暂无数据</span>
+                </div>
+              </td>
             </tr>
             <tr v-for="row in data" :key="row.id" class="hover:bg-[#f8fafc] transition-colors">
 
-              <!-- 会员信息 -->
-              <td class="px-3 py-2 w-[180px]">
-                <div class="flex items-center gap-2.5">
-                  <img
-                    :src="row.avatar || defaultImg"
-                    @error="(e: any) => (e.target.src = defaultImg)"
-                    class="w-8 h-8 rounded-full flex-shrink-0 object-cover bg-muted"
-                  />
-                  <div class="min-w-0">
-                    <div class="member-link font-medium truncate">{{ row.memberNo }}</div>
-                    <div class="text-[12px] text-muted-foreground truncate">{{ (row.lastName || '') + (row.firstName || '') || '—' }}</div>
-                  </div>
+              <!-- 会员昵称 -->
+              <td class="member-col-name py-2">
+                <div
+                  class="member-name-cell"
+                  :data-full-name="getMemberName(row)"
+                >
+                  <span class="member-name-text">{{ getMemberName(row) }}</span>
                 </div>
               </td>
 
-              <!-- 会员分组 -->
-              <td class="px-3 py-2 text-muted-foreground whitespace-nowrap">
-                {{ row.groupId > 0 && row.memberGroup ? row.memberGroup.memberGroup : '—' }}
+              <!-- 会员ID -->
+              <td class="member-col-id py-2 text-muted-foreground whitespace-nowrap">
+                {{ row.memberNo || row.id || '—' }}
               </td>
 
               <!-- 会员等级 -->
-              <td class="px-3 py-2 whitespace-nowrap">
-                {{ row.memberLevel?.levelName || '—' }}
+              <td class="member-col-level py-2 whitespace-nowrap">
+                <span class="member-level-badge" :title="row.memberLevel?.levelName || '未分级'">
+                  <img
+                    v-if="row.memberLevel?.levelBadge"
+                    :src="row.memberLevel.levelBadge"
+                    alt=""
+                    class="member-level-badge-img"
+                  />
+                  <Award v-else :size="14" />
+                </span>
               </td>
 
-              <!-- 推荐信息 -->
+              <!-- 手机信息 -->
               <td class="px-3 py-2 text-muted-foreground whitespace-nowrap">
-                {{ getReferrerText(row) }}
+                {{ row.phone ? `${row.phoneArea}-${row.phone}` : '—' }}
               </td>
 
-              <!-- 手机/邮箱 -->
-              <td class="px-3 py-2">
-                <div class="space-y-0.5">
-                  <div class="flex items-center gap-1">
-                    <span class="inline-block text-[10px] text-muted-foreground w-7 flex-shrink-0">tel</span>
-                    <span class="text-[13px]">{{ row.phone ? `${row.phoneArea}-${row.phone}` : '—' }}</span>
-                  </div>
-                  <div class="flex items-center gap-1">
-                    <span class="inline-block text-[10px] text-muted-foreground w-7 flex-shrink-0">mail</span>
-                    <span class="text-[13px] truncate max-w-[140px]">{{ row.mail || '—' }}</span>
-                  </div>
-                </div>
-              </td>
-
-              <!-- 积分/经验 -->
-              <td class="px-3 py-2 whitespace-nowrap tabular-nums">
-                {{ row.balance }}<span class="text-muted-foreground mx-0.5 text-[11px]">/</span>{{ row.exp }}
+              <!-- 邮箱信息 -->
+              <td class="px-3 py-2 text-muted-foreground">
+                <div class="member-single-line">{{ row.mail || '—' }}</div>
               </td>
 
               <!-- 状态 -->
-              <td class="px-3 py-2">
+              <td class="member-col-status py-2">
                 <span :class="[
                   'member-status inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-medium',
                   row.status === 1
@@ -219,46 +236,64 @@
 
               <!-- 上次登录 -->
               <td class="px-3 py-2 text-[12px] text-muted-foreground whitespace-nowrap">
-                {{ row.lastLogin || '—' }}
+                {{ formatDateOnly(row.lastLogin) }}
               </td>
 
               <!-- 创建时间 -->
               <td class="px-3 py-2 text-[12px] text-muted-foreground whitespace-nowrap">
-                {{ row.createdAt || '—' }}
+                {{ formatDateOnly(row.createdAt) }}
               </td>
 
               <!-- 操作 -->
-              <td class="px-3 py-2">
-                <div class="flex items-center gap-2 flex-wrap">
+              <td class="member-col-action py-2">
+                <div class="member-action-menu">
                   <button
-                    v-if="hasPermission(['/pmsMember/view'])"
                     type="button"
-                    class="member-action member-action-primary text-[13px] transition-colors whitespace-nowrap"
-                    @click="handleView(row)"
-                  >详情</button>
-                  <button
-                    v-if="row.status === 1 && hasPermission(['/pmsMember/status'])"
-                    type="button"
-                    class="member-action member-action-danger text-[13px] transition-colors whitespace-nowrap"
-                    @click="handleStatus(row, 2)"
-                  >禁用</button>
-                  <button
-                    v-if="row.status === 2 && hasPermission(['/pmsMember/status'])"
-                    type="button"
-                    class="member-action member-action-primary text-[13px] transition-colors whitespace-nowrap"
-                    @click="handleStatus(row, 1)"
-                  >启用</button>
-                  <button
-                    v-if="row.memberCancelArr == null && hasPermission(['/pmsWithdraw/disagreeStaff'])"
-                    type="button"
-                    class="member-action member-action-danger text-[13px] transition-colors whitespace-nowrap"
-                    @click="handleCancel(row)"
-                  >注销</button>
-                  <UiDropdownMenu
-                    :items="dropdownItems"
-                    label="更多"
-                    @select="(key) => handleDropdownSelect(key, row)"
-                  />
+                    class="member-kebab"
+                    @click.stop="toggleActionMenu(row.id)"
+                  >
+                    <MoreHorizontal :size="19" />
+                  </button>
+
+                  <div v-if="activeActionId === row.id" class="member-action-popover">
+                    <div class="member-menu-section">
+                      <div class="member-menu-title">操作</div>
+                      <button
+                        v-if="hasPermission(['/pmsMember/view'])"
+                        type="button"
+                        class="member-menu-item"
+                        @click="runAction('view', row)"
+                      >查看详情</button>
+                      <button
+                        v-if="row.status === 1 && hasPermission(['/pmsMember/status'])"
+                        type="button"
+                        class="member-menu-item member-menu-danger"
+                        @click="runAction('disable', row)"
+                      >禁用会员</button>
+                      <button
+                        v-if="row.status === 2 && hasPermission(['/pmsMember/status'])"
+                        type="button"
+                        class="member-menu-item"
+                        @click="runAction('enable', row)"
+                      >启用会员</button>
+                      <button
+                        v-if="row.memberCancelArr == null && hasPermission(['/pmsWithdraw/disagreeStaff'])"
+                        type="button"
+                        class="member-menu-item member-menu-danger"
+                        @click="runAction('cancel', row)"
+                      >注销会员</button>
+                    </div>
+                    <div class="member-menu-divider"></div>
+                    <div class="member-menu-section">
+                      <div class="member-menu-title">连接</div>
+                      <button type="button" class="member-menu-item" @click="runAction('mes', row)">发通知</button>
+                      <button type="button" class="member-menu-item" @click="runAction('mail', row)">发邮件</button>
+                      <button type="button" class="member-menu-item" @click="runAction('telmes', row)">发短信</button>
+                      <button type="button" class="member-menu-item" @click="runAction('coupon', row)">发优惠券</button>
+                      <button type="button" class="member-menu-item" @click="runAction('thcoupon', row)">发礼品券</button>
+                      <button type="button" class="member-menu-item" @click="runAction('h5_link', row)">H5分销链接</button>
+                    </div>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -275,7 +310,7 @@
             :disabled="page <= 1"
             class="h-7 px-2 rounded border border-border hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            <ChevronLeft :size="13" />
           </button>
           <template v-for="p in pages" :key="p">
             <button
@@ -290,7 +325,7 @@
             :disabled="page >= pageCount"
             class="h-7 px-2 rounded border border-border hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <ChevronRight :size="13" />
           </button>
           <select
             :value="pageSize"
@@ -316,11 +351,26 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, computed, onMounted } from 'vue';
+import { reactive, ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useMessage } from 'naive-ui';
-import { UiButton, UiInput, UiSelect, UiDropdownMenu } from '@/components/ui';
+import { UiButton, UiInput, UiSelect } from '@/components/ui';
+import {
+  Award,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Loader2,
+  Minus,
+  MoreHorizontal,
+  RefreshCw,
+  RotateCcw,
+  Search,
+  SearchX,
+  Users,
+} from '@lucide/vue';
 import { List, Status, Export } from '@/api/pmsMember';
-import { options, loadOptions, levelList, recommendModel } from './model';
+import { options, loadOptions, levelList } from './model';
 import { getOptionLabel } from '@/utils/hotgo';
 import Edit from './edit.vue';
 import sendemail from '@/views/smjcomm/sendemail.vue';
@@ -332,7 +382,6 @@ import ChooseCoupon from '@/views/pmsMember/chooseCouponType.vue';
 import ChooseThCoupon from '@/views/pmsMember/chooseThCoupon.vue';
 import MemberCancel from '@/views/pmsMember/member_cancel.vue';
 import { usePermission } from '@/hooks/web/usePermission';
-import defaultImg from '@/assets/images/mrtx.png';
 
 const { hasPermission } = usePermission();
 const router = useRouter();
@@ -349,7 +398,8 @@ const chooseThCouponRef = ref();
 const memberCancelRef = ref();
 
 // UI state
-const showMore = ref(false);
+const showMore = ref(true);
+const activeActionId = ref<number | string | null>(null);
 
 // Table state
 const loading = ref(false);
@@ -446,29 +496,37 @@ function handleReset() {
   loadData();
 }
 
-// Column helpers
-function getReferrerText(row: any): string {
-  if (row.referrer <= 0 && row.lastReferrer <= 0) return '无';
-  if (recommendModel.value === 'FIRST') {
-    if (!row.referrerDetail) return '无';
-    const { rebateMode, memberNo } = row.referrerDetail;
-    return rebateMode === 'CHANNEL' ? `渠道：${memberNo}` : rebateMode === 'STAFF' ? `员工：${memberNo}` : `会员：${memberNo}`;
-  } else {
-    if (!row.LastReferrerDetail) return '无';
-    const { rebateMode, memberNo } = row.LastReferrerDetail;
-    return rebateMode === 'CHANNEL' ? `渠道：${memberNo}` : rebateMode === 'STAFF' ? `员工：${memberNo}` : `会员：${memberNo}`;
-  }
+function getMemberName(row: any): string {
+  const name = `${row.lastName || ''}${row.firstName || ''}`.trim();
+  return name || row.fullName || row.nickname || row.nickName || '—';
 }
 
-// Dropdown actions
-const dropdownItems = [
-  { label: '发通知', key: 'mes' },
-  { label: '发邮件', key: 'mail' },
-  { label: '发短信', key: 'telmes' },
-  { label: '发优惠券', key: 'coupon' },
-  { label: '发礼品券', key: 'thcoupon' },
-  { label: 'H5分销链接', key: 'h5_link' },
-];
+function formatDateOnly(value: string | null | undefined): string {
+  if (!value) return '—';
+  return String(value).slice(0, 10) || '—';
+}
+
+function toggleActionMenu(id: number | string) {
+  activeActionId.value = activeActionId.value === id ? null : id;
+}
+
+function closeActionMenu() {
+  activeActionId.value = null;
+}
+
+function handleDocumentClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+  if (!target.closest('.member-action-menu')) closeActionMenu();
+}
+
+function runAction(key: string, record: any) {
+  closeActionMenu();
+  if (key === 'view') return handleView(record);
+  if (key === 'disable') return handleStatus(record, 2);
+  if (key === 'enable') return handleStatus(record, 1);
+  if (key === 'cancel') return handleCancel(record);
+  return handleDropdownSelect(key, record);
+}
 
 function handleDropdownSelect(key: string, record: any) {
   if (key === 'mes') return tomessage(record);
@@ -527,6 +585,11 @@ function handleExport() {
 onMounted(() => {
   loadOptions();
   loadData();
+  document.addEventListener('click', handleDocumentClick);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleDocumentClick);
 });
 </script>
 
@@ -544,7 +607,430 @@ onMounted(() => {
   --crs-danger-soft: #fff1f2;
   --crs-success: #16a34a;
   --crs-success-soft: #eefbf3;
+  --crs-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(220, 231, 242, 0.5);
+  padding: 16px;
   color: var(--crs-text);
+  background: #f6f9fc;
+  min-height: calc(100vh - var(--header-height, 56px));
+
+  .member-page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .member-eyebrow {
+    color: var(--crs-primary-strong);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 16px;
+    text-transform: uppercase;
+  }
+
+  .member-title {
+    color: var(--crs-text);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    margin: 0;
+  }
+
+  .member-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .member-panel {
+    background: var(--crs-surface);
+    border: 1px solid var(--crs-border);
+    border-radius: 8px;
+    box-shadow: var(--crs-shadow);
+  }
+
+  .member-table-panel {
+    overflow: visible;
+  }
+
+  .member-panel-section {
+    padding: 16px;
+  }
+
+  .member-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .member-field {
+    min-width: 0;
+  }
+
+  .member-label {
+    color: var(--crs-muted);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+    margin-bottom: 4px;
+  }
+
+  .member-more-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    margin-top: 12px;
+  }
+
+  .member-date-input {
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--input));
+    border-radius: 6px;
+    color: var(--crs-text);
+    flex: 1 1 0;
+    font-size: 13px;
+    height: 32px;
+    min-width: 0;
+    padding: 0 8px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .member-disclosure,
+  .member-refresh {
+    align-items: center;
+    border-radius: 6px;
+    color: var(--crs-muted);
+    display: inline-flex;
+    font-size: 12px;
+    gap: 4px;
+    height: 28px;
+    padding: 0 8px;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .member-disclosure:hover,
+  .member-refresh:hover {
+    background: var(--crs-primary-soft);
+    color: var(--crs-primary-strong);
+  }
+
+  .member-refresh:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .member-table-toolbar {
+    align-items: center;
+    border-bottom: 1px solid var(--crs-border);
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 16px 10px 24px;
+  }
+
+  .member-table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    position: relative;
+  }
+
+  .member-table-scroll-open {
+    padding-bottom: 360px;
+  }
+
+  .member-table {
+    min-width: 1040px;
+    table-layout: fixed;
+  }
+
+  .member-col-name {
+    padding-left: 46px;
+    padding-right: 12px;
+  }
+
+  .member-col-id {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .member-col-level,
+  .member-col-status {
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: center;
+  }
+
+  .member-col-action {
+    background: var(--crs-surface);
+    box-shadow: -10px 0 16px -16px rgba(15, 23, 42, 0.35);
+    padding-left: 8px;
+    padding-right: 8px;
+    position: sticky;
+    right: 0;
+    text-align: center;
+    z-index: 6;
+  }
+
+  thead .member-col-action {
+    background: #f8fafc;
+    z-index: 8;
+  }
+
+  tbody tr:hover .member-col-action {
+    background: #f8fafc;
+  }
+
+  .member-colgroup-name {
+    width: 176px;
+  }
+
+  .member-colgroup-id {
+    width: 92px;
+  }
+
+  .member-colgroup-level {
+    width: 64px;
+  }
+
+  .member-colgroup-phone {
+    width: 144px;
+  }
+
+  .member-colgroup-email {
+    width: 180px;
+  }
+
+  .member-colgroup-status {
+    width: 74px;
+  }
+
+  .member-colgroup-source {
+    width: 96px;
+  }
+
+  .member-colgroup-date {
+    width: 112px;
+  }
+
+  .member-colgroup-action {
+    width: 64px;
+  }
+
+  .member-count {
+    align-items: center;
+    background: var(--crs-primary-soft);
+    border-radius: 999px;
+    color: var(--crs-primary-strong);
+    display: inline-flex;
+    font-size: 11px;
+    font-weight: 700;
+    height: 20px;
+    padding: 0 7px;
+  }
+
+  .member-empty {
+    align-items: center;
+    color: var(--crs-muted);
+    display: inline-flex;
+    flex-direction: column;
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .member-single-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .member-name-cell {
+    display: inline-block;
+    max-width: 118px;
+    position: relative;
+    vertical-align: middle;
+  }
+
+  .member-name-text {
+    display: block;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .member-name-cell:hover::after {
+    background: var(--crs-text);
+    border-radius: 6px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+    color: #fff;
+    content: attr(data-full-name);
+    font-size: 12px;
+    font-weight: 500;
+    left: 0;
+    line-height: 18px;
+    max-width: 240px;
+    overflow-wrap: break-word;
+    padding: 6px 8px;
+    position: absolute;
+    top: calc(100% + 8px);
+    white-space: normal;
+    width: max-content;
+    z-index: 90;
+  }
+
+  .member-level-badge {
+    align-items: center;
+    background: #f8fbff;
+    border: 1px solid rgba(18, 143, 200, 0.14);
+    border-radius: 999px;
+    color: var(--crs-primary-strong);
+    display: inline-flex;
+    height: 26px;
+    justify-content: center;
+    line-height: 1;
+    overflow: hidden;
+    padding: 0 7px;
+    width: 34px;
+  }
+
+  .member-level-badge-img {
+    display: block;
+    max-height: 18px;
+    max-width: 22px;
+    object-fit: contain;
+  }
+
+  .member-action-menu {
+    display: inline-flex;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+  }
+
+  .member-kebab {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: none;
+    color: var(--crs-muted);
+    display: inline-flex;
+    height: 32px;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    width: 36px;
+  }
+
+  .member-kebab:hover,
+  .member-kebab:focus-visible {
+    background: var(--crs-primary-soft);
+    color: var(--crs-primary-strong);
+    box-shadow: 0 0 0 3px rgba(56, 174, 234, 0.14);
+  }
+
+  .member-action-popover {
+    background: var(--crs-surface);
+    border: 1px solid var(--crs-border);
+    border-radius: 8px;
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+    color: var(--crs-text);
+    min-width: 176px;
+    padding: 8px 0;
+    position: absolute;
+    right: 0;
+    text-align: left;
+    top: calc(100% + 8px);
+    z-index: 80;
+  }
+
+  .member-menu-section {
+    display: grid;
+    gap: 2px;
+    padding: 0 0;
+  }
+
+  .member-menu-title {
+    color: var(--crs-muted);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    padding: 4px 14px 5px;
+  }
+
+  .member-menu-item {
+    background: transparent;
+    border: 0;
+    color: var(--crs-text);
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    min-height: 32px;
+    padding: 6px 14px;
+    text-align: left;
+    transition: background 0.15s ease, color 0.15s ease;
+    width: 100%;
+  }
+
+  .member-menu-item:hover {
+    background: #f4f8fd;
+    color: var(--crs-primary-strong);
+  }
+
+  .member-menu-danger {
+    color: var(--crs-danger);
+  }
+
+  .member-menu-danger:hover {
+    background: var(--crs-danger-soft);
+    color: #dc2626;
+  }
+
+  .member-menu-divider {
+    border-top: 1px solid var(--crs-border);
+    margin: 6px 0;
+  }
+
+  @media (min-width: 768px) {
+    .member-filter-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .member-more-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .member-filter-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 12px;
+
+    .member-page-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .member-header-actions {
+      width: 100%;
+    }
+
+    .member-header-actions :deep(button) {
+      flex: 1;
+    }
+
+    .member-panel-section {
+      padding: 12px;
+    }
+
+    .member-filter-grid {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+  }
 
   :deep(.border-border),
   .border-border {
@@ -611,6 +1097,19 @@ onMounted(() => {
     color: var(--crs-primary-strong);
   }
 
+  .member-action {
+    align-items: center;
+    border-radius: 6px;
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 4px;
+    height: 28px;
+    padding: 0 7px;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
   :deep([class*='text-stripe']) {
     color: var(--crs-primary-strong);
   }
@@ -621,11 +1120,16 @@ onMounted(() => {
     color: #0879ad;
   }
 
+  .member-action-primary:hover {
+    background: var(--crs-primary-soft);
+  }
+
   .member-action-danger {
     color: var(--crs-danger);
   }
 
   .member-action-danger:hover {
+    background: var(--crs-danger-soft);
     color: #dc2626;
   }
 

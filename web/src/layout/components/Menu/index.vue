@@ -1,16 +1,15 @@
 <template>
-  <NMenu class="app-side-menu" :options="menus" :inverted="false" :mode="mode" :collapsed="collapsed" :collapsed-width="40"
-    :collapsed-icon-size="16" :indent="16" :expanded-keys="openKeys" :value="getSelectedKeys"
+  <NMenu class="app-side-menu" :options="menus" :inverted="false" :mode="mode" :collapsed="collapsed" :collapsed-width="48"
+    :collapsed-icon-size="18" :indent="26" :expanded-keys="openKeys" :value="getSelectedKeys"
     @update:value="clickMenuItem" @update:expanded-keys="menuExpanded" />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, reactive, computed, watch, toRefs, unref, PropType } from 'vue';
+import { defineComponent, ref, onMounted, reactive, computed, watch, toRefs, PropType } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAsyncRouteStore } from '@/store/modules/asyncRoute';
-import { generatorMenu, generatorMenuMix } from '@/utils';
+import { generatorMenu } from '@/utils';
 import { useProjectSettingStore } from '@/store/modules/projectSetting';
-import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
 
 export default defineComponent({
   name: 'Menu',
@@ -45,11 +44,6 @@ export default defineComponent({
     const settingStore = useProjectSettingStore();
     const menus = ref<any[]>([]);
     const selectedKeys = ref<string>(currentRoute.name as string);
-    const headerMenuSelectKey = ref<string>('');
-
-    const { getNavMode } = useProjectSetting();
-
-    const navMode = getNavMode;
 
     // 获取当前打开的子菜单
     const matched = currentRoute.matched;
@@ -71,10 +65,7 @@ export default defineComponent({
     });
 
     const getSelectedKeys = computed(() => {
-      let location = props.location;
-      return location === 'left' || (location === 'header' && unref(navMode) === 'horizontal')
-        ? unref(selectedKeys)
-        : unref(headerMenuSelectKey);
+      return selectedKeys.value;
     });
 
     // 监听分割菜单
@@ -108,16 +99,7 @@ export default defineComponent({
     );
 
     function updateMenu() {
-      if (!settingStore.menuSetting.mixMenu) {
-        menus.value = generatorMenu(asyncRouteStore.getMenus);
-      } else {
-        //混合菜单
-        const firstRouteName: string = (currentRoute.matched[0].name as string) || '';
-        menus.value = generatorMenuMix(asyncRouteStore.getMenus, firstRouteName, props.location);
-        const activeMenu: string = currentRoute?.matched[0].meta?.activeMenu as string;
-        headerMenuSelectKey.value = (activeMenu ? activeMenu : firstRouteName) || '';
-        ;
-      }
+      menus.value = generatorMenu(asyncRouteStore.getMenus);
     }
 
     // 点击菜单
@@ -135,21 +117,7 @@ export default defineComponent({
     //展开菜单
     function menuExpanded(openKeys: string[]) {
       if (!openKeys) return;
-      const latestOpenKey = openKeys.find((key) => state.openKeys.indexOf(key) === -1);
-      const isExistChildren = findChildrenLen(latestOpenKey as string);
-      state.openKeys = isExistChildren ? (latestOpenKey ? [latestOpenKey] : []) : openKeys;
-    }
-
-    //查找是否存在子路由
-    function findChildrenLen(key: string) {
-      if (!key) return false;
-      const subRouteChildren: string[] = [];
-      for (const { children, key } of unref(menus)) {
-        if (children && children.length) {
-          subRouteChildren.push(key as string);
-        }
-      }
-      return subRouteChildren.includes(key);
+      state.openKeys = openKeys;
     }
 
     onMounted(() => {
@@ -165,7 +133,6 @@ export default defineComponent({
       menuInverted,
       menus,
       selectedKeys,
-      headerMenuSelectKey,
       getSelectedKeys,
       clickMenuItem,
       menuExpanded,
@@ -177,12 +144,14 @@ export default defineComponent({
 <style lang="less" scoped>
 .app-side-menu {
   background: transparent;
-  --smartcam-foreground: #152033;
-  --smartcam-muted: #7b93ad;
-  --smartcam-muted-bg: #f4f8fb;
-  --smartcam-active-bg: #eaf7ff;
-  --smartcam-border: #dce7f2;
-  --smartcam-primary: #128fc8;
+  --nav-foreground: #192b47;
+  --nav-muted: #71829d;
+  --nav-subtle: #f6f9fc;
+  --nav-active: #f3f7fb;
+  --nav-border: #e5edf5;
+  --nav-primary: #0f8fc9;
+  --nav-radius: 8px;
+  padding: 4px 0;
 
   :deep(.n-menu-item),
   :deep(.n-submenu) {
@@ -191,13 +160,14 @@ export default defineComponent({
 
   :deep(.n-menu-item-content),
   :deep(.n-submenu > .n-menu-item-content) {
-    height: 36px;
-    padding-right: 8px !important;
-    border-radius: 6px;
-    color: var(--smartcam-muted);
-    font-size: 14px;
+    height: 42px;
+    padding-right: 14px !important;
+    border-radius: var(--nav-radius);
+    color: var(--nav-foreground);
+    font-size: 16px;
     font-weight: 500;
-    transition: background 0.15s ease, color 0.15s ease;
+    letter-spacing: 0;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
   }
 
   :deep(.n-menu-item-content::before),
@@ -207,15 +177,15 @@ export default defineComponent({
 
   :deep(.n-menu-item-content:hover),
   :deep(.n-submenu > .n-menu-item-content:hover) {
-    background: var(--smartcam-muted-bg);
-    color: var(--smartcam-foreground);
+    background: var(--nav-subtle);
+    color: var(--nav-foreground);
   }
 
   :deep(.n-menu-item-content--selected),
   :deep(.n-menu-item-content--selected:hover),
   :deep(.n-menu-item-content--child-active) {
-    background: var(--smartcam-active-bg) !important;
-    color: var(--smartcam-primary) !important;
+    background: var(--nav-active) !important;
+    color: var(--nav-foreground) !important;
   }
 
   :deep(.n-menu-item-content--selected .n-menu-item-content-header),
@@ -224,27 +194,73 @@ export default defineComponent({
   :deep(.n-menu-item-content--child-active .n-menu-item-content-header),
   :deep(.n-menu-item-content--child-active .n-menu-item-content__icon),
   :deep(.n-menu-item-content--child-active .n-menu-item-content__arrow) {
-    color: var(--smartcam-primary) !important;
+    color: var(--nav-foreground) !important;
   }
 
   :deep(.n-menu-item-content__icon) {
     margin-right: 10px;
     color: currentColor;
+    opacity: 0.72;
+    width: 22px;
   }
 
   :deep(.n-menu-item-content__arrow) {
-    color: currentColor;
+    color: var(--nav-muted);
+    font-size: 18px;
   }
 
   :deep(.n-menu-item-content-header) {
     color: currentColor;
     line-height: 1;
+    max-width: 6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   :deep(.n-submenu-children) {
-    margin-left: 8px;
-    padding-left: 8px;
-    border-left: 1px solid var(--smartcam-border);
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  :deep(.n-submenu-children .n-menu-item-content),
+  :deep(.n-submenu-children .n-submenu > .n-menu-item-content) {
+    height: 36px;
+    border-radius: 6px;
+    color: var(--nav-foreground);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  :deep(.n-submenu-children .n-menu-item-content__icon),
+  :deep(.n-submenu-children .n-submenu > .n-menu-item-content .n-menu-item-content__icon) {
+    display: none;
+  }
+
+  :deep(.n-submenu-children .n-menu-item-content-header) {
+    padding-left: 10px;
+  }
+
+  :deep(.n-submenu-children .n-submenu-children .n-menu-item-content) {
+    height: 32px;
+    color: var(--nav-muted);
+    font-size: 14px;
+  }
+
+  :deep(.n-submenu-children .n-submenu-children .n-menu-item-content-header) {
+    padding-left: 24px;
+  }
+
+  :deep(.n-submenu-children .n-menu-item-content--selected),
+  :deep(.n-submenu-children .n-menu-item-content--selected:hover) {
+    background: transparent !important;
+    color: var(--nav-primary) !important;
+  }
+
+  :deep(.n-submenu-children .n-menu-item-content--selected .n-menu-item-content-header) {
+    color: var(--nav-primary) !important;
+    font-weight: 600;
   }
 
   &.n-menu--collapsed :deep(.n-menu-item),
@@ -255,11 +271,11 @@ export default defineComponent({
 
   &.n-menu--collapsed :deep(.n-menu-item-content),
   &.n-menu--collapsed :deep(.n-submenu > .n-menu-item-content) {
-    width: 40px;
-    height: 36px;
+    width: 48px;
+    height: 42px;
     padding: 0 !important;
     justify-content: center;
-    border-radius: 6px;
+    border-radius: 8px;
   }
 
   &.n-menu--collapsed :deep(.n-menu-item-content__icon) {

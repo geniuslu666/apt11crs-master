@@ -128,7 +128,6 @@
   import { renderIcon } from '@/utils';
   import elementResizeDetectorMaker from 'element-resize-detector';
   import { useDesignSetting } from '@/hooks/setting/useDesignSetting';
-  import { useProjectSettingStore } from '@/store/modules/projectSetting';
   import { useThemeVars } from 'naive-ui';
   import { useGo } from '@/hooks/web/usePage';
   import { EllipsisHorizontalCircleOutline } from '@vicons/ionicons5';
@@ -151,9 +150,7 @@
     },
     setup(props) {
       const { getDarkTheme, getAppTheme } = useDesignSetting();
-      const { getNavMode, getHeaderSetting, getMultiTabsSetting, getIsMobile } =
-        useProjectSetting();
-      const settingStore = useProjectSettingStore();
+      const { getHeaderSetting, getMultiTabsSetting, getIsMobile } = useProjectSetting();
 
       const message = useMessage();
       const route = useRoute();
@@ -191,23 +188,12 @@
         return { fullPath, hash, meta, name, params, path, query };
       };
 
-      const isMixMenuNoneSub = computed(() => {
-        const mixMenu = settingStore.menuSetting.mixMenu;
-        const navMode = unref(getNavMode);
-        if (unref(navMode) != 'horizontal-mix') return true;
-        return !(unref(navMode) === 'horizontal-mix' && mixMenu && route.meta.isRoot);
-      });
-
       //动态组装样式 菜单缩进
       const getChangeStyle = computed(() => {
         const { collapsed } = props;
-        const navMode = unref(getNavMode);
         const { fixed }: any = unref(getMultiTabsSetting);
-        const smartCamMenuWidth = collapsed ? '64px' : '256px';
-        let lenNum =
-          navMode === 'horizontal' || !isMixMenuNoneSub.value
-            ? '0px'
-            : smartCamMenuWidth;
+        const smartCamMenuWidth = collapsed ? '64px' : '224px';
+        let lenNum = smartCamMenuWidth;
 
         if (getIsMobile.value) {
           return {

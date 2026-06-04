@@ -1,6 +1,6 @@
 const setting = {
   //导航模式 vertical 左侧菜单模式 horizontal 顶部菜单模式
-  navMode: 'horizontal-mix',
+  navMode: 'vertical',
   //导航风格 dark 暗色侧边栏 light 白色侧边栏 header-dark 暗色顶栏
   navTheme: 'light',
   // 是否处于移动端模式
@@ -30,11 +30,11 @@ const setting = {
     //最小宽度
     minMenuWidth: 64,
     //菜单宽度
-    menuWidth: 200,
+    menuWidth: 224,
     //固定菜单
     fixed: true,
     //分割菜单
-    mixMenu: true,
+    mixMenu: false,
     //触发移动端侧边栏的宽度
     mobileWidth: 800,
     // 折叠菜单

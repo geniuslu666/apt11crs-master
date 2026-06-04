@@ -1,8 +1,6 @@
 <template>
   <n-layout class="layout" :position="fixedMenu" has-sider>
-    <n-layout-sider v-if="
-      !isMobile && isMixMenuNoneSub && (navMode === 'vertical' || navMode === 'horizontal-mix')
-    " :position="fixedMenu"
+    <n-layout-sider v-if="!isMobile" :position="fixedMenu"
       :collapsed="collapsed" collapse-mode="width" :collapsed-width="64" :width="leftMenuWidth"
       :native-scrollbar="false" :inverted="false" class="layout-sider">
       <div class="sidebar-inner" :class="{ 'sidebar-inner-collapsed': collapsed }">
@@ -67,7 +65,6 @@ import { useProjectSettingStore } from '@/store/modules/projectSetting';
 const { getDarkTheme } = useDesignSetting();
 const {
   // getShowFooter,
-  getNavMode,
   getNavTheme,
   getHeaderSetting,
   getMenuSetting,
@@ -77,7 +74,7 @@ const {
 const route = useRoute();
 const settingStore = useProjectSettingStore();
 
-const navMode = getNavMode;
+const navMode = computed(() => 'vertical');
 
 const collapsed = ref<boolean>(false);
 
@@ -127,7 +124,7 @@ const getHeaderInverted = computed(() => {
 });
 
 const leftMenuWidth = computed(() => {
-  return collapsed.value ? 64 : 256;
+  return collapsed.value ? 64 : 224;
 });
 
 // const getChangeStyle = computed(() => {
@@ -214,6 +211,12 @@ onMounted(() => {
 
     :deep(.n-layout-sider-scroll-container) {
       background: transparent;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
     }
   }
 
@@ -248,16 +251,22 @@ onMounted(() => {
 
 .sidebar-inner-collapsed {
   border-radius: 0;
+
+  .sidebar-menu-wrap {
+    padding: 12px 8px;
+  }
 }
 
 .sidebar-menu-wrap {
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
-  padding: 12px 8px;
+  padding: 14px 10px 12px;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 0;
+    height: 0;
   }
   &::-webkit-scrollbar-thumb {
     background: rgb(148 163 184 / 0.35);
