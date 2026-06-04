@@ -5,7 +5,7 @@
     max-width="480px"
     @update:open="closeForm"
   >
-    <div class="space-y-4 py-2">
+    <div class="member-admin-page member-edit-form space-y-3 py-2">
       <div class="flex flex-col gap-1">
         <label class="text-sm font-medium text-foreground">注销原因</label>
         <UiTextarea

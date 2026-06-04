@@ -1,6 +1,6 @@
 <template>
-  <NMenu :options="menus" :inverted="menuInverted" :mode="mode" :collapsed="collapsed" :collapsed-width="64"
-    :collapsed-icon-size="20" :indent="24" :expanded-keys="openKeys" :value="getSelectedKeys"
+  <NMenu class="app-side-menu" :options="menus" :inverted="false" :mode="mode" :collapsed="collapsed" :collapsed-width="40"
+    :collapsed-icon-size="16" :indent="16" :expanded-keys="openKeys" :value="getSelectedKeys"
     @update:value="clickMenuItem" @update:expanded-keys="menuExpanded" />
 </template>
 
@@ -173,3 +173,103 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="less" scoped>
+.app-side-menu {
+  background: transparent;
+  --smartcam-foreground: #152033;
+  --smartcam-muted: #7b93ad;
+  --smartcam-muted-bg: #f4f8fb;
+  --smartcam-active-bg: #eaf7ff;
+  --smartcam-border: #dce7f2;
+  --smartcam-primary: #128fc8;
+
+  :deep(.n-menu-item),
+  :deep(.n-submenu) {
+    margin: 2px 0;
+  }
+
+  :deep(.n-menu-item-content),
+  :deep(.n-submenu > .n-menu-item-content) {
+    height: 36px;
+    padding-right: 8px !important;
+    border-radius: 6px;
+    color: var(--smartcam-muted);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  :deep(.n-menu-item-content::before),
+  :deep(.n-submenu > .n-menu-item-content::before) {
+    display: none !important;
+  }
+
+  :deep(.n-menu-item-content:hover),
+  :deep(.n-submenu > .n-menu-item-content:hover) {
+    background: var(--smartcam-muted-bg);
+    color: var(--smartcam-foreground);
+  }
+
+  :deep(.n-menu-item-content--selected),
+  :deep(.n-menu-item-content--selected:hover),
+  :deep(.n-menu-item-content--child-active) {
+    background: var(--smartcam-active-bg) !important;
+    color: var(--smartcam-primary) !important;
+  }
+
+  :deep(.n-menu-item-content--selected .n-menu-item-content-header),
+  :deep(.n-menu-item-content--selected .n-menu-item-content__icon),
+  :deep(.n-menu-item-content--selected .n-menu-item-content__arrow),
+  :deep(.n-menu-item-content--child-active .n-menu-item-content-header),
+  :deep(.n-menu-item-content--child-active .n-menu-item-content__icon),
+  :deep(.n-menu-item-content--child-active .n-menu-item-content__arrow) {
+    color: var(--smartcam-primary) !important;
+  }
+
+  :deep(.n-menu-item-content__icon) {
+    margin-right: 10px;
+    color: currentColor;
+  }
+
+  :deep(.n-menu-item-content__arrow) {
+    color: currentColor;
+  }
+
+  :deep(.n-menu-item-content-header) {
+    color: currentColor;
+    line-height: 1;
+  }
+
+  :deep(.n-submenu-children) {
+    margin-left: 8px;
+    padding-left: 8px;
+    border-left: 1px solid var(--smartcam-border);
+  }
+
+  &.n-menu--collapsed :deep(.n-menu-item),
+  &.n-menu--collapsed :deep(.n-submenu) {
+    display: flex;
+    justify-content: center;
+  }
+
+  &.n-menu--collapsed :deep(.n-menu-item-content),
+  &.n-menu--collapsed :deep(.n-submenu > .n-menu-item-content) {
+    width: 40px;
+    height: 36px;
+    padding: 0 !important;
+    justify-content: center;
+    border-radius: 6px;
+  }
+
+  &.n-menu--collapsed :deep(.n-menu-item-content__icon) {
+    margin-right: 0;
+  }
+
+  &.n-menu--collapsed :deep(.n-submenu-children) {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+</style>

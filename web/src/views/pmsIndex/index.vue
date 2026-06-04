@@ -1,1029 +1,151 @@
 <template>
-  <div class="">
-    <!-- PC端标题 -->
-    <div class="title-name hidden md:block">欢迎回来，{{ userStore.realName }}！</div>
-    <!-- 移动端标题 -->
-    <div class="text-lg font-semibold text-gray-900 mb-4 md:hidden">欢迎回来，{{ userStore.realName }}！</div>
+  <div class="shadcn-dashboard">
     <n-spin :show="show" description="请稍候...">
-      <n-grid :cols="1" y-gap="15">
-        <n-gi>
-          <!-- PC端会员统计卡片 -->
-          <n-card :bordered="false" class="hidden md:block" :header-style="{
-            padding: '25px 20px 26px',
-          }" :content-style="{
-            padding: '0 20px 30px',
-          }">
-            <template #header>
-              <div class="room-stat-title">会员统计</div>
-            </template>
-            <n-grid :cols="4" x-gap="15">
-              <n-gi>
-                <div class="room-stat-gi-div">
-                  <img style="width: 65px" src="@/assets/images/index/img1.png" />
-                  <div class="room-stat-gi-div-item">
-                    <div class="room-stat-gi-div-item-d1">新增会员</div>
-                    <div class="room-stat-gi-div-item-d2">{{
-                      state.dashboard.memberStat.todayRegMemberNum
-                    }}</div>
-                    <div class="room-stat-gi-div-item-d3">
-                      同比：
-                      <img v-if="state.dashboard.memberStat.todayMemberNumGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img5.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img6.png" />
-                      {{ state.dashboard.memberStat.todayMemberNumGrewPer >= 0 ?
-                        state.dashboard.memberStat.todayMemberNumGrewPer :
-                        -state.dashboard.memberStat.todayMemberNumGrewPer }}%
-                    </div>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="room-stat-gi-div">
-                  <img style="width: 65px" src="@/assets/images/index/img2.png" />
-                  <div class="room-stat-gi-div-item">
-                    <div class="room-stat-gi-div-item-d1">累计会员</div>
-                    <div class="room-stat-gi-div-item-d2">{{
-                      state.dashboard.memberStat.totalMemberNum
-                    }}</div>
-                    <div class="room-stat-gi-div-item-d3">
-                      较昨日：
-                      <img v-if="state.dashboard.memberStat.totalMemberGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img5.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img6.png" />
-                      {{ state.dashboard.memberStat.totalMemberGrewPer >= 0 ?
-                        state.dashboard.memberStat.totalMemberGrewPer :
-                        -state.dashboard.memberStat.totalMemberGrewPer }}%
-                    </div>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="room-stat-gi-div">
-                  <img style="width: 65px" src="@/assets/images/index/img3.png" />
-                  <div class="room-stat-gi-div-item">
-                    <div class="room-stat-gi-div-item-d1">新增积分</div>
-                    <div class="room-stat-gi-div-item-d2">{{
-                      state.dashboard.memberStat.todayIncBal
-                    }}</div>
-                    <div class="room-stat-gi-div-item-d3">
-                      较昨日：
-                      <img v-if="state.dashboard.memberStat.todayIncBalGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img5.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img6.png" />
-                      {{ state.dashboard.memberStat.todayIncBalGrewPer >= 0 ?
-                        state.dashboard.memberStat.todayIncBalGrewPer :
-                        -state.dashboard.memberStat.todayIncBalGrewPer }}%
-                    </div>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="room-stat-gi-div">
-                  <img style="width: 65px" src="@/assets/images/index/img4.png" />
-                  <div class="room-stat-gi-div-item">
-                    <div class="room-stat-gi-div-item-d1">消耗积分</div>
-                    <div class="room-stat-gi-div-item-d2">{{
-                      state.dashboard.memberStat.todayConsumeBal
-                    }}</div>
-                    <div class="room-stat-gi-div-item-d3">
-                      较昨日：
-                      <img v-if="state.dashboard.memberStat.todayConsumeBalGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img5.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img6.png" />
-                      {{ state.dashboard.memberStat.todayConsumeBalGrewPer >= 0 ?
-                        state.dashboard.memberStat.todayConsumeBalGrewPer :
-                        -state.dashboard.memberStat.todayConsumeBalGrewPer }}%
-                    </div>
-                  </div>
-                </div>
-              </n-gi>
-            </n-grid>
-          </n-card>
-          <!-- 移动端会员统计卡片 -->
-          <n-card :bordered="false" class="block md:hidden mb-4" :header-style="{
-            padding: '16px',
-          }" :content-style="{
-            padding: '0 16px 16px',
-          }">
-            <template #header>
-              <div class="text-base font-medium text-gray-900">会员统计</div>
-            </template>
-            <n-grid :cols="2" x-gap="12" y-gap="12">
-              <n-gi>
-                <div class="room-stat-gi-div-mobile">
-                  <img class="w-12" src="@/assets/images/index/img1.png" />
-                  <div class="room-stat-gi-div-item-mobile w-full">
-                    <div class="text-sm text-gray-700 font-medium">新增会员</div>
-                    <div class="text-xl font-bold text-gray-900 mt-1">{{
-                      state.dashboard.memberStat.todayRegMemberNum
-                    }}</div>
-                    <div class="flex items-center mt-2 text-xs text-gray-500">
-                      同比：
-                      <img v-if="state.dashboard.memberStat.todayMemberNumGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img5.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img6.png" />
-                      {{ state.dashboard.memberStat.todayMemberNumGrewPer >= 0 ?
-                        state.dashboard.memberStat.todayMemberNumGrewPer
-                        : -state.dashboard.memberStat.todayMemberNumGrewPer }}%
-                    </div>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="room-stat-gi-div-mobile">
-                  <img class="w-12" src="@/assets/images/index/img2.png" />
-                  <div class="room-stat-gi-div-item-mobile">
-                    <div class="text-sm text-gray-700 font-medium">累计会员</div>
-                    <div class="text-xl font-bold text-gray-900 mt-1">{{
-                      state.dashboard.memberStat.totalMemberNum
-                    }}</div>
-                    <div class="flex items-center mt-2 text-xs text-gray-500">
-                      较昨日：
-                      <img v-if="state.dashboard.memberStat.totalMemberGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img5.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img6.png" />
-                      {{ state.dashboard.memberStat.totalMemberGrewPer >= 0 ?
-                        state.dashboard.memberStat.totalMemberGrewPer :
-                        -state.dashboard.memberStat.totalMemberGrewPer }}%
-                    </div>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="room-stat-gi-div-mobile">
-                  <img class="w-12" src="@/assets/images/index/img3.png" />
-                  <div class="room-stat-gi-div-item-mobile">
-                    <div class="text-sm text-gray-700 font-medium">新增积分</div>
-                    <div class="text-xl font-bold text-gray-900 mt-1">{{
-                      state.dashboard.memberStat.todayIncBal
-                    }}</div>
-                    <div class="flex items-center mt-2 text-xs text-gray-500">
-                      较昨日：
-                      <img v-if="state.dashboard.memberStat.todayIncBalGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img5.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img6.png" />
-                      {{ state.dashboard.memberStat.todayIncBalGrewPer >= 0 ?
-                        state.dashboard.memberStat.todayIncBalGrewPer :
-                        -state.dashboard.memberStat.todayIncBalGrewPer }}%
-                    </div>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="room-stat-gi-div-mobile">
-                  <img class="w-12" src="@/assets/images/index/img4.png" />
-                  <div class="room-stat-gi-div-item-mobile">
-                    <div class="text-sm text-gray-700 font-medium">消耗积分</div>
-                    <div class="text-xl font-bold text-gray-900 mt-1">{{
-                      state.dashboard.memberStat.todayConsumeBal
-                    }}</div>
-                    <div class="flex items-center mt-2 text-xs text-gray-500">
-                      较昨日：
-                      <img v-if="state.dashboard.memberStat.todayConsumeBalGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img5.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img6.png" />
-                      {{ state.dashboard.memberStat.todayConsumeBalGrewPer >= 0 ?
-                        state.dashboard.memberStat.todayConsumeBalGrewPer
-                        : -state.dashboard.memberStat.todayConsumeBalGrewPer }}%
-                    </div>
-                  </div>
-                </div>
-              </n-gi>
-            </n-grid>
-          </n-card>
-        </n-gi>
-        <n-gi>
-          <!-- PC端订单统计卡片 -->
-          <n-card :bordered="false" class="hidden md:block" :header-style="{
-            padding: '25px 20px 18px',
-          }" :content-style="{
-            padding: '0 20px 23px',
-          }">
-            <template #header>
-              <div style="display: inline-block">
-                <n-tabs type="segment" animated pane-wrapper-style="display:none"
-                  :tab-style="{ width: '50px', borderRadius: '2px' }" @update:value="handleUpdateValue">
-                  <n-tab-pane name="all" tab="全部"></n-tab-pane>
-                  <n-tab-pane name="hotel" tab="APP"></n-tab-pane>
-                </n-tabs>
-              </div>
-            </template>
-            <n-grid :cols="5" x-gap="28" y-gap="15">
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">今日订单<span>(单)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.todayOrderNum
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.todayOrderNum
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.todayOrderNumGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.todayOrderNumGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.todayOrderNumGrewPer :
-                        -state.dashboard.orderStat.allStat.todayOrderNumGrewPer }}</span>%
-                    </template>
-
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.todayOrderNumGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.todayOrderNumGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.todayOrderNumGrewPer :
-                        -state.dashboard.orderStat.hotelStat.todayOrderNumGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">全量订单<span>(单)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalOrderNum
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalOrderNum
-                  }}</div>
-                  <div class="tab-div2-d3">同比：
-                    <!--                    <img style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />-->
-
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.totalOrderNumGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.totalOrderNumGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.totalOrderNumGrewPer :
-                        -state.dashboard.orderStat.allStat.totalOrderNumGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.totalOrderNumGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.totalOrderNumGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.totalOrderNumGrewPer :
-                        -state.dashboard.orderStat.hotelStat.totalOrderNumGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">今日退款<span>(单)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.todayRefundNum
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.todayRefundNum
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    同比：
-                    <!--                    <img style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />-->
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.todayRefundGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.todayRefundGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.todayRefundGrewPer :
-                        -state.dashboard.orderStat.allStat.todayRefundGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.todayRefundGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.todayRefundGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.todayRefundGrewPer :
-                        -state.dashboard.orderStat.hotelStat.todayRefundGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">全量退款<span>(单)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalRefundNum
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalRefundNum
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    同比：
-                    <!--                    <img style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />-->
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.totalRefundGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.totalRefundGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.totalRefundGrewPer :
-                        -state.dashboard.orderStat.allStat.totalRefundGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.totalRefundGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.totalRefundGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.totalRefundGrewPer :
-                        -state.dashboard.orderStat.hotelStat.totalRefundGrewPer }}</span>%
-                    </template>
-
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">全部物业<span>(幢)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalPropertyNum
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalPropertyNum
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    在线物业：
-                    <span v-if="state.orderStatType == 'all'">{{
-                      state.dashboard.orderStat.allStat.onlinePropertyNum
-                    }}</span>
-                    <span v-if="state.orderStatType == 'hotel'">{{
-                      state.dashboard.orderStat.hotelStat.onlinePropertyNum
-                    }}</span>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">今日订单总额<span>(日元)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.todayOrderMoney
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.todayOrderMoney
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    同比：
-
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.todayOrderMoneyGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.todayOrderMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.todayOrderMoneyGrewPer :
-                        -state.dashboard.orderStat.allStat.todayOrderMoneyGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.todayOrderMoneyGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.todayOrderMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.todayOrderMoneyGrewPer :
-                        -state.dashboard.orderStat.hotelStat.todayOrderMoneyGrewPer }}</span>%
-                    </template>
-
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">全量订单总额<span>(日元)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalOrderMoney
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalOrderMoney
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    同比：
-
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.totalOrderMoneyGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.totalOrderMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.totalOrderMoneyGrewPer :
-                        -state.dashboard.orderStat.allStat.totalOrderMoneyGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.totalOrderMoneyGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.totalOrderMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.totalOrderMoneyGrewPer :
-                        -state.dashboard.orderStat.hotelStat.totalOrderMoneyGrewPer }}</span>%
-                    </template>
-
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">今日退款总额<span>(日元)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.todayRefundMoney
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.todayRefundMoney
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.todayRefundMoneyGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.todayRefundMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.todayRefundMoneyGrewPer :
-                        -state.dashboard.orderStat.allStat.todayRefundMoneyGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.todayRefundMoneyGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.todayRefundMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.todayRefundMoneyGrewPer :
-                        -state.dashboard.orderStat.hotelStat.todayRefundMoneyGrewPer }}</span>%
-                    </template>
-
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">全量退款总额<span>(日元)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalRefundMoney
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalRefundMoney
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.totalRefundMoneyGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.totalRefundMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.totalRefundMoneyGrewPer :
-                        -state.dashboard.orderStat.allStat.totalRefundMoneyGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.totalRefundMoneyGrewPer >= 0"
-                        style="width: 16px; margin-right: 2px" src="@/assets/images/index/img7.png" />
-                      <img v-else style="width: 16px; margin-right: 2px" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.totalRefundMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.totalRefundMoneyGrewPer :
-                        -state.dashboard.orderStat.hotelStat.totalRefundMoneyGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2">
-                  <div class="tab-div2-d1">全部房型<span>(个)</span></div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalRoomTypeNum
-                  }}</div>
-                  <div class="tab-div2-d2" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalRoomTypeNum
-                  }}</div>
-                  <div class="tab-div2-d3">
-                    在线房型：
-                    <span v-if="state.orderStatType == 'all'">{{
-                      state.dashboard.orderStat.allStat.onlineRoomTypeNum
-                    }}</span>
-                    <span v-if="state.orderStatType == 'hotel'">{{
-                      state.dashboard.orderStat.hotelStat.onlineRoomTypeNum
-                    }}</span>
-                  </div>
-                </div>
-              </n-gi>
-            </n-grid>
-          </n-card>
-          <!-- 移动端订单统计卡片 -->
-          <n-card :bordered="false" class="block md:hidden mb-4" :header-style="{
-            padding: '16px',
-          }" :content-style="{
-            padding: '0 16px 16px',
-          }">
-            <template #header>
-              <div class="inline-block">
-                <n-tabs type="segment" animated pane-wrapper-style="display:none"
-                  :tab-style="{ width: '50px', borderRadius: '2px' }" @update:value="handleUpdateValue">
-                  <n-tab-pane name="all" tab="全部"></n-tab-pane>
-                  <n-tab-pane name="hotel" tab="APP"></n-tab-pane>
-                </n-tabs>
-              </div>
-            </template>
-            <n-grid :cols="2" x-gap="12" y-gap="12">
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">今日订单<span class="text-gray-500 font-normal">(单)</span>
-                  </div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.todayOrderNum
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.todayOrderNum
-                  }}</div>
-                  <div class="flex items-center mt-1 text-xs text-gray-500">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.todayOrderNumGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.todayOrderNumGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.todayOrderNumGrewPer :
-                        -state.dashboard.orderStat.allStat.todayOrderNumGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.todayOrderNumGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.todayOrderNumGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.todayOrderNumGrewPer :
-                        -state.dashboard.orderStat.hotelStat.todayOrderNumGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">全量订单<span class="text-gray-500 font-normal">(单)</span>
-                  </div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalOrderNum
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalOrderNum
-                  }}</div>
-                  <div class="flex items-center mt-1 text-xs text-gray-500">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.totalOrderNumGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.totalOrderNumGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.totalOrderNumGrewPer :
-                        -state.dashboard.orderStat.allStat.totalOrderNumGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.totalOrderNumGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.totalOrderNumGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.totalOrderNumGrewPer :
-                        -state.dashboard.orderStat.hotelStat.totalOrderNumGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">今日退款<span class="text-gray-500 font-normal">(单)</span>
-                  </div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.todayRefundNum
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.todayRefundNum
-                  }}</div>
-                  <div class="flex items-center mt-1 text-xs text-gray-500">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.todayRefundGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.todayRefundGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.todayRefundGrewPer :
-                        -state.dashboard.orderStat.allStat.todayRefundGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.todayRefundGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.todayRefundGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.todayRefundGrewPer :
-                        -state.dashboard.orderStat.hotelStat.todayRefundGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">全量退款<span class="text-gray-500 font-normal">(单)</span>
-                  </div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalRefundNum
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalRefundNum
-                  }}</div>
-                  <div class="flex items-center mt-1 text-xs text-gray-500">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.totalRefundGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.totalRefundGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.totalRefundGrewPer :
-                        -state.dashboard.orderStat.allStat.totalRefundGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.totalRefundGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.totalRefundGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.totalRefundGrewPer :
-                        -state.dashboard.orderStat.hotelStat.totalRefundGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">全部物业<span class="text-gray-500 font-normal">(幢)</span>
-                  </div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalPropertyNum
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalPropertyNum
-                  }}</div>
-                  <div class="text-xs text-gray-500 mt-1">
-                    在线物业：
-                    <span v-if="state.orderStatType == 'all'">{{
-                      state.dashboard.orderStat.allStat.onlinePropertyNum
-                    }}</span>
-                    <span v-if="state.orderStatType == 'hotel'">{{
-                      state.dashboard.orderStat.hotelStat.onlinePropertyNum
-                    }}</span>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">今日订单总额<span
-                      class="text-gray-500 font-normal">(日元)</span></div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.todayOrderMoney
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.todayOrderMoney
-                  }}</div>
-                  <div class="flex items-center mt-1 text-xs text-gray-500">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.todayOrderMoneyGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.todayOrderMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.todayOrderMoneyGrewPer :
-                        -state.dashboard.orderStat.allStat.todayOrderMoneyGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.todayOrderMoneyGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.todayOrderMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.todayOrderMoneyGrewPer :
-                        -state.dashboard.orderStat.hotelStat.todayOrderMoneyGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">全量订单总额<span
-                      class="text-gray-500 font-normal">(日元)</span></div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalOrderMoney
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalOrderMoney
-                  }}</div>
-                  <div class="flex items-center mt-1 text-xs text-gray-500">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.totalOrderMoneyGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.totalOrderMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.totalOrderMoneyGrewPer :
-                        -state.dashboard.orderStat.allStat.totalOrderMoneyGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.totalOrderMoneyGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.totalOrderMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.totalOrderMoneyGrewPer :
-                        -state.dashboard.orderStat.hotelStat.totalOrderMoneyGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">今日退款总额<span
-                      class="text-gray-500 font-normal">(日元)</span></div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.todayRefundMoney
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.todayRefundMoney
-                  }}</div>
-                  <div class="flex items-center mt-1 text-xs text-gray-500">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.todayRefundMoneyGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.todayRefundMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.todayRefundMoneyGrewPer :
-                        -state.dashboard.orderStat.allStat.todayRefundMoneyGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.todayRefundMoneyGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.todayRefundMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.todayRefundMoneyGrewPer :
-                        -state.dashboard.orderStat.hotelStat.todayRefundMoneyGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">全量退款总额<span
-                      class="text-gray-500 font-normal">(日元)</span></div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalRefundMoney
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalRefundMoney
-                  }}</div>
-                  <div class="flex items-center mt-1 text-xs text-gray-500">
-                    同比：
-                    <template v-if="state.orderStatType == 'all'">
-                      <img v-if="state.dashboard.orderStat.allStat.totalRefundMoneyGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.allStat.totalRefundMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.allStat.totalRefundMoneyGrewPer :
-                        -state.dashboard.orderStat.allStat.totalRefundMoneyGrewPer }}</span>%
-                    </template>
-                    <template v-if="state.orderStatType == 'hotel'">
-                      <img v-if="state.dashboard.orderStat.hotelStat.totalRefundMoneyGrewPer >= 0" class="w-4 mr-1"
-                        src="@/assets/images/index/img7.png" />
-                      <img v-else class="w-4 mr-1" src="@/assets/images/index/img8.png" />
-                      <span>{{ state.dashboard.orderStat.hotelStat.totalRefundMoneyGrewPer >= 0 ?
-                        state.dashboard.orderStat.hotelStat.totalRefundMoneyGrewPer :
-                        -state.dashboard.orderStat.hotelStat.totalRefundMoneyGrewPer }}</span>%
-                    </template>
-                  </div>
-                </div>
-              </n-gi>
-              <n-gi>
-                <div class="tab-div2-mobile">
-                  <div class="text-sm font-medium text-gray-700">全部房型<span class="text-gray-500 font-normal">(个)</span>
-                  </div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'all'">{{
-                    state.dashboard.orderStat.allStat.totalRoomTypeNum
-                  }}</div>
-                  <div class="text-lg font-bold text-gray-900 mt-1" v-if="state.orderStatType == 'hotel'">{{
-                    state.dashboard.orderStat.hotelStat.totalRoomTypeNum
-                  }}</div>
-                  <div class="text-xs text-gray-500 mt-1">
-                    在线房型：
-                    <span v-if="state.orderStatType == 'all'">{{
-                      state.dashboard.orderStat.allStat.onlineRoomTypeNum
-                    }}</span>
-                    <span v-if="state.orderStatType == 'hotel'">{{
-                      state.dashboard.orderStat.hotelStat.onlineRoomTypeNum
-                    }}</span>
-                  </div>
-                </div>
-              </n-gi>
-            </n-grid>
-          </n-card>
-        </n-gi>
-        <n-gi>
-          <!-- PC端图表区域 -->
-          <div class="hidden md:flex" style="gap: 8px 15px">
-            <div style="flex: 1; height: 375px">
-              <n-card :bordered="false" style="height: 375px" :header-style="{
-                padding: '25px 20px 20px',
-              }" :content-style="cardContStyle">
-                <template #header>
-                  <span class="room-stat-title1">七日订单趋势</span>
-                </template>
-                <div ref="chartRef" style="width: 100%; height: 80%"></div>
-              </n-card>
-            </div>
-            <div style="width: 20.5%; height: 375px">
-              <n-card :bordered="false" style="height: 375px" :header-style="{
-                padding: '25px 20px 20px',
-              }" :content-style="cardContStyle">
-                <template #header>
-                  <span class="room-stat-title1">物业预订量排行</span>
-                </template>
-                <div class="data-table">
-                  <div class="data-table-thead">
-                    <div class="data-table-td-d1">排名</div>
-                    <div class="data-table-td-d2">物业名称</div>
-                    <div class="data-table-td-d3">占比</div>
-                  </div>
-
-                  <div v-for="(item, index) in state.dashboard.propertyList" :key="index">
-                    <div class="data-table-tbody">
-                      <div class="data-table-td-d1">{{ index + 1 }}</div>
-                      <div class="data-table-td-d2">
-                        <n-tooltip trigger="hover">
-                          <template #trigger>
-                            {{ (item as any)?.propertyDetail?.name }}
-                          </template>
-                          {{ (item as any)?.propertyDetail?.name }}
-                        </n-tooltip>
-                      </div>
-                      <div class="data-table-td-d3">{{ (item as any)?.rate }}%</div>
-                    </div>
-                  </div>
-                </div>
-              </n-card>
-            </div>
-            <div style="width: 20.5%; height: 375px">
-              <n-card :bordered="false" style="height: 375px" :header-style="{
-                padding: '25px 20px 20px',
-              }" :content-style="cardContStyle">
-                <template #header>
-                  <span class="room-stat-title1">OTA渠道排名排行</span>
-                </template>
-                <div class="data-table">
-                  <div class="data-table-thead">
-                    <div class="data-table-td-d1">排名</div>
-                    <div class="data-table-td-d2">渠道名称</div>
-                    <div class="data-table-td-d3">占比</div>
-                  </div>
-                  <div v-for="(item, index) in state.dashboard.oTAChannelList" :key="index">
-                    <div class="data-table-tbody">
-                      <div class="data-table-td-d1">{{ index + 1 }}</div>
-                      <div class="data-table-td-d2">
-                        <n-tooltip trigger="hover">
-                          <template #trigger>
-                            {{ (item as any)?.name }}
-                          </template>
-                          {{ (item as any)?.name }}
-                        </n-tooltip>
-                      </div>
-                      <div class="data-table-td-d3">{{ (item as any)?.rate }}%</div>
-                    </div>
-                  </div>
-                </div>
-              </n-card>
-            </div>
-            <div style="width: 20.5%; height: 375px">
-              <n-card :bordered="false" style="height: 375px" :header-style="{
-                padding: '25px 20px 20px',
-              }" :content-style="cardContStyle">
-                <template #header>
-                  <span class="room-stat-title1">国家预订量排行</span>
-                </template>
-                <div class="data-table">
-                  <div class="data-table-thead">
-                    <div class="data-table-td-d1">排名</div>
-                    <div class="data-table-td-d2">国家名称</div>
-                    <div class="data-table-td-d3">占比</div>
-                  </div>
-                  <div class="data-table-tbody" v-for="(item, index) in state.dashboard.nationalityList" :key="index">
-                    <div class="data-table-td-d1">{{ index + 1 }}</div>
-                    <div class="data-table-td-d2">
-                      <n-tooltip trigger="hover">
-                        <template #trigger>
-                          {{ (item as any)?.name }}
-                        </template>
-                        {{ (item as any)?.name }}
-                      </n-tooltip>
-                    </div>
-                    <div class="data-table-td-d3">{{ (item as any)?.rate }}%</div>
-                  </div>
-                </div>
-              </n-card>
-            </div>
+      <div class="documents-frame hidden md:block">
+        <header class="documents-header">
+          <div class="documents-title">
+            <button class="icon-button" type="button" aria-label="Sidebar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="5" width="16" height="14" rx="2" />
+                <path d="M9 5v14" />
+              </svg>
+            </button>
+            <span class="header-separator"></span>
+            <strong>主控台</strong>
           </div>
-          <!-- 移动端图表区域 -->
-          <div class="flex flex-col gap-4 md:hidden mb-4">
-            <!-- 七日订单趋势 -->
-            <n-card :bordered="false" :header-style="{
-              padding: '16px',
-            }" :content-style="{
-              padding: '0 16px 16px',
-            }">
-              <template #header>
-                <span class="text-base font-medium text-gray-900">七日订单趋势</span>
-              </template>
-              <div ref="chartRefMobile" style="width: 100%; height: 250px"></div>
-            </n-card>
-            <!-- 物业预订量排行 -->
-            <n-card :bordered="false" :header-style="{
-              padding: '16px',
-            }" :content-style="{
-              padding: '0 16px 16px',
-            }">
-              <template #header>
-                <span class="text-base font-medium text-gray-900">物业预订量排行</span>
-              </template>
-              <div class="data-table-mobile">
-                <div v-for="(item, index) in state.dashboard.propertyList" :key="index" class="data-table-tbody-mobile">
-                  <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                    <div class="flex items-center flex-1 min-w-0">
-                      <div class="w-8 text-center text-sm font-medium text-gray-700">{{ index + 1 }}</div>
-                      <div class="flex-1 min-w-0 text-sm text-gray-900 truncate ml-2">{{ (item as
-                        any)?.propertyDetail?.name }}
-                      </div>
-                    </div>
-                    <div class="text-sm font-medium text-gray-700 ml-2">{{ (item as any)?.rate }}%</div>
-                  </div>
-                </div>
+          <strong>{{ userStore.realName }}</strong>
+        </header>
+
+        <main class="documents-content">
+          <section class="section-card-grid">
+            <article v-for="card in featuredCards" :key="card.title" class="featured-card">
+              <div class="featured-card-head">
+                <span>{{ card.title }}</span>
+                <span class="trend-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path :d="card.up ? 'M7 17 17 7M9 7h8v8' : 'M7 7l10 10M17 9v8H9'" />
+                  </svg>
+                  {{ card.badge }}
+                </span>
               </div>
-            </n-card>
-            <!-- OTA渠道排名排行 -->
-            <n-card :bordered="false" :header-style="{
-              padding: '16px',
-            }" :content-style="{
-              padding: '0 16px 16px',
-            }">
-              <template #header>
-                <span class="text-base font-medium text-gray-900">OTA渠道排名排行</span>
-              </template>
-              <div class="data-table-mobile">
-                <div v-for="(item, index) in state.dashboard.oTAChannelList" :key="index"
-                  class="data-table-tbody-mobile">
-                  <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                    <div class="flex items-center flex-1 min-w-0">
-                      <div class="w-8 text-center text-sm font-medium text-gray-700">{{ index + 1 }}</div>
-                      <div class="flex-1 min-w-0 text-sm text-gray-900 truncate ml-2">{{ (item as any)?.name }}</div>
-                    </div>
-                    <div class="text-sm font-medium text-gray-700 ml-2">{{ (item as any)?.rate }}%</div>
-                  </div>
-                </div>
+              <div class="featured-value">{{ card.value }}</div>
+              <div class="featured-caption">
+                {{ card.caption }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path :d="card.up ? 'M7 17 17 7M9 7h8v8' : 'M7 7l10 10M17 9v8H9'" />
+                </svg>
               </div>
-            </n-card>
-            <!-- 国家预订量排行 -->
-            <n-card :bordered="false" :header-style="{
-              padding: '16px',
-            }" :content-style="{
-              padding: '0 16px 16px',
-            }">
-              <template #header>
-                <span class="text-base font-medium text-gray-900">国家预订量排行</span>
-              </template>
-              <div class="data-table-mobile">
-                <div v-for="(item, index) in state.dashboard.nationalityList" :key="index"
-                  class="data-table-tbody-mobile">
-                  <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                    <div class="flex items-center flex-1 min-w-0">
-                      <div class="w-8 text-center text-sm font-medium text-gray-700">{{ index + 1 }}</div>
-                      <div class="flex-1 min-w-0 text-sm text-gray-900 truncate ml-2">{{ (item as any)?.name }}</div>
-                    </div>
-                    <div class="text-sm font-medium text-gray-700 ml-2">{{ (item as any)?.rate }}%</div>
-                  </div>
-                </div>
+              <p>{{ card.description }}</p>
+            </article>
+          </section>
+
+          <section class="chart-card">
+            <div class="chart-card-head">
+              <div>
+                <h2>七日订单趋势</h2>
+                <p>{{ state.orderStatType === 'all' ? '全部渠道' : 'APP渠道' }}订单量变化</p>
               </div>
-            </n-card>
-          </div>
-        </n-gi>
-        <n-gi>
-          <!-- PC端近三十日订单趋势 -->
-          <n-card :bordered="false" class="hidden md:block" :header-style="{
-            padding: '25px 20px 20px',
-          }" :content-style="cardContStyle">
-            <template #header>
-              <span class="room-stat-title1">近三十日订单趋势</span>
-            </template>
-            <div ref="chartRef30" style="width: 100%; height: 300px"></div>
-          </n-card>
-          <!-- 移动端近三十日订单趋势 -->
-          <n-card :bordered="false" class="block md:hidden" :header-style="{
-            padding: '16px',
-          }" :content-style="{
-            padding: '0 16px 16px',
-          }">
-            <template #header>
-              <span class="text-base font-medium text-gray-900">近三十日订单趋势</span>
-            </template>
-            <div ref="chartRef30Mobile" style="width: 100%; height: 250px"></div>
-          </n-card>
-        </n-gi>
-      </n-grid>
+              <div class="range-tabs">
+                <button type="button" :class="{ active: state.orderStatType === 'all' }" @click="handleUpdateValue('all')">全部</button>
+                <button type="button" :class="{ active: state.orderStatType === 'hotel' }" @click="handleUpdateValue('hotel')">APP</button>
+              </div>
+            </div>
+            <div ref="chartRef" class="featured-chart"></div>
+          </section>
+
+          <section class="table-toolbar">
+            <div class="outline-tabs">
+              <button type="button" :class="{ active: activePanel === 'orders' }" @click="activePanel = 'orders'">订单统计</button>
+              <button type="button" :class="{ active: activePanel === 'property' }" @click="activePanel = 'property'">物业排行 <span>{{ state.dashboard.propertyList.length }}</span></button>
+              <button type="button" :class="{ active: activePanel === 'ota' }" @click="activePanel = 'ota'">OTA排行 <span>{{ state.dashboard.oTAChannelList.length }}</span></button>
+              <button type="button" :class="{ active: activePanel === 'country' }" @click="activePanel = 'country'">国家排行 <span>{{ state.dashboard.nationalityList.length }}</span></button>
+            </div>
+            <div class="toolbar-actions">
+              <button type="button" class="toolbar-button" @click="Load">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="4" y="5" width="16" height="14" rx="2" />
+                  <path d="M10 5v14" />
+                </svg>
+                {{ state.orderStatType === 'all' ? '全部' : 'APP' }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <button type="button" class="toolbar-button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                刷新数据
+              </button>
+            </div>
+          </section>
+
+          <section v-if="activePanel === 'orders'" class="data-shell">
+            <table class="documents-table">
+              <thead>
+                <tr>
+                  <th class="drag-cell"></th>
+                  <th class="check-cell"><span class="fake-check"></span></th>
+                  <th>指标</th>
+                  <th>分类</th>
+                  <th>状态</th>
+                  <th>数值</th>
+                  <th>同比</th>
+                  <th>说明</th>
+                  <th class="menu-cell"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in documentRows" :key="row.name">
+                  <td class="drag-cell">⋮⋮</td>
+                  <td class="check-cell"><span class="fake-check"></span></td>
+                  <td class="row-title">{{ row.name }}</td>
+                  <td><span class="soft-pill">{{ row.category }}</span></td>
+                  <td><span :class="['soft-pill', row.statusClass]">{{ row.status }}</span></td>
+                  <td>{{ row.value }}</td>
+                  <td>{{ row.trend }}</td>
+                  <td>{{ row.remark }}</td>
+                  <td class="menu-cell">⋮</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section v-else class="data-shell">
+            <table class="documents-table">
+              <thead>
+                <tr>
+                  <th class="drag-cell"></th>
+                  <th class="check-cell"><span class="fake-check"></span></th>
+                  <th>排名</th>
+                  <th>{{ rankingTitle }}</th>
+                  <th>占比</th>
+                  <th>说明</th>
+                  <th class="menu-cell"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in rankingRows" :key="`${activePanel}-${row.rank}`">
+                  <td class="drag-cell">⋮⋮</td>
+                  <td class="check-cell"><span class="fake-check"></span></td>
+                  <td class="row-title">{{ row.rank }}</td>
+                  <td><span class="soft-pill">{{ row.name }}</span></td>
+                  <td>{{ row.rate }}%</td>
+                  <td>{{ row.remark }}</td>
+                  <td class="menu-cell">⋮</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </main>
+      </div>
+
     </n-spin>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, Ref, ref } from 'vue';
+import { computed, nextTick, onMounted, reactive, Ref, ref } from 'vue';
 import { useECharts } from '@/hooks/web/useECharts';
 import { dashboardAll } from '@/api/comm';
 import { hexToRgba } from '@/utils/artDesignUtils';
@@ -1032,9 +154,7 @@ import * as echarts from 'echarts';
 
 const show = ref(false);
 const userStore = useUserStore();
-const cardContStyle = ref({
-  padding: '0 20px 20px',
-});
+const activePanel = ref<'orders' | 'property' | 'ota' | 'country'>('orders');
 const chartRef = ref<HTMLDivElement | null>(null);
 const chartRef30 = ref<HTMLDivElement | null>(null);
 const chartRefMobile = ref<HTMLDivElement | null>(null);
@@ -1111,17 +231,148 @@ const state = reactive({
   },
 });
 
+const activeOrderStat = computed(() => {
+  return state.orderStatType === 'hotel'
+    ? state.dashboard.orderStat.hotelStat
+    : state.dashboard.orderStat.allStat;
+});
+
+const formatTrend = (value: number) => {
+  const num = Number(value || 0);
+  return `${num >= 0 ? '+' : '-'}${Math.abs(num)}%`;
+};
+
+const featuredCards = computed(() => [
+  {
+    title: '新增会员',
+    value: Number(state.dashboard.memberStat.todayRegMemberNum || 0).toLocaleString(),
+    badge: formatTrend(state.dashboard.memberStat.todayMemberNumGrewPer),
+    caption: '今日新增会员',
+    description: `累计会员 ${Number(state.dashboard.memberStat.totalMemberNum || 0).toLocaleString()}`,
+    up: Number(state.dashboard.memberStat.todayMemberNumGrewPer || 0) >= 0,
+  },
+  {
+    title: '累计订单',
+    value: Number(activeOrderStat.value.totalOrderNum || 0).toLocaleString(),
+    badge: formatTrend(activeOrderStat.value.totalOrderNumGrewPer),
+    caption: '全部订单累计',
+    description: `今日订单 ${Number(activeOrderStat.value.todayOrderNum || 0).toLocaleString()} 单`,
+    up: Number(activeOrderStat.value.totalOrderNumGrewPer || 0) >= 0,
+  },
+  {
+    title: '订单总额',
+    value: `¥${Number(activeOrderStat.value.totalOrderMoney || 0).toLocaleString()}`,
+    badge: formatTrend(activeOrderStat.value.totalOrderMoneyGrewPer),
+    caption: '累计订单总额',
+    description: `今日订单总额 ¥${Number(activeOrderStat.value.todayOrderMoney || 0).toLocaleString()}`,
+    up: Number(activeOrderStat.value.totalOrderMoneyGrewPer || 0) >= 0,
+  },
+  {
+    title: '全部物业',
+    value: Number(activeOrderStat.value.totalPropertyNum || 0).toLocaleString(),
+    badge: `${Number(activeOrderStat.value.onlinePropertyNum || 0).toLocaleString()} 在线`,
+    caption: '物业与房型覆盖',
+    description: `全部房型 ${Number(activeOrderStat.value.totalRoomTypeNum || 0).toLocaleString()}，在线房型 ${Number(activeOrderStat.value.onlineRoomTypeNum || 0).toLocaleString()}`,
+    up: true,
+  },
+]);
+
+const documentRows = computed(() => [
+  {
+    name: '今日订单',
+    category: '订单',
+    status: '实时',
+    statusClass: 'is-process',
+    value: `${Number(activeOrderStat.value.todayOrderNum || 0).toLocaleString()} 单`,
+    trend: formatTrend(activeOrderStat.value.todayOrderNumGrewPer),
+    remark: '今日新增订单数量',
+  },
+  {
+    name: '累计订单',
+    category: '订单',
+    status: '完成',
+    statusClass: 'is-done',
+    value: `${Number(activeOrderStat.value.totalOrderNum || 0).toLocaleString()} 单`,
+    trend: formatTrend(activeOrderStat.value.totalOrderNumGrewPer),
+    remark: '平台累计订单数量',
+  },
+  {
+    name: '今日退款',
+    category: '退款',
+    status: '实时',
+    statusClass: 'is-process',
+    value: `${Number(activeOrderStat.value.todayRefundNum || 0).toLocaleString()} 单`,
+    trend: formatTrend(activeOrderStat.value.todayRefundGrewPer),
+    remark: '今日退款订单数量',
+  },
+  {
+    name: '累计退款总额',
+    category: '退款',
+    status: '完成',
+    statusClass: 'is-done',
+    value: `¥${Number(activeOrderStat.value.totalRefundMoney || 0).toLocaleString()}`,
+    trend: formatTrend(activeOrderStat.value.totalRefundMoneyGrewPer),
+    remark: '平台累计退款金额',
+  },
+  {
+    name: '新增积分',
+    category: '会员',
+    status: '实时',
+    statusClass: 'is-process',
+    value: Number(state.dashboard.memberStat.todayIncBal || 0).toLocaleString(),
+    trend: formatTrend(state.dashboard.memberStat.todayIncBalGrewPer),
+    remark: '会员今日新增积分',
+  },
+  {
+    name: '消耗积分',
+    category: '会员',
+    status: '实时',
+    statusClass: 'is-process',
+    value: Number(state.dashboard.memberStat.todayConsumeBal || 0).toLocaleString(),
+    trend: formatTrend(state.dashboard.memberStat.todayConsumeBalGrewPer),
+    remark: '会员今日消耗积分',
+  },
+]);
+
+const rankingTitle = computed(() => {
+  if (activePanel.value === 'property') return '物业名称';
+  if (activePanel.value === 'ota') return '渠道名称';
+  return '国家名称';
+});
+
+const rankingRows = computed(() => {
+  if (activePanel.value === 'property') {
+    return state.dashboard.propertyList.map((item: any, index) => ({
+      rank: index + 1,
+      name: item?.propertyDetail?.name || '-',
+      rate: item?.rate || 0,
+      remark: '物业预订量占比',
+    }));
+  }
+  if (activePanel.value === 'ota') {
+    return state.dashboard.oTAChannelList.map((item: any, index) => ({
+      rank: index + 1,
+      name: item?.name || '-',
+      rate: item?.rate || 0,
+      remark: 'OTA渠道预订占比',
+    }));
+  }
+  return state.dashboard.nationalityList.map((item: any, index) => ({
+    rank: index + 1,
+    name: item?.name || '-',
+    rate: item?.rate || 0,
+    remark: '国家预订量占比',
+  }));
+});
+
 const Load = async () => {
   show.value = true;
   const res = await dashboardAll({});
   state.dashboard = res;
-  console.log(state.dashboard);
-  let daytimeArr = [];
-  let percentArr = [];
-  for (let i = 0; i < 7; i++) {
-    daytimeArr.push(state.dashboard.orderNumberList[i]['orderDate']);
-    percentArr.push(state.dashboard.orderNumberList[i]['orderNumber']);
-  }
+  await nextTick();
+  const sevenDayOrders = (state.dashboard.orderNumberList || []).slice(0, 7) as any[];
+  let daytimeArr = sevenDayOrders.map((item) => item?.orderDate || '');
+  let percentArr = sevenDayOrders.map((item) => Number(item?.orderNumber || 0));
   setOptions({
     grid: {
       top: '9%',
@@ -1184,18 +435,18 @@ const Load = async () => {
         smooth: true,
         symbol: 'none',
         lineStyle: {
-          width: 3,
-          color: '#5D87FF',
+          width: 2,
+          color: '#111111',
         },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: hexToRgba('#5D87FF', 0.2).rgba,
+              color: hexToRgba('#111111', 0.38).rgba,
             },
             {
               offset: 1,
-              color: hexToRgba('#5D87FF', 0.01).rgba,
+              color: hexToRgba('#111111', 0.04).rgba,
             },
           ]),
         },
@@ -1470,6 +721,422 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
+.shadcn-dashboard {
+  min-height: 100%;
+  background: #f7f7f8;
+  color: #0a0a0a;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.documents-frame {
+  margin: 8px 12px 24px;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+.documents-header {
+  display: flex;
+  height: 54px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 0 24px;
+  font-size: 16px;
+}
+
+.documents-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.icon-button {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: #111;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.header-separator {
+  width: 1px;
+  height: 24px;
+  background: #e5e5e5;
+}
+
+.documents-content {
+  padding: 24px;
+}
+
+.section-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.featured-card,
+.chart-card,
+.data-shell {
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.04);
+}
+
+.featured-card {
+  min-height: 170px;
+  padding: 24px;
+  background: linear-gradient(180deg, #fff 0%, #f7f7f7 100%);
+}
+
+.featured-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #737373;
+  font-size: 14px;
+}
+
+.trend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #e5e5e5;
+  border-radius: 999px;
+  padding: 3px 9px;
+  color: #111;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+.featured-value {
+  margin-top: 14px;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.featured-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.featured-card p {
+  margin-top: 8px;
+  color: #737373;
+  font-size: 14px;
+}
+
+.chart-card {
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.chart-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  h2 {
+    margin: 0;
+    color: #111;
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  p {
+    margin-top: 6px;
+    color: #737373;
+    font-size: 14px;
+  }
+}
+
+.range-tabs {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+
+  button {
+    height: 36px;
+    border-left: 1px solid #e5e5e5;
+    padding: 0 16px;
+    color: #111;
+    font-size: 14px;
+    font-weight: 700;
+
+    &:first-child {
+      border-left: 0;
+    }
+
+    &.active {
+      background: #f4f4f5;
+    }
+  }
+}
+
+.featured-chart {
+  width: 100%;
+  height: 320px;
+  margin-top: 20px;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.outline-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 12px;
+  background: #f4f4f5;
+  padding: 4px;
+
+  button {
+    display: inline-flex;
+    height: 34px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 9px;
+    padding: 0 12px;
+    color: #737373;
+    font-size: 14px;
+    font-weight: 700;
+
+    &.active {
+      background: #fff;
+      color: #111;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+    }
+
+    span {
+      display: inline-flex;
+      min-width: 24px;
+      height: 22px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #d4d4d8;
+      color: #111;
+      font-size: 12px;
+    }
+  }
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar-button {
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  background: #fff;
+  padding: 0 14px;
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.data-shell {
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.documents-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th,
+  td {
+    height: 54px;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0 14px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th {
+    background: #f7f7f7;
+    color: #111;
+    font-weight: 800;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+}
+
+.drag-cell {
+  width: 44px;
+  color: #737373;
+  text-align: center !important;
+}
+
+.check-cell {
+  width: 44px;
+}
+
+.menu-cell {
+  width: 44px;
+  color: #737373;
+  text-align: center !important;
+}
+
+.fake-check {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 0.03);
+}
+
+.row-title {
+  color: #111;
+  font-weight: 800;
+}
+
+.soft-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: #737373;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.soft-pill.is-done {
+  color: #16a34a;
+}
+
+.soft-pill.is-process {
+  color: #737373;
+}
+
+.soft-pill.is-muted {
+  color: #a1a1aa;
+}
+
+.ranking-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.ranking-card {
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.04);
+
+  h3 {
+    margin: 0;
+    padding: 22px 28px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #111;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+  }
+
+  th,
+  td {
+    height: 48px;
+    border-bottom: 1px solid #eeeeee;
+    padding: 0 18px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th {
+    background: #f7f7f7;
+    color: #111;
+    font-weight: 800;
+  }
+
+  td {
+    color: #1d2129;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 1400px) {
+  .section-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ranking-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .title-name {
   margin: 15px 0 19px 20px;
   font-weight: 500;

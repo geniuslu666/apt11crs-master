@@ -6,7 +6,7 @@
     @update:open="closeForm"
   >
     <UiSpinner :show="loading">
-      <div class="space-y-4">
+      <div class="member-admin-page member-edit-form space-y-3">
         <div class="flex flex-col gap-1">
           <label class="text-sm font-medium text-foreground">当前积分</label>
           <p class="text-sm text-foreground py-1">{{ formValue.balance }}</p>
@@ -15,7 +15,7 @@
           <label class="text-sm font-medium text-foreground">调整值</label>
           <UiNumberInput v-model="formValue.value" placeholder="请输入调整值" />
           <span v-if="errors.value" class="text-xs text-destructive">{{ errors.value }}</span>
-          <span class="text-xs text-red-500">调整后：{{ Number(formValue.value) + Number(formValue.balance) }} 积分</span>
+          <span class="member-help-danger">调整后：{{ Number(formValue.value) + Number(formValue.balance) }} 积分</span>
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-sm font-medium text-foreground">操作人</label>

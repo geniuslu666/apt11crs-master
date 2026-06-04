@@ -151,7 +151,7 @@
     },
     setup(props) {
       const { getDarkTheme, getAppTheme } = useDesignSetting();
-      const { getNavMode, getHeaderSetting, getMenuSetting, getMultiTabsSetting, getIsMobile } =
+      const { getNavMode, getHeaderSetting, getMultiTabsSetting, getIsMobile } =
         useProjectSetting();
       const settingStore = useProjectSettingStore();
 
@@ -202,14 +202,12 @@
       const getChangeStyle = computed(() => {
         const { collapsed } = props;
         const navMode = unref(getNavMode);
-        const { minMenuWidth, menuWidth }: any = unref(getMenuSetting);
         const { fixed }: any = unref(getMultiTabsSetting);
+        const smartCamMenuWidth = collapsed ? '64px' : '256px';
         let lenNum =
           navMode === 'horizontal' || !isMixMenuNoneSub.value
             ? '0px'
-            : collapsed
-            ? `${minMenuWidth}px`
-            : `${menuWidth}px`;
+            : smartCamMenuWidth;
 
         if (getIsMobile.value) {
           return {

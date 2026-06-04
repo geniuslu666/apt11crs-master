@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="member-admin-page">
     <n-drawer v-model:show="showModal" :width="dialogWidth">
       <n-drawer-content closable :header-style="{
                     padding: '20px',
@@ -139,5 +139,4 @@ defineExpose({
   }
 }
 </style>
-
 

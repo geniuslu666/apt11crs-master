@@ -6,7 +6,7 @@
     @update:open="closeForm"
   >
     <UiSpinner :show="loading">
-      <div class="space-y-4">
+      <div class="member-admin-page member-edit-form space-y-3">
         <div class="flex flex-col gap-1">
           <label class="text-sm font-medium text-foreground">当前成长值</label>
           <p class="text-sm text-foreground py-1">{{ formValue.exp }}</p>

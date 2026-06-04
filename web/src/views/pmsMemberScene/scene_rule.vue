@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="member-admin-page">
     <n-spin :show="loading" description="请稍候...">
       <n-card
         :bordered="false"
@@ -243,5 +243,4 @@ function load() {
 </script>
 
 <style lang="less"></style>
-
 

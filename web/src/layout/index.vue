@@ -4,17 +4,17 @@
       !isMobile && isMixMenuNoneSub && (navMode === 'vertical' || navMode === 'horizontal-mix')
     " :position="fixedMenu"
       :collapsed="collapsed" collapse-mode="width" :collapsed-width="64" :width="leftMenuWidth"
-      :native-scrollbar="false" :inverted="inverted" class="layout-sider">
-      <div class="sidebar-inner">
+      :native-scrollbar="false" :inverted="false" class="layout-sider">
+      <div class="sidebar-inner" :class="{ 'sidebar-inner-collapsed': collapsed }">
         <Logo :collapsed="collapsed" />
         <div class="sidebar-menu-wrap">
           <AsideMenu v-model:collapsed="collapsed" v-model:location="getMenuLocation" />
         </div>
-        <!-- Collapse toggle button -->
-        <div class="sidebar-collapse-btn" @click="collapsed = !collapsed" :title="collapsed ? '展开菜单' : '折叠菜单'">
-          <svg v-if="collapsed" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-          <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          <span v-if="!collapsed" class="collapse-label">折叠菜单</span>
+        <div class="sidebar-footer">
+          <button class="sidebar-collapse-btn" type="button" @click="collapsed = !collapsed" :title="collapsed ? '展开菜单' : '折叠菜单'">
+            <svg v-if="collapsed" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
         </div>
       </div>
     </n-layout-sider>
@@ -127,8 +127,7 @@ const getHeaderInverted = computed(() => {
 });
 
 const leftMenuWidth = computed(() => {
-  const { minMenuWidth, menuWidth } = unref(getMenuSetting);
-  return collapsed.value ? minMenuWidth : menuWidth;
+  return collapsed.value ? 64 : 256;
 });
 
 // const getChangeStyle = computed(() => {
@@ -185,11 +184,11 @@ onMounted(() => {
 <style lang="less">
 // Mobile sidebar drawer
 .layout-side-drawer {
-  background-color: #0a2540 !important;
+  background-color: #ffffff !important;
 
   :deep(.n-drawer-body-content-wrapper) {
     padding: 0;
-    background-color: #0a2540;
+    background-color: #ffffff;
   }
 }
 </style>
@@ -200,22 +199,28 @@ onMounted(() => {
   flex: auto;
 
   &-default-background {
-    background: #f6f9fc;
+    background: #f7fbff;
   }
 
   .layout-sider {
     min-height: 100vh;
     box-shadow: none;
-    border-right: none;
+    border-right: 1px solid hsl(214 32% 91%);
     position: relative;
     z-index: 13;
     transition: width 0.2s ease;
+    background: hsl(0 0% 100%) !important;
+    padding: 0;
+
+    :deep(.n-layout-sider-scroll-container) {
+      background: transparent;
+    }
   }
 
   .layout-content {
     flex: auto;
     min-height: 100vh;
-    background: #f6f9fc;
+    background: #f7fbff;
   }
 
   .n-layout-header.n-layout-header--absolute-positioned {
@@ -233,52 +238,61 @@ onMounted(() => {
   flex-direction: column;
   height: 100%;
   min-height: 100vh;
-  background: #0a2540;
+  background: hsl(0 0% 100%);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+  transition: background 0.2s ease;
+}
+
+.sidebar-inner-collapsed {
+  border-radius: 0;
 }
 
 .sidebar-menu-wrap {
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
-  padding: 4px 0;
+  padding: 12px 8px;
 
   &::-webkit-scrollbar {
     width: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.1);
+    background: rgb(148 163 184 / 0.35);
     border-radius: 2px;
   }
 }
 
+.sidebar-footer {
+  flex-shrink: 0;
+  border-top: 1px solid hsl(214 32% 91%);
+  padding: 10px 12px;
+}
+
 .sidebar-collapse-btn {
   display: flex;
+  width: 100%;
+  height: 30px;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  margin: 4px 8px 8px;
+  justify-content: center;
+  margin-top: 0;
+  border: 0;
   border-radius: 6px;
+  background: transparent;
   cursor: pointer;
-  color: #697e99;
-  font-size: 13px;
-  transition: background 0.15s, color 0.15s;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding-top: 14px;
+  color: hsl(215 16% 47%);
+  transition: background 0.15s ease, color 0.15s ease;
 
   svg {
     flex-shrink: 0;
     transition: transform 0.2s ease;
   }
 
-  .collapse-label {
-    font-size: 13px;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
   &:hover {
-    background: rgba(255,255,255,0.06);
-    color: #c8d2e0;
+    background: hsl(210 40% 96%);
+    color: hsl(222 47% 11%);
   }
 }
 

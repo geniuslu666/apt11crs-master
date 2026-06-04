@@ -156,7 +156,7 @@
         </n-dropdown>
       </div>
       <!--设置-->
-      <!-- <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">
+      <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">
         <n-tooltip placement="bottom-end">
           <template #trigger>
             <n-icon size="18" style="font-weight: bold">
@@ -165,7 +165,7 @@
           </template>
           <span>项目配置</span>
         </n-tooltip>
-      </div> -->
+      </div>
     </div>
 
     <!-- 移动端：Header -->
@@ -248,6 +248,15 @@
         </div>
 
         <!-- 个人中心 -->
+        <div
+          class="mobile-action-btn w-10 h-10 flex items-center justify-center rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">
+          <button class="w-10 h-10 flex items-center justify-center" @click="openSetting" aria-label="项目配置">
+            <n-icon size="20">
+              <SettingOutlined />
+            </n-icon>
+          </button>
+        </div>
+
         <div
           class="mobile-action-btn w-10 h-10 flex items-center justify-center rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">
           <n-dropdown trigger="click" @select="avatarSelect" :options="avatarOptions" show-arrow>

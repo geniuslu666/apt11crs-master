@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 space-y-3">
+  <div class="member-admin-page member-page p-4 space-y-3">
 
     <!-- Search card -->
     <div class="bg-white rounded-lg border border-border">
@@ -160,7 +160,7 @@
                     class="w-8 h-8 rounded-full flex-shrink-0 object-cover bg-muted"
                   />
                   <div class="min-w-0">
-                    <div class="text-stripe-600 font-medium truncate">{{ row.memberNo }}</div>
+                    <div class="member-link font-medium truncate">{{ row.memberNo }}</div>
                     <div class="text-[12px] text-muted-foreground truncate">{{ (row.lastName || '') + (row.firstName || '') || '—' }}</div>
                   </div>
                 </div>
@@ -203,10 +203,10 @@
               <!-- 状态 -->
               <td class="px-3 py-2">
                 <span :class="[
-                  'inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-medium',
+                  'member-status inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-medium',
                   row.status === 1
-                    ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20'
-                    : 'bg-red-50 text-red-700 ring-1 ring-red-600/20'
+                    ? 'member-status-ok'
+                    : 'member-status-danger'
                 ]">
                   {{ getOptionLabel(options.sys_normal_disable, row.status) || '—' }}
                 </span>
@@ -233,25 +233,25 @@
                   <button
                     v-if="hasPermission(['/pmsMember/view'])"
                     type="button"
-                    class="text-[13px] text-stripe-600 hover:text-stripe-800 transition-colors whitespace-nowrap"
+                    class="member-action member-action-primary text-[13px] transition-colors whitespace-nowrap"
                     @click="handleView(row)"
                   >详情</button>
                   <button
                     v-if="row.status === 1 && hasPermission(['/pmsMember/status'])"
                     type="button"
-                    class="text-[13px] text-orange-500 hover:text-orange-700 transition-colors whitespace-nowrap"
+                    class="member-action member-action-danger text-[13px] transition-colors whitespace-nowrap"
                     @click="handleStatus(row, 2)"
                   >禁用</button>
                   <button
                     v-if="row.status === 2 && hasPermission(['/pmsMember/status'])"
                     type="button"
-                    class="text-[13px] text-green-600 hover:text-green-800 transition-colors whitespace-nowrap"
+                    class="member-action member-action-primary text-[13px] transition-colors whitespace-nowrap"
                     @click="handleStatus(row, 1)"
                   >启用</button>
                   <button
                     v-if="row.memberCancelArr == null && hasPermission(['/pmsWithdraw/disagreeStaff'])"
                     type="button"
-                    class="text-[13px] text-red-500 hover:text-red-700 transition-colors whitespace-nowrap"
+                    class="member-action member-action-danger text-[13px] transition-colors whitespace-nowrap"
                     @click="handleCancel(row)"
                   >注销</button>
                   <UiDropdownMenu
@@ -529,3 +529,121 @@ onMounted(() => {
   loadData();
 });
 </script>
+
+<style lang="less" scoped>
+.member-page {
+  --crs-primary: #38aeea;
+  --crs-primary-strong: #128fc8;
+  --crs-primary-soft: #eaf7ff;
+  --crs-border: #dce7f2;
+  --crs-surface: #ffffff;
+  --crs-surface-soft: #f7fbff;
+  --crs-text: #152033;
+  --crs-muted: #6b7c93;
+  --crs-danger: #ef4444;
+  --crs-danger-soft: #fff1f2;
+  --crs-success: #16a34a;
+  --crs-success-soft: #eefbf3;
+  color: var(--crs-text);
+
+  :deep(.border-border),
+  .border-border {
+    border-color: var(--crs-border);
+  }
+
+  :deep(.text-muted-foreground),
+  .text-muted-foreground {
+    color: var(--crs-muted);
+  }
+
+  :deep(.text-foreground),
+  .text-foreground {
+    color: var(--crs-text);
+  }
+
+  :deep(.bg-white),
+  .bg-white {
+    background: var(--crs-surface);
+  }
+
+  :deep(.bg-muted),
+  .bg-muted {
+    background: var(--crs-primary-soft);
+    color: var(--crs-primary-strong);
+  }
+
+  :deep(.bg-primary),
+  .bg-primary {
+    background: var(--crs-primary);
+  }
+
+  :deep(.text-primary) {
+    color: var(--crs-primary-strong);
+  }
+
+  :deep(.border-primary) {
+    border-color: var(--crs-primary);
+  }
+
+  :deep(input),
+  :deep(button),
+  select {
+    border-color: var(--crs-border);
+  }
+
+  :deep(input:focus),
+  :deep(button:focus-visible),
+  select:focus {
+    border-color: var(--crs-primary);
+    box-shadow: 0 0 0 2px rgba(56, 174, 234, 0.16);
+  }
+
+  thead tr {
+    background: var(--crs-surface-soft) !important;
+  }
+
+  tbody tr:hover {
+    background: var(--crs-surface-soft) !important;
+  }
+
+  .member-link,
+  .member-action-primary {
+    color: var(--crs-primary-strong);
+  }
+
+  :deep([class*='text-stripe']) {
+    color: var(--crs-primary-strong);
+  }
+
+  .member-link:hover,
+  .member-action-primary:hover,
+  :deep([class*='text-stripe']:hover) {
+    color: #0879ad;
+  }
+
+  .member-action-danger {
+    color: var(--crs-danger);
+  }
+
+  .member-action-danger:hover {
+    color: #dc2626;
+  }
+
+  .member-status {
+    border: 1px solid transparent;
+    box-shadow: none;
+  }
+
+  .member-status-ok {
+    background: var(--crs-success-soft);
+    border-color: rgba(22, 163, 74, 0.18);
+    color: var(--crs-success);
+  }
+
+  .member-status-danger {
+    background: var(--crs-danger-soft);
+    border-color: rgba(239, 68, 68, 0.18);
+    color: var(--crs-danger);
+  }
+}
+</style>

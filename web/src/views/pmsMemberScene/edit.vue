@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="member-admin-page">
     <n-modal
       v-model:show="showModal"
       :mask-closable="false"
@@ -143,5 +143,4 @@ defineExpose({
 </script>
 
 <style lang="less"></style>
-
 

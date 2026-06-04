@@ -6,7 +6,7 @@
     @update:open="closeForm"
   >
     <UiSpinner :show="loading">
-      <div class="space-y-4">
+      <div class="member-admin-page member-edit-form space-y-3">
         <!-- Group -->
         <template v-if="formValue.type === 'group'">
           <div class="flex flex-col gap-1">

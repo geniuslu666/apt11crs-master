@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="member-admin-page">
     <div class="n-layout-page-header" style="margin: 0">
       <n-card :bordered="false" :header-style="{
                     padding: '20px',
@@ -160,4 +160,3 @@ onMounted(async () => {
 </script>
 
 <style lang="less" scoped></style>
-

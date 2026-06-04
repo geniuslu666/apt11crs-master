@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 space-y-4">
+  <div class="member-admin-page member-detail-page p-4 space-y-4">
     <!-- Loading overlay -->
     <div v-if="loading" class="flex items-center justify-center py-20">
       <svg class="animate-spin w-8 h-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -10,11 +10,11 @@
 
     <template v-if="!loading">
       <!-- Basic Info + Account Info -->
-      <div class="grid grid-cols-1 gap-4" style="grid-template-columns: 1fr auto">
+      <div class="member-detail-grid grid grid-cols-1 gap-4">
         <!-- Basic Info -->
-        <div class="bg-white rounded-lg border border-border p-5">
-          <h2 class="text-lg font-semibold text-foreground mb-4">基本信息</h2>
-          <div class="flex gap-4 md:gap-10">
+        <div class="member-card bg-white rounded-lg border border-border p-5">
+          <h2 class="member-section-title">基本信息</h2>
+          <div class="flex gap-4 md:gap-8">
             <!-- Avatar -->
             <div class="flex-shrink-0 w-12 h-12 md:w-24 md:h-24 rounded-full overflow-hidden bg-muted">
               <img v-if="data.avatar" :src="data.avatar" loading="lazy" class="w-full h-full object-cover"
@@ -24,43 +24,43 @@
             <!-- Info lists -->
             <div class="flex-1 min-w-0">
               <!-- Row 1 -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 pb-3 mb-3 border-b border-border">
+              <div class="member-info-grid grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 pb-3 mb-3 border-b border-border">
                 <InfoItem label="会员号" :value="data.memberNo" />
                 <InfoItem label="会员姓">
                   {{ data.lastName }}
-                  <a v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('firstName', data)" class="text-blue-500 text-xs ml-2 cursor-pointer hover:underline">修改</a>
+                  <button v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('firstName', data)" class="member-inline-action">修改</button>
                 </InfoItem>
                 <InfoItem label="会员分组">
                   {{ data.groupName }}
-                  <a v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('group', data)" class="text-blue-500 text-xs ml-2 cursor-pointer hover:underline">修改</a>
+                  <button v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('group', data)" class="member-inline-action">修改</button>
                 </InfoItem>
                 <InfoItem label="会员名">
                   {{ data.firstName }}
-                  <a v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('lastName', data)" class="text-blue-500 text-xs ml-2 cursor-pointer hover:underline">修改</a>
+                  <button v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('lastName', data)" class="member-inline-action">修改</button>
                 </InfoItem>
                 <InfoItem label="会员等级">
                   {{ data.levelName }}
-                  <a v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('level', data)" class="text-blue-500 text-xs ml-2 cursor-pointer hover:underline">修改</a>
+                  <button v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('level', data)" class="member-inline-action">修改</button>
                 </InfoItem>
                 <InfoItem label="会员全名" :value="data.fullName" />
               </div>
               <!-- Row 2 -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 pb-3 mb-3 border-b border-border">
+              <div class="member-info-grid grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 pb-3 mb-3 border-b border-border">
                 <InfoItem label="手机号码">
                   {{ data.phoneArea ? data.phoneArea + ' ' : '' }}{{ data.phone || '--' }}
-                  <a v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('phone', data)" class="text-blue-500 text-xs ml-2 cursor-pointer hover:underline">修改</a>
+                  <button v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('phone', data)" class="member-inline-action">修改</button>
                 </InfoItem>
                 <InfoItem label="注册来源" :value="data.source" />
                 <InfoItem label="电子邮箱">
                   {{ data.mail || '--' }}
-                  <a v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('mail', data)" class="text-blue-500 text-xs ml-2 cursor-pointer hover:underline">修改</a>
+                  <button v-if="hasPermission(['/pmsMember/baseEdit'])" @click="handleEditBase('mail', data)" class="member-inline-action">修改</button>
                 </InfoItem>
                 <InfoItem label="注册IP" :value="data.registerIp" />
                 <InfoItem label="推荐人" :value="data.referrerName" />
                 <InfoItem label="注册时间" :value="data.registerTime" />
               </div>
               <!-- Row 3 -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2">
+              <div class="member-info-grid grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2">
                 <InfoItem label="最后登录IP" :value="data.lastLoginIp" />
                 <InfoItem label="注册设备型号" :value="data.registerMpModel || '--'" />
                 <InfoItem label="最后登录时间" :value="data.lastLogin" />
@@ -71,26 +71,26 @@
         </div>
 
         <!-- Account Info -->
-        <div class="bg-white rounded-lg border border-border p-5 min-w-[200px]">
-          <h2 class="text-lg font-semibold text-foreground mb-4">账户信息</h2>
-          <div class="space-y-3">
-            <div class="flex items-center gap-3">
-              <span class="text-sm text-muted-foreground w-24">会员积分：</span>
-              <span class="text-sm font-medium text-foreground">{{ data.balance }}</span>
-              <a v-if="hasPermission(['/pmsMember/balanceEdit'])" @click="handleEditBalance(data.balance)" class="text-blue-500 text-xs cursor-pointer hover:underline">修改</a>
+        <div class="member-card bg-white rounded-lg border border-border p-5 min-w-[220px]">
+          <h2 class="member-section-title">账户信息</h2>
+          <div class="space-y-2.5">
+            <div class="member-account-row">
+              <span>会员积分</span>
+              <strong>{{ data.balance }}</strong>
+              <button v-if="hasPermission(['/pmsMember/balanceEdit'])" @click="handleEditBalance(data.balance)" class="member-inline-action">修改</button>
             </div>
-            <div class="flex items-center gap-3">
-              <span class="text-sm text-muted-foreground w-24">会员成长值：</span>
-              <span class="text-sm font-medium text-foreground">{{ data.exp }}</span>
-              <a v-if="hasPermission(['/pmsMember/expEdit'])" @click="handleEditExp(data.exp)" class="text-blue-500 text-xs cursor-pointer hover:underline">修改</a>
+            <div class="member-account-row">
+              <span>会员成长值</span>
+              <strong>{{ data.exp }}</strong>
+              <button v-if="hasPermission(['/pmsMember/expEdit'])" @click="handleEditExp(data.exp)" class="member-inline-action">修改</button>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Detail Tabs -->
-      <div class="bg-white rounded-lg border border-border p-5">
-        <h2 class="text-lg font-semibold text-foreground mb-4">会员明细</h2>
+      <div class="member-card bg-white rounded-lg border border-border p-5">
+        <h2 class="member-section-title">会员明细</h2>
 
         <!-- Tab Bar -->
         <div class="flex items-center gap-1 flex-wrap mb-4">
@@ -110,7 +110,7 @@
           >
             <template #action="{ row }">
               <span v-if="row.orderSn">
-                <button @click="openOrderView(row.orderSn)" class="text-sm text-blue-600 hover:underline cursor-pointer">{{ row.orderSn }}</button>
+                <button @click="openOrderView(row.orderSn)" class="member-table-action">{{ row.orderSn }}</button>
               </span>
             </template>
           </ProTable>
@@ -135,7 +135,7 @@
             :row-key="(row) => row.id"
           >
             <template #action="{ row }">
-              <button @click="handleHotelOrderView(row)" class="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">详情</button>
+              <button @click="handleHotelOrderView(row)" class="member-table-action">详情</button>
             </template>
           </ProTable>
         </template>
@@ -149,7 +149,7 @@
             :row-key="(row) => row.id"
           >
             <template #action="{ row }">
-              <button @click="handleFoodOrderView(row)" class="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">详情</button>
+              <button @click="handleFoodOrderView(row)" class="member-table-action">详情</button>
             </template>
           </ProTable>
         </template>
@@ -163,7 +163,7 @@
             :row-key="(row) => row.id"
           >
             <template #action="{ row }">
-              <button @click="handleSpaOrderView(row)" class="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">详情</button>
+              <button @click="handleSpaOrderView(row)" class="member-table-action">详情</button>
             </template>
           </ProTable>
         </template>
@@ -177,7 +177,7 @@
             :row-key="(row) => row.id"
           >
             <template #action="{ row }">
-              <button @click="handleCarOrderView(row)" class="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">详情</button>
+              <button @click="handleCarOrderView(row)" class="member-table-action">详情</button>
             </template>
           </ProTable>
         </template>
@@ -191,7 +191,7 @@
             :row-key="(row) => row.id"
           >
             <template #action="{ row }">
-              <button @click="handleCabinetOrderView(row)" class="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">详情</button>
+              <button @click="handleCabinetOrderView(row)" class="member-table-action">详情</button>
             </template>
           </ProTable>
         </template>
@@ -205,7 +205,7 @@
             :row-key="(row) => row.id"
           >
             <template #action="{ row }">
-              <button @click="handleTravelOrderView(row)" class="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">详情</button>
+              <button @click="handleTravelOrderView(row)" class="member-table-action">详情</button>
             </template>
           </ProTable>
         </template>
@@ -222,7 +222,7 @@
               <button
                 v-if="row.state === 1 && hasPermission(['/pmsCouponType/delete'])"
                 @click="handleCouponRecycle(row)"
-                class="text-sm text-red-600 hover:text-red-800 cursor-pointer"
+                class="member-table-action member-table-action-danger"
               >回收</button>
             </template>
           </ProTable>
@@ -240,7 +240,7 @@
               <button
                 v-if="(row.state === 1 || row.state === 2) && hasPermission(['/thMemberCoupon/recycle'])"
                 @click="handleThCouponRecycle(row)"
-                class="text-sm text-red-600 hover:text-red-800 cursor-pointer"
+                class="member-table-action member-table-action-danger"
               >回收</button>
             </template>
           </ProTable>
@@ -313,9 +313,9 @@ import defaultImg from "@/assets/images/mrtx.png";
 const InfoItem = {
   props: ['label', 'value'],
   setup(props: any, { slots }: any) {
-    return () => h('div', { class: 'flex items-center gap-2 text-sm' }, [
-      h('span', { class: 'text-muted-foreground flex-shrink-0', style: 'min-width:78px' }, props.label + '：'),
-      slots.default ? h('span', { class: 'text-foreground flex items-center gap-1' }, slots.default()) : h('span', { class: 'text-foreground' }, props.value ?? '--'),
+    return () => h('div', { class: 'member-info-item' }, [
+      h('span', { class: 'member-info-label' }, props.label),
+      slots.default ? h('span', { class: 'member-info-value' }, slots.default()) : h('span', { class: 'member-info-value' }, props.value ?? '--'),
     ]);
   },
 };
@@ -395,7 +395,7 @@ const balanceCols = [
     key: 'changePrice_dir',
     title: '方向',
     width: 70,
-    render: (row: any) => h('span', { style: { color: row.changePrice > 0 ? 'green' : 'red' } }, row.changePrice > 0 ? '发放' : '消耗'),
+    render: (row: any) => h('span', { class: row.changePrice > 0 ? 'member-text-success' : 'member-text-danger' }, row.changePrice > 0 ? '发放' : '消耗'),
   },
   {
     key: 'scene',
@@ -407,7 +407,7 @@ const balanceCols = [
     key: 'changePrice',
     title: '积分变化',
     width: 120,
-    render: (row: any) => h('span', { style: { color: row.changePrice > 0 ? 'green' : 'red' } }, row.changePrice > 0 ? `+${row.changePrice}` : String(row.changePrice)),
+    render: (row: any) => h('span', { class: row.changePrice > 0 ? 'member-text-success' : 'member-text-danger' }, row.changePrice > 0 ? `+${row.changePrice}` : String(row.changePrice)),
   },
   {
     key: 'operator',
@@ -435,7 +435,7 @@ const balanceCols = [
     render: (row: any) => {
       if (!row.orderSn) return '';
       return h('button', {
-        class: 'text-blue-600 hover:underline text-sm',
+        class: 'member-table-action',
         onClick: () => openOrderView(row.orderSn),
       }, row.orderSn);
     },
@@ -449,7 +449,7 @@ const expCols = [
     key: 'exp_dir',
     title: '方向',
     width: 70,
-    render: (row: any) => h('span', { style: { color: row.exp > 0 ? 'green' : 'red' } }, row.exp > 0 ? '发放' : '消耗'),
+    render: (row: any) => h('span', { class: row.exp > 0 ? 'member-text-success' : 'member-text-danger' }, row.exp > 0 ? '发放' : '消耗'),
   },
   {
     key: 'scene',
@@ -461,7 +461,7 @@ const expCols = [
     key: 'exp_change',
     title: '成长值变化',
     width: 120,
-    render: (row: any) => h('span', { style: { color: row.exp > 0 ? 'green' : 'red' } }, row.exp > 0 ? `+${row.exp}` : String(row.exp)),
+    render: (row: any) => h('span', { class: row.exp > 0 ? 'member-text-success' : 'member-text-danger' }, row.exp > 0 ? `+${row.exp}` : String(row.exp)),
   },
   {
     key: 'operator',
@@ -757,3 +757,144 @@ onMounted(() => {
   getInfo();
 });
 </script>
+
+<style lang="less" scoped>
+.member-detail-page {
+  --member-primary: #38aeea;
+  --member-primary-strong: #128fc8;
+  --member-primary-soft: #eaf7ff;
+  --member-border: #dce7f2;
+  --member-surface-soft: #f7fbff;
+  --member-text: #152033;
+  --member-muted: #6b7c93;
+  --member-danger: #ef4444;
+  --member-success: #16a34a;
+}
+
+.member-detail-grid {
+  grid-template-columns: minmax(0, 1fr) 260px;
+
+  @media (max-width: 1180px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.member-card {
+  border-color: var(--member-border);
+  color: var(--member-text);
+}
+
+.member-section-title {
+  margin-bottom: 14px;
+  color: var(--member-text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.member-info-grid {
+  border-color: var(--member-border);
+}
+
+:deep(.member-info-item) {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-height: 28px;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+:deep(.member-info-label) {
+  color: var(--member-muted);
+  white-space: nowrap;
+}
+
+:deep(.member-info-label::after) {
+  content: ":";
+}
+
+:deep(.member-info-value) {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: var(--member-text);
+  overflow-wrap: anywhere;
+}
+
+.member-account-row {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  font-size: 13px;
+  line-height: 20px;
+
+  span {
+    color: var(--member-muted);
+  }
+
+  strong {
+    color: var(--member-text);
+    font-weight: 600;
+  }
+}
+
+.member-inline-action,
+.member-table-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  border: 0;
+  border-radius: 5px;
+  color: var(--member-primary-strong);
+  background: transparent;
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    color: #0879ad;
+    background: var(--member-primary-soft);
+  }
+}
+
+.member-table-action {
+  min-height: 26px;
+  padding: 0 7px;
+  font-size: 13px;
+}
+
+.member-table-action-danger {
+  color: var(--member-danger);
+
+  &:hover {
+    color: #dc2626;
+    background: #fff1f2;
+  }
+}
+
+:deep(.member-text-success) {
+  color: var(--member-success);
+  font-weight: 500;
+}
+
+:deep(.member-text-danger) {
+  color: var(--member-danger);
+  font-weight: 500;
+}
+
+:deep(.bg-muted) {
+  background: var(--member-primary-soft);
+}
+
+:deep(.text-primary) {
+  color: var(--member-primary-strong);
+}
+</style>

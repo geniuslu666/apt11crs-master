@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="member-admin-page">
     <n-drawer v-model:show="showModal" :width="dialogWidth">
       <n-drawer-content title="会员等级场景详情" closable>
         <n-spin :show="loading" description="请稍候...">
@@ -86,5 +86,4 @@ defineExpose({
 </script>
 
 <style lang="less" scoped></style>
-
 

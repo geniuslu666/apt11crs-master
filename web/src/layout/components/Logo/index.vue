@@ -1,10 +1,20 @@
 <template>
   <div class="logo-wrap" :class="{ 'logo-collapsed': collapsed }">
-    <img src="~@/assets/images/logo.png" alt="logo" class="logo-img" />
+    <span class="logo-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 14v-4" />
+        <path d="M9.2 12.4 7.8 11" />
+        <path d="m14.8 12.4 1.4-1.4" />
+        <path d="M19.4 14a7.8 7.8 0 1 0-14.8 0" />
+        <path d="M5 18h14" />
+      </svg>
+    </span>
     <transition name="logo-text-fade">
       <div v-if="!collapsed" class="logo-text">
-        <span class="logo-title">住一CRS</span>
-        <span v-if="state.pmsmeun && propertyName" class="logo-sub" :title="propertyName">{{ propertyName }}</span>
+        <span class="logo-title">住一 CRS</span>
+        <span class="logo-sub" :title="state.pmsmeun && propertyName ? propertyName : 'CRS 管理后台'">
+          {{ state.pmsmeun && propertyName ? propertyName : 'CRS 管理后台' }}
+        </span>
       </div>
     </transition>
   </div>
@@ -77,29 +87,40 @@ onMounted(async () => {
 .logo-wrap {
   display: flex;
   align-items: center;
-  height: 56px;
-  padding: 0 16px;
+  min-height: 56px;
+  gap: 12px;
+  padding: 0 12px;
   overflow: hidden;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid hsl(214 32% 91%);
   transition: padding 0.2s ease;
 
   &.logo-collapsed {
     padding: 0;
     justify-content: center;
+    min-height: 56px;
+    gap: 0;
   }
 }
 
-.logo-img {
-  width: 28px;
-  height: 28px;
+.logo-mark {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
+  background: #38aeea;
+  color: #fff;
   flex-shrink: 0;
-  object-fit: contain;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .logo-text {
-  margin-left: 10px;
   min-width: 0;
   overflow: hidden;
 }
@@ -108,21 +129,21 @@ onMounted(async () => {
   display: block;
   font-size: 14px;
   font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.02em;
+  color: hsl(222 47% 11%);
+  letter-spacing: 0;
   white-space: nowrap;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .logo-sub {
   display: block;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  color: hsl(215 16% 47%);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 130px;
-  margin-top: 1px;
+  max-width: 160px;
+  margin-top: 2px;
 }
 
 // Fade transition for logo text

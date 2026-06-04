@@ -6,7 +6,7 @@
     @update:open="closeForm"
   >
     <UiSpinner :show="loading">
-      <div class="space-y-4 py-2">
+      <div class="member-admin-page member-edit-form space-y-3 py-2">
         <div class="flex flex-col gap-1">
           <label class="text-sm font-medium text-foreground">会员号</label>
           <UiInput v-model="formValue.memberNo" placeholder="请输入会员号" />
